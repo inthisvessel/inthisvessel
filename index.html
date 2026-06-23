@@ -15,8 +15,8 @@
     --orb-aqua: #CDE2E6;
     /* ink */
     --ink: #1B232E;
-    --muted: #5C6675;
-    --muted-soft: #79828F;
+    --muted: #525C6B;
+    --muted-soft: #616B7A;
     --line: rgba(27,35,46,0.10);
     /* accent (single, restrained) */
     --accent: #3D5A80;
@@ -48,6 +48,18 @@
   a { text-decoration: none; color: inherit; }
   button { font-family: inherit; cursor: pointer; }
   ::selection { background: rgba(61,90,128,0.20); }
+
+  /* ── Accessibility: visible focus + skip link ── */
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .skip-link {
+    position: fixed; top: 10px; left: 50%;
+    transform: translateX(-50%) translateY(-160%);
+    z-index: 9999; background: var(--accent); color: #fff;
+    padding: 10px 20px; border-radius: 30px; font-family: var(--sans);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em;
+    transition: transform 0.2s ease;
+  }
+  .skip-link:focus { transform: translateX(-50%) translateY(0); }
 
   /* ── Ambient backdrop so glass has something to refract ── */
   .atmos { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
@@ -214,10 +226,12 @@
   }
   .hero-fade { opacity: var(--hero-op, 1); }
   .hero-eyebrow-anim { opacity: 0; animation: fadeUp 0.9s cubic-bezier(0.22,0.61,0.36,1) 0.1s forwards; }
-  .hero-anim-line { overflow: hidden; }
+  .hero-h1 { margin: 0; }
+  .hero-anim-line { display: block; overflow: hidden; }
   .hero-line-1, .hero-line-2 {
+    display: block;
     font-family: var(--serif); font-weight: 300; font-size: clamp(2.7rem, 7vw, 5.4rem);
-    line-height: 1.0; letter-spacing: -0.025em; color: var(--ink); margin: 0;
+    line-height: 1.04; letter-spacing: -0.025em; color: var(--ink); margin: 0;
   }
   .hero-line-1 { opacity: 0; animation: fadeUp 0.95s cubic-bezier(0.22,0.61,0.36,1) 0.28s forwards; }
   .hero-line-2 { opacity: 0; animation: fadeUp 0.95s cubic-bezier(0.22,0.61,0.36,1) 0.42s forwards; }
@@ -297,7 +311,51 @@
   }
   .position-synth em { font-style: italic; color: var(--accent); }
 
+  /* ── HOW I THINK (operating loop) ── */
+  .think-wrap { padding: 5.5rem 0 1rem; }
+  @media (max-width: 820px) { .think-wrap { padding: 4rem 0 0.5rem; } }
+  .think-head { max-width: 720px; margin: 0 0 2.6rem; }
+  .think-head h2 {
+    font-family: var(--serif); font-weight: 400; font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+    line-height: 1.12; letter-spacing: -0.015em; color: var(--ink); margin: 0.9rem 0 0.7rem;
+  }
+  .think-head p { font-family: var(--sans); font-size: 0.96rem; font-weight: 300; line-height: 1.7; color: var(--muted); margin: 0; max-width: 600px; }
+  .think-rail { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.9rem; align-items: stretch; }
+  @media (max-width: 860px) { .think-rail { grid-template-columns: 1fr; gap: 0.6rem; } }
+  .think-step {
+    position: relative; padding: 1.7rem 1.5rem; border-radius: 18px;
+    background: var(--glass); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow), var(--glass-inset);
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .think-step .ts-num { font-family: var(--sans); font-size: 0.62rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
+  .think-step h3 { font-family: var(--serif); font-weight: 400; font-size: 1.3rem; color: var(--ink); margin: 0.1rem 0 0.2rem; }
+  .think-step .ts-principle { font-family: var(--sans); font-size: 0.86rem; font-weight: 500; line-height: 1.5; color: var(--ink); margin: 0; }
+  .think-step .ts-eg { font-family: var(--sans); font-size: 0.82rem; font-weight: 300; line-height: 1.55; color: var(--muted); margin: 0.3rem 0 0; padding-top: 0.6rem; border-top: 1px solid var(--line); }
+  .think-step .ts-eg b { font-weight: 600; color: var(--ink); }
+  /* connector arrow between steps */
+  .think-step:not(:last-child)::after {
+    content: ""; position: absolute; z-index: 2; top: 50%; right: -0.62rem; width: 1.2rem; height: 1.2rem;
+    transform: translateY(-50%) rotate(45deg);
+    border-top: 2px solid var(--accent); border-right: 2px solid var(--accent);
+    opacity: 0.5;
+  }
+  @media (max-width: 860px) {
+    .think-step:not(:last-child)::after { top: auto; right: 50%; bottom: -0.62rem; transform: translateX(50%) rotate(135deg); }
+  }
+  .think-loop {
+    margin-top: 1.4rem; font-family: var(--serif); font-weight: 400; font-size: clamp(1rem, 1.8vw, 1.3rem);
+    line-height: 1.5; color: var(--ink); padding: 1.2rem 1.6rem; border-radius: 14px;
+    background: var(--accent-soft); border: 1px solid var(--glass-edge);
+  }
+  .think-loop em { font-style: italic; color: var(--accent); }
+
   /* ── PROJECT CARD SNAPSHOT (Problem · Approach · Outcome) ── */
+  .cs-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin: 0 0 1.3rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--line); }
+  .cs-meta > div { display: flex; flex-direction: column; gap: 0.18rem; }
+  .cs-meta .k { font-family: var(--sans); font-size: 0.58rem; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted-soft); }
+  .cs-meta .v { font-family: var(--sans); font-size: 0.82rem; font-weight: 500; line-height: 1.3; color: var(--ink); }
+  @media (max-width: 380px) { .cs-meta { grid-template-columns: 1fr 1fr; } }
   .cs-snapshot { display: flex; flex-direction: column; gap: 0.7rem; margin: 0 0 1.4rem; }
   .cs-snap-row { display: grid; grid-template-columns: 76px 1fr; gap: 0.8rem; align-items: baseline; }
   .cs-snap-k {
@@ -370,6 +428,13 @@
   .cs-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.6rem; }
   .cs-tag { font-family: var(--sans); font-size: 0.68rem; font-weight: 500; color: var(--muted); padding: 5px 11px; border-radius: 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--line); }
   .cs-cta { display: inline-flex; align-items: center; gap: 7px; font-family: var(--sans); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em; }
+  /* Equal-height cards: both inherit the tallest card's height, with the tag row
+     and CTA pinned to a shared baseline so the pair reads as one system. */
+  .cs-grid { align-items: stretch; }
+  .cs-grid > .reveal { display: flex; }
+  .cs-card { display: flex; flex-direction: column; height: 100%; }
+  .cs-desc { min-height: 4.8em; }       /* aligns the Problem · Approach · Outcome rows */
+  .cs-tags { margin-top: auto; }        /* pins the tag row + CTA to the card bottom */
 
   /* ── EXPERIENCE ── */
   .xp-wrap { padding: 6rem 0; }
@@ -423,21 +488,23 @@
   .foot .name { font-family: var(--serif); font-size: 0.96rem; color: var(--ink); }
   .foot .meta { font-family: var(--sans); font-size: 0.74rem; font-weight: 300; color: var(--muted-soft); letter-spacing: 0.02em; }
 
-  /* ── FOOTER HUB ── */
-  .foot-hub { border-top: 1px solid var(--line); padding: 4.5rem 3rem 0; }
-  .foot-hub-inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr; gap: 2.5rem; }
-  @media (max-width: 860px) { .foot-hub-inner { grid-template-columns: 1fr 1fr; gap: 2.4rem 2rem; } .foot-hub { padding: 3.5rem 1.5rem 0; } }
-  @media (max-width: 480px) { .foot-hub-inner { grid-template-columns: 1fr; } }
-  .foot-brand .fb-logo { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; color: var(--ink); display: inline-block; margin-bottom: 0.7rem; }
-  .foot-brand .fb-logo em { font-style: italic; color: var(--accent); }
-  .foot-brand p { font-family: var(--sans); font-size: 0.88rem; font-weight: 300; line-height: 1.65; color: var(--muted); max-width: 280px; margin: 0; }
-  .foot-col h4 { font-family: var(--sans); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.1rem; }
-  .foot-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
-  .foot-col a { font-family: var(--sans); font-size: 0.9rem; font-weight: 400; color: var(--muted); background: none; border: none; padding: 0; text-align: left; transition: color 0.2s, padding-left 0.2s; cursor: pointer; }
-  .foot-col a:hover { color: var(--accent); padding-left: 4px; }
-  .foot-bottom { max-width: 1120px; margin: 4rem auto 0; border-top: 1px solid var(--line); padding: 1.8rem 0 2.4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; }
-  .foot-bottom .name { font-family: var(--serif); font-size: 0.94rem; color: var(--ink); }
-  .foot-bottom .meta { font-family: var(--sans); font-size: 0.72rem; font-weight: 300; color: var(--muted-soft); letter-spacing: 0.02em; }
+  /* ── SHARED FOOTER COMPONENT (global site navigation) ──
+     Identical IA, layout logic, nav structure, interaction & accessibility on
+     every page — only the skin (palette + type) changes. Homepage skin below. */
+  .site-footer { border-top: 1px solid var(--line); padding: 4.5rem 3rem 0; }
+  .site-footer__inner { max-width: 1120px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 2.5rem; }
+  @media (max-width: 860px) { .site-footer__inner { grid-template-columns: 1fr 1fr; gap: 2.4rem 2rem; } .site-footer { padding: 3.5rem 1.5rem 0; } }
+  @media (max-width: 480px) { .site-footer__inner { grid-template-columns: 1fr; } }
+  .sf-brand .sf-logo { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; color: var(--ink); display: inline-block; margin-bottom: 0.7rem; }
+  .sf-brand .sf-logo em { font-style: italic; color: var(--accent); }
+  .sf-brand p { font-family: var(--sans); font-size: 0.88rem; font-weight: 300; line-height: 1.65; color: var(--muted); max-width: 280px; margin: 0; }
+  .sf-col h4 { font-family: var(--sans); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.1rem; }
+  .sf-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
+  .sf-col a { font-family: var(--sans); font-size: 0.9rem; font-weight: 400; color: var(--muted); background: none; border: none; padding: 0; text-align: left; transition: color 0.2s, padding-left 0.2s; cursor: pointer; }
+  .sf-col a:hover { color: var(--accent); padding-left: 4px; }
+  .site-footer__bottom { max-width: 1120px; margin: 4rem auto 0; border-top: 1px solid var(--line); padding: 1.8rem 0 2.4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; }
+  .site-footer__bottom .sf-sign { font-family: var(--serif); font-size: 0.94rem; color: var(--ink); }
+  .site-footer__bottom .sf-meta { font-family: var(--sans); font-size: 0.72rem; font-weight: 300; color: var(--muted-soft); letter-spacing: 0.02em; }
 
   /* ── OVERLAYS (about + case study) ── */
   .overlay {
@@ -589,6 +656,8 @@
 </head>
 <body>
 
+<a class="skip-link" href="#hero">Skip to content</a>
+
 <!-- ambient backdrop -->
 <div class="atmos" aria-hidden="true">
   <div class="orb orb-1"></div>
@@ -609,14 +678,15 @@
     </button>
     <div class="nav-links" id="navLinks">
       <button class="nav-link" data-scroll="#top" data-hover>Home</button>
-      <button class="nav-link" data-open-about data-hover>About Me</button>
       <div class="work-dropdown" id="workDD">
         <button class="nav-link" id="workToggle" aria-haspopup="true" aria-expanded="false" data-hover>
           Case Studies
-          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--accent);transition:transform 0.2s" id="workChev"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--accent);transition:transform 0.2s" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <div class="work-menu" id="workMenu" role="menu"></div>
+        <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies"></div>
       </div>
+      <button class="nav-link" data-open-about data-hover>About</button>
+      <button class="nav-link" data-scroll="#resume" data-hover>Resume</button>
       <button class="nav-cta" data-scroll="#contact" data-hover>Contact</button>
     </div>
   </div>
@@ -625,16 +695,18 @@
 <a id="top"></a>
 
 <!-- HERO -->
-<section class="hero" id="hero">
+<section class="hero" id="hero" tabindex="-1">
   <div class="hero-inner hero-fade">
     <div class="hero-text">
       <div class="hero-eyebrow-anim" style="margin-bottom:1.8rem">
-        <span class="eyebrow">In This Vessel — psychology meets design</span>
+        <span class="eyebrow">In This Vessel — where psychology meets product</span>
       </div>
-      <div class="hero-anim-line"><h1 class="hero-line-1" style="font-size: 70px">the intersection between</h1></div>
-      <div class="hero-anim-line"><h1 class="hero-line-2"><em style="font-size: 70px">mind, behavior, and design</em></h1></div>
+      <h1 class="hero-h1">
+        <span class="hero-anim-line"><span class="hero-line-1">I turn human behavior</span></span>
+        <span class="hero-anim-line"><span class="hero-line-2"><em>into measurable outcomes</em></span></span>
+      </h1>
       <p class="hero-tagline">
-        Psychology student at <span class="accent">Kennesaw State University</span> — transitioning into UX design with a background in healthcare, banking, and operations.
+        Psychology-informed <span class="accent">UX &amp; product designer</span> translating research into decisions that move real metrics. Four-plus years across healthcare, banking, and live operations — now designing the systems behind the screen.
       </p>
       <div class="hero-ctas">
         <button class="btn-primary" data-scroll="#work" data-hover>
@@ -680,6 +752,44 @@
       </div>
     </div>
     <p class="reveal position-synth">Psychology explains the behavior. Research <em>locates</em> it. Product design <em>resolves</em> it — that loop is what I bring to a team.</p>
+  </div>
+</section>
+
+<!-- HOW I THINK -->
+<section class="think-wrap" id="how-i-think">
+  <div class="container">
+    <div class="think-head reveal">
+      <div class="section-eyebrow"><span class="line"></span><span class="text">How I think</span></div>
+      <h2>Every decision earns its place — from evidence, not taste.</h2>
+      <p>The same loop runs through every project. Here it is on <b>Closing the Care Gap</b>, where it cut specialist referral times from over a year to about two weeks.</p>
+    </div>
+    <div class="think-rail">
+      <div class="reveal think-step">
+        <span class="ts-num">01 · Research</span>
+        <h3>Go to the friction</h3>
+        <p class="ts-principle">I observe the system where it meets real people — not where it's documented.</p>
+        <p class="ts-eg">Shadowed the clinic for six weeks and audited a full year of referrals.</p>
+      </div>
+      <div class="reveal think-step" style="transition-delay:0.08s">
+        <span class="ts-num">02 · Insight</span>
+        <h3>Name the real problem</h3>
+        <p class="ts-principle">I interpret findings into a "so what" — the cause, not the symptom.</p>
+        <p class="ts-eg">The delay wasn't clinical. It was an <b>invisible handoff with no owner</b>.</p>
+      </div>
+      <div class="reveal think-step" style="transition-delay:0.16s">
+        <span class="ts-num">03 · Decision</span>
+        <h3>Make a defensible call</h3>
+        <p class="ts-principle">I weigh options against constraints and commit to a tradeoff I can defend.</p>
+        <p class="ts-eg">Chose one <b>shared referral tracker</b> over a new patient-facing app — feasible for the team to sustain.</p>
+      </div>
+      <div class="reveal think-step" style="transition-delay:0.24s">
+        <span class="ts-num">04 · Outcome</span>
+        <h3>Ship something that holds</h3>
+        <p class="ts-principle">I measure the change and design it to survive without me.</p>
+        <p class="ts-eg">Referral processing fell from <b>12+ months to ~2 weeks</b> — and held after I left.</p>
+      </div>
+    </div>
+    <p class="reveal think-loop">Research → insight → decision → outcome. The <em>decision log</em> in each case study traces this loop end to end — so you can audit the reasoning, not just admire the result.</p>
   </div>
 </section>
 
@@ -770,10 +880,10 @@
   </div>
 </section>
 
-<!-- EXPERIENCE -->
-<section class="xp-wrap">
+<!-- EXPERIENCE / RESUME -->
+<section class="xp-wrap" id="resume">
   <div class="container">
-    <div class="reveal section-eyebrow"><span class="line"></span><span class="text">Background</span></div>
+    <div class="reveal section-eyebrow"><span class="line"></span><span class="text">Résumé · Background</span></div>
     <h2 class="reveal section-h2">Experience &amp; Education</h2>
     <div class="xp-grid" id="xpGrid"></div>
   </div>
@@ -801,31 +911,38 @@
 </section>
 
 <!-- FOOTER -->
-<footer class="foot-hub">
-  <div class="foot-hub-inner">
-    <div class="foot-brand">
-      <a class="fb-logo" href="#top" data-scroll="#top">Jenny <em>Negrete</em></a>
-      <p>UX designer with a psychology background.</p>
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="sf-brand">
+      <a class="sf-logo" href="#top" data-scroll="#top">In This <em>Vessel</em></a>
+      <p>UX designer with a psychology background — designing for the people systems leave behind.</p>
     </div>
-    <div class="foot-col">
+    <nav class="sf-col" aria-label="Explore">
       <h4>Explore</h4>
       <ul>
         <li><a href="#top" data-scroll="#top">Home</a></li>
         <li><a data-open-about href="#about-overlay">About</a></li>
-        <li><a href="https://www.linkedin.com/in/jennynegrete">Contact</a></li>
+        <li><a href="#contact" data-scroll="#contact">Contact</a></li>
       </ul>
-    </div>
-    <div class="foot-col">
+    </nav>
+    <nav class="sf-col" aria-label="Case studies">
       <h4>Case Studies</h4>
       <ul>
         <li><a href="closing-the-care-gap.html">Closing the Care Gap</a></li>
         <li><a href="first-service.html">First Service</a></li>
       </ul>
-    </div>
+    </nav>
+    <nav class="sf-col" aria-label="Connect">
+      <h4>Connect</h4>
+      <ul>
+        <li><a href="#resume" data-scroll="#resume">Resume</a></li>
+        <li><a href="https://www.linkedin.com/in/jennynegrete" target="_blank" rel="noopener">LinkedIn</a></li>
+      </ul>
+    </nav>
   </div>
-  <div class="foot-bottom">
-    <div class="name">Jenny Negrete — Portfolio 2026</div>
-    <div class="meta">In This Vessel · where psychology meets design</div>
+  <div class="site-footer__bottom">
+    <div class="sf-sign">In This Vessel — Portfolio 2026</div>
+    <div class="sf-meta">where psychology meets design</div>
   </div>
 </footer>
 
@@ -949,6 +1066,9 @@ const caseStudies = [
     tags: ["Service Design", "Health Equity", "Research"],
     accent: "#4F7A86",
     num: "01",
+    role: "UX Researcher & Designer",
+    duration: "14 weeks",
+    skill: "Service Design",
     snapshot: {
       problem: "Uninsured patients waited 12+ months for specialist referrals — many fell through the cracks entirely.",
       approach: "Treated it as a service problem, not a screen: shadowed the clinic, audited a year of referrals, rebuilt the workflow.",
@@ -984,6 +1104,9 @@ const caseStudies = [
     tags: ["Product Design", "Onboarding", "Information Architecture"],
     accent: "#C2783C",
     num: "02",
+    role: "UX Designer (solo)",
+    duration: "4 weeks",
+    skill: "Behavior Design",
     snapshot: {
       problem: "ProPresenter's power-user depth strands the anxious volunteer running a live service alone.",
       approach: "Reframed onboarding as ability under pressure (Fogg): a focused view, a safe practice mode, one-tap recovery.",
@@ -1030,6 +1153,11 @@ function renderCS() {
         <span class="cs-label" style="color:${cs.accent}">${cs.label}</span>
         <h3 class="cs-title">${cs.title}</h3>
         <p class="cs-desc">${cs.desc}</p>
+        ${(cs.role || cs.duration || cs.skill) ? `<div class="cs-meta">
+          <div><span class="k">Role</span><span class="v">${cs.role || '—'}</span></div>
+          <div><span class="k">Duration</span><span class="v">${cs.duration || '—'}</span></div>
+          <div><span class="k">Key skill</span><span class="v">${cs.skill || '—'}</span></div>
+        </div>` : ''}
         ${cs.snapshot ? `<div class="cs-snapshot">
           <div class="cs-snap-row"><span class="cs-snap-k" style="color:${cs.accent}">Problem</span><span class="cs-snap-v">${cs.snapshot.problem}</span></div>
           <div class="cs-snap-row"><span class="cs-snap-k" style="color:${cs.accent}">Approach</span><span class="cs-snap-v">${cs.snapshot.approach}</span></div>
@@ -1197,15 +1325,26 @@ function initNav() {
   const workMenu = document.getElementById('workMenu');
   const workChev = document.getElementById('workChev');
   const workDD = document.getElementById('workDD');
-  workToggle.addEventListener('click', e => {
-    e.stopPropagation();
-    const open = workMenu.classList.toggle('open');
+  const setWork = (open) => {
+    workMenu.classList.toggle('open', open);
     workChev.style.transform = open ? 'rotate(180deg)' : '';
     workToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+  workToggle.addEventListener('click', e => { e.stopPropagation(); setWork(!workMenu.classList.contains('open')); });
+  workToggle.addEventListener('keydown', e => {
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault(); setWork(true);
+      const first = workMenu.querySelector('.work-item'); if (first) first.focus();
+    }
   });
-  document.addEventListener('click', e => {
-    if (!workDD.contains(e.target)) { workMenu.classList.remove('open'); workChev.style.transform = ''; workToggle.setAttribute('aria-expanded', 'false'); }
+  workMenu.addEventListener('keydown', e => {
+    const items = [...workMenu.querySelectorAll('.work-item')];
+    const i = items.indexOf(document.activeElement);
+    if (e.key === 'ArrowDown') { e.preventDefault(); (items[i + 1] || items[0]).focus(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); (items[i - 1] || items[items.length - 1]).focus(); }
+    else if (e.key === 'Escape') { setWork(false); workToggle.focus(); }
   });
+  document.addEventListener('click', e => { if (!workDD.contains(e.target)) setWork(false); });
 
   // mobile hamburger
   const navBurger = document.getElementById('navBurger');

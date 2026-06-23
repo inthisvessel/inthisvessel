@@ -398,16 +398,21 @@
   .related-card .rc-tag{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber)}
   .related-card .rc-title{font-size:18px;font-weight:700;color:var(--ink)}
   .related-card .rc-desc{font-size:13.5px;color:var(--muted);line-height:1.55}
-  .foot-hub-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:34px;margin-top:8px}
-  @media(max-width:860px){.foot-hub-grid{grid-template-columns:1fr 1fr;gap:28px 22px}}
-  @media(max-width:480px){.foot-hub-grid{grid-template-columns:1fr}}
-  .fh-brand .fh-logo{font-size:20px;font-weight:700;color:var(--ink);text-decoration:none;display:inline-block;margin-bottom:8px}
-  .fh-brand .fh-logo b{color:var(--amber)}
-  .fh-brand p{font-size:13.5px;color:var(--muted);max-width:260px}
-  .fh-col h4{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
-  .fh-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
-  .fh-col a{font-size:14px;color:var(--muted);text-decoration:none;transition:color .15s,padding-left .15s}
-  .fh-col a:hover{color:var(--amber);padding-left:3px}
+  /* SHARED FOOTER COMPONENT (global site navigation) — same component as the
+     homepage & Care Gap; identical IA, layout logic, nav structure, interaction
+     & accessibility. First Service skin (broadcast / control-room, dark). */
+  .site-footer__inner{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:34px;margin-top:46px;padding-top:34px;border-top:1px solid var(--line)}
+  @media(max-width:860px){.site-footer__inner{grid-template-columns:1fr 1fr;gap:28px 22px}}
+  @media(max-width:480px){.site-footer__inner{grid-template-columns:1fr}}
+  .sf-brand .sf-logo{font-size:20px;font-weight:700;color:var(--ink);text-decoration:none;display:inline-block;margin-bottom:8px}
+  .sf-brand .sf-logo em{font-style:normal;color:var(--amber)}
+  .sf-brand p{font-size:13.5px;color:var(--muted);max-width:260px}
+  .sf-col h4{font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);margin-bottom:14px}
+  .sf-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .sf-col a{font-size:14px;color:var(--muted);text-decoration:none;transition:color .15s,padding-left .15s}
+  .sf-col a:hover{color:var(--amber);padding-left:3px}
+  .site-footer__bottom{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:30px;padding-top:22px;border-top:1px solid var(--line);font-family:"IBM Plex Mono",monospace;font-size:12px;color:var(--faint);letter-spacing:.05em}
+  .site-footer__bottom .sf-meta{color:var(--amber)}
   .kicker.solo{margin-bottom:14px}
 
   .personas{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
@@ -987,13 +992,14 @@
   </button>
   <div class="nav-right" id="navRight">
     <a class="nav-x" href="index.html">Home</a>
-    <a class="nav-x" href="index.html#about-overlay">About Me</a>
     <div class="work-dropdown" id="workDD">
       <button class="nav-x" id="workToggle" aria-haspopup="true" aria-expanded="false">Case Studies
         <svg width="11" height="11" viewBox="0 0 12 12" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </button>
-      <div class="work-menu" id="workMenu" role="menu"></div>
+      <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies"></div>
     </div>
+    <a class="nav-x" href="index.html#about-overlay">About</a>
+    <a class="nav-x" href="index.html#resume">Resume</a>
     <a class="nav-cta-x" href="index.html#contact">Contact</a>
   </div>
 </div></div></div>
@@ -2363,77 +2369,43 @@
   </div>
 </div></section>
 
-<!-- ====== CONTINUE / NAVIGATION ====== -->
+<!-- ====== SITE FOOTER ====== -->
 <section class="sec" id="continue"><div class="wrap fade">
-  <div class="kicker solo">Continue exploring</div>
-  <nav class="pager" aria-label="Case study pagination">
-    <a class="pager-card" href="closing-the-care-gap.html">
-      <div class="pager-dir">← Previous case study</div>
-      <div class="pager-name">Closing the Care Gap</div>
-    </a>
-    <a class="pager-card is-next" href="index.html#work">
-      <div class="pager-dir">Back to all work →</div>
-      <div class="pager-name">Portfolio home</div>
-    </a>
-  </nav>
-
-  <div class="kicker solo" style="margin-top:34px">Related work</div>
-  <div class="related-grid">
-    <a class="related-card" href="closing-the-care-gap.html">
-      <span class="rc-tag">Service Design · Health Equity</span>
-      <span class="rc-title">Closing the Care Gap</span>
-      <span class="rc-desc">Redesigning the specialist referral workflow at a free community clinic so underserved patients are actually seen.</span>
-    </a>
-    <a class="related-card" href="index.html#contact">
-      <span class="rc-tag">Get in touch</span>
-      <span class="rc-title">Start a conversation</span>
-      <span class="rc-desc">Designing for non-technical people under pressure. If that's your problem space, let's talk.</span>
-    </a>
-  </div>
-
-  <div class="foot-hub-grid" style="margin-top:46px;padding-top:34px;border-top:1px solid var(--line)">
-    <div class="fh-brand">
-      <a class="fh-logo" href="index.html">Jenny <b>Negrete</b></a>
-      <p>UX designer with a psychology background — designing for the people systems leave behind.</p>
+  <footer class="site-footer">
+    <div class="site-footer__inner">
+      <div class="sf-brand">
+        <a class="sf-logo" href="index.html">In This <em>Vessel</em></a>
+        <p>UX designer with a psychology background — designing for the people systems leave behind.</p>
+      </div>
+      <nav class="sf-col" aria-label="Explore">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about-overlay">About</a></li>
+          <li><a href="index.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+      <nav class="sf-col" aria-label="Case studies">
+        <h4>Case Studies</h4>
+        <ul>
+          <li><a href="closing-the-care-gap.html">Closing the Care Gap</a></li>
+          <li><a href="first-service.html">First Service</a></li>
+        </ul>
+      </nav>
+      <nav class="sf-col" aria-label="Connect">
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="index.html#resume">Resume</a></li>
+          <li><a href="https://www.linkedin.com/in/jennynegrete" target="_blank" rel="noopener">LinkedIn</a></li>
+        </ul>
+      </nav>
     </div>
-    <div class="fh-col">
-      <h4>Explore</h4>
-      <ul>
-        <li><a href="index.html">Home</a></li>
-        <li><a href="index.html#about-overlay">About</a></li>
-        <li><a href="index.html#contact">Contact</a></li>
-      </ul>
+    <div class="site-footer__bottom">
+      <div class="sf-sign">In This Vessel — Portfolio 2026</div>
+      <div class="sf-meta">where psychology meets design</div>
     </div>
-    <div class="fh-col">
-      <h4>Case Studies</h4>
-      <ul>
-        <li><a href="closing-the-care-gap.html">Closing the Care Gap</a></li>
-        <li><a href="first-service.html">First Service</a></li>
-      </ul>
-    </div>
-    <div class="fh-col">
-      <h4>Methods</h4>
-      <ul>
-        <li><a href="#research">User Research</a></li>
-        <li><a href="#journey">Journey Mapping</a></li>
-        <li><a href="#ia">Information Architecture</a></li>
-        <li><a href="#why">Product Strategy</a></li>
-        <li><a href="closing-the-care-gap.html#solution">Service Design</a></li>
-      </ul>
-    </div>
-  </div>
+  </footer>
 </div></section>
-
-<footer><div class="wrap fade"><div class="sign">
-  <h3>Why this is how I work.</h3>
-  <p>I came up through clinical front-office and banking operations, rooms full of non-technical people under pressure. I reach for the framework that names the real problem, design for the least confident person, and let the experience grow with them. That is the lens I would bring to software that shows up in real rooms, in real time, as a UX Designer II at Renewed Vision.</p>
-  <div class="by">IN THIS VESSEL · <b>where psychology meets design</b> · Jenny Negrete</div>
-  <div class="by" style="margin-top:24px;line-height:2;color:var(--faint)">
-    SOURCES · operator reviews via <a href="https://www.capterra.com/p/170172/ProPresenter/reviews/" target="_blank" rel="noopener">Capterra</a> &amp; <a href="https://www.getapp.com.au/reviews/118675/propresenter" target="_blank" rel="noopener">GetApp</a> · Renewed Vision <a href="https://www.renewedvision.com/blog/volunteer-operators-guide-to-propresenter-7" target="_blank" rel="noopener">Volunteer Operator's Guide</a><br>
-    METHODS · Double Diamond · Jobs-to-be-Done · Nielsen heuristic evaluation (severity 0 to 4) · Fogg Behavior Model, B=MAP · Peak-End Rule (Kahneman) · Cognitive Load Theory · WCAG 2.2 AA<br>
-    NOTE · Self-initiated concept project. Metrics are projected targets, not production data.
-  </div>
-</div></div></footer>
 
 <script>
   const $=id=>document.getElementById(id);
@@ -2767,6 +2739,21 @@ var rough=function(){"use strict";function t(t,e,s){if(t&&t.length){const[n,o]=e
         var open = menu.classList.toggle('open');
         if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
         toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
+      var setMenu = function (o) {
+        menu.classList.toggle('open', o);
+        if (chev) chev.style.transform = o ? 'rotate(180deg)' : '';
+        toggle.setAttribute('aria-expanded', o ? 'true' : 'false');
+      };
+      toggle.addEventListener('keydown', function (e) {
+        if (e.key === 'ArrowDown') { e.preventDefault(); setMenu(true); var f = menu.querySelector('.work-item'); if (f) f.focus(); }
+      });
+      menu.addEventListener('keydown', function (e) {
+        var items = Array.prototype.slice.call(menu.querySelectorAll('.work-item'));
+        var idx = items.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown') { e.preventDefault(); (items[idx + 1] || items[0]).focus(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); (items[idx - 1] || items[items.length - 1]).focus(); }
+        else if (e.key === 'Escape') { setMenu(false); toggle.focus(); }
       });
       document.addEventListener('click', function (e) {
         if (!dd.contains(e.target)) { menu.classList.remove('open'); if (chev) chev.style.transform = ''; toggle.setAttribute('aria-expanded', 'false'); }
