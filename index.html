@@ -22,6 +22,10 @@
     --accent: #3D5A80;
     --accent-deep: #2C435F;
     --accent-soft: rgba(61,90,128,0.12);
+    /* universal shell accent */
+    --shell-accent: #3D5A80;
+    --shell-accent-deep: #2C435F;
+    --shell-accent-soft: rgba(61,90,128,0.12);
     /* glass */
     --glass: rgba(255,255,255,0.45);
     --glass-2: rgba(255,255,255,0.62);
@@ -159,14 +163,14 @@
     color: var(--ink); background: none; border: none; padding: 0; transition: color 0.2s;
     display: inline-flex; align-items: center; cursor: pointer;
   }
-  .nav-link:hover { color: var(--accent); }
+  .nav-link:hover { color: var(--shell-accent); }
   .nav-cta {
-    color: #fff; background: var(--accent); font-family: var(--serif);
+    color: #fff; background: var(--shell-accent); font-family: var(--serif);
     padding: 8px 24px; border-radius: 40px;
     font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
     font-weight: 600; transition: background 0.2s, transform 0.2s; border: none;
   }
-  .nav-cta:hover { background: var(--accent-deep); transform: translateY(-1px); }
+  .nav-cta:hover { background: var(--shell-accent-deep); transform: translateY(-1px); }
 
   /* hamburger (mobile) */
   .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; padding: 8px; background: none; border: none; cursor: pointer; }
@@ -189,7 +193,7 @@
     }
     .nav-links.open { max-height: 80vh; opacity: 1; pointer-events: auto; padding: 0.5rem 1.5rem 1rem; }
     .nav-links > .nav-link, .nav-links > .nav-cta { width: 100%; text-align: left; justify-content: flex-start; padding: 14px 0; }
-    .nav-cta { background: none; color: var(--accent); border-radius: 0; }
+    .nav-cta { background: none; color: var(--shell-accent); border-radius: 0; }
     .work-dropdown { width: 100%; }
     .work-menu { position: static; opacity: 1; transform: none; pointer-events: auto; min-width: 0; background: transparent; border: none; box-shadow: none; padding: 0 0 8px; }
     #workToggle { width: 100%; justify-content: space-between; padding: 14px 0; }
@@ -211,7 +215,8 @@
     font-family: var(--sans); font-size: 0.86rem; color: var(--ink);
     transition: background 0.16s, padding-left 0.2s;
   }
-  .work-item:hover { background: rgba(61,90,128,0.10); padding-left: 20px; }
+  .work-item:hover { background: var(--shell-accent-soft); padding-left: 20px; }
+  .work-item.is-current { color: var(--shell-accent); background: var(--shell-accent-soft); }
   .work-item .sub { display: block; font-size: 0.72rem; color: var(--muted-soft); margin-top: 2px; }
 
   /* ── Container ── */
@@ -496,12 +501,12 @@
   @media (max-width: 860px) { .site-footer__inner { grid-template-columns: 1fr 1fr; gap: 2.4rem 2rem; } .site-footer { padding: 3.5rem 1.5rem 0; } }
   @media (max-width: 480px) { .site-footer__inner { grid-template-columns: 1fr; } }
   .sf-brand .sf-logo { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; color: var(--ink); display: inline-block; margin-bottom: 0.7rem; }
-  .sf-brand .sf-logo em { font-style: italic; color: var(--accent); }
+  .sf-brand .sf-logo em { font-style: italic; color: var(--shell-accent); }
   .sf-brand p { font-family: var(--sans); font-size: 0.88rem; font-weight: 300; line-height: 1.65; color: var(--muted); max-width: 280px; margin: 0; }
-  .sf-col h4 { font-family: var(--sans); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); margin: 0 0 1.1rem; }
+  .sf-col h4 { font-family: var(--sans); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--shell-accent); margin: 0 0 1.1rem; }
   .sf-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.7rem; }
   .sf-col a { font-family: var(--sans); font-size: 0.9rem; font-weight: 400; color: var(--muted); background: none; border: none; padding: 0; text-align: left; transition: color 0.2s, padding-left 0.2s; cursor: pointer; }
-  .sf-col a:hover { color: var(--accent); padding-left: 4px; }
+  .sf-col a:hover { color: var(--shell-accent); padding-left: 4px; }
   .site-footer__bottom { max-width: 1120px; margin: 4rem auto 0; border-top: 1px solid var(--line); padding: 1.8rem 0 2.4rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 0.6rem; }
   .site-footer__bottom .sf-sign { font-family: var(--serif); font-size: 0.94rem; color: var(--ink); }
   .site-footer__bottom .sf-meta { font-family: var(--sans); font-size: 0.72rem; font-weight: 300; color: var(--muted-soft); letter-spacing: 0.02em; }
@@ -712,7 +717,7 @@
       <div class="work-dropdown" id="workDD">
         <button class="nav-link" id="workToggle" aria-haspopup="true" aria-expanded="false" data-hover>
           Case Studies
-          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--accent);transition:transform 0.2s" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--shell-accent);transition:transform 0.2s" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies"></div>
       </div>
@@ -1367,7 +1372,15 @@ function initNav() {
   });
 
   document.getElementById('csClose').addEventListener('click', closeCaseStudy);
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeCaseStudy(); closeAbout(); } });
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeCaseStudy();
+      closeAbout();
+      setWork(false);
+      if (navLinks) navLinks.classList.remove('open');
+      if (navBurger) navBurger.setAttribute('aria-expanded', 'false');
+    }
+  });
 
   document.querySelectorAll('[data-open-about]').forEach(el => {
     el.addEventListener('click', e => { e.preventDefault(); openAbout(); });

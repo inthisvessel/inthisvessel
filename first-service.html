@@ -4,18 +4,38 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>First Service — ProPresenter Onboarding · UX Case Study</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Caveat:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#0C0E13; --base:#11141B; --surf:#0A0C10; --panel:#181C25; --panel-2:#1F2530;
-    --line:#2C333F; --line-soft:#222834;
-    --ink:#EEF1F6; --muted:#AFB8C4; --faint:#828D9B;
-    --program:#FF4B4F;   /* on-air / live  (broadcast red) */
-    --preview:#37D27F;   /* cued / next / safe (broadcast green) */
-    --amber:#FFA23E;     /* interactive / active control */
-    --amber-soft:#FFC081;
+    /* ── index.html design system (source of truth) ── */
+    --bg:#E8EBF1; --ink:#1B232E; --muted:#525C6B; --muted-soft:#616B7A;
+    /* per-study accent — amber / broadcast (First Service) */
+    --accent:#C2683A; --accent-deep:#9A4F2A; --accent-soft:rgba(194,104,58,0.12);
+    /* atmosphere orbs (one accent-tinted) */
+    --orb-cool:#C7D3EC; --orb-warm:#EADFDD; --orb-aqua:#CDE2E6;
+    /* universal shell accent */
+    --shell-accent:#3D5A80; --shell-accent-deep:#2C435F; --shell-accent-soft:rgba(61,90,128,0.12);
+    /* glass */
+    --glass:rgba(255,255,255,0.45); --glass-2:rgba(255,255,255,0.62); --glass-3:rgba(255,255,255,0.80);
+    --glass-edge:rgba(255,255,255,0.72);
+    --glass-shadow:0 14px 44px rgba(27,35,46,0.10);
+    --glass-inset:inset 0 1px 0 rgba(255,255,255,0.85), inset 0 0 0 1px rgba(255,255,255,0.18);
+
+    /* ── compatibility remap: broadcast tokens → glass/slate shell ──
+       (the dark page re-skins to light through these; the prototype + sketch
+       artifacts restore the broadcast palette in a scoped block below) */
+    --void:var(--bg); --base:var(--glass); --surf:rgba(255,255,255,0.30);
+    --panel:var(--glass-2); --panel-2:rgba(255,255,255,0.42);
+    --line:rgba(27,35,46,0.10); --line-soft:rgba(27,35,46,0.06);
+    --faint:var(--muted-soft);
+    --amber:var(--accent); --amber-soft:#D98E5E;
+    --program:#BE2F2C; --preview:#1E8E54;
+    --serif:'General Sans','Inter',system-ui,sans-serif;
+    --sans:'Satoshi','Inter',system-ui,sans-serif;
     --max:1120px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
@@ -32,60 +52,85 @@
   .transport{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:60}
   .transport .play{height:100%;width:0;background:linear-gradient(90deg,var(--preview),var(--amber),var(--program));transition:width .1s linear}
 
-  /* top status strip — multiviewer header */
-  .status{position:sticky;top:0;z-index:50;background:rgba(12,14,19,.9);backdrop-filter:blur(12px);
-    border-bottom:1px solid var(--line)}
-  .status .row{display:flex;align-items:center;gap:16px;height:48px;font-size:11px;letter-spacing:.1em;
-    color:var(--muted);font-family:"IBM Plex Mono",monospace}
-  .pgm{display:inline-flex;align-items:center;gap:7px;color:var(--program)}
-  .pgm i{width:8px;height:8px;border-radius:1px;background:var(--program);animation:blink 1.6s infinite}
-  @keyframes blink{0%,60%{opacity:1}80%{opacity:.25}100%{opacity:1}}
-  .status .sp{flex:1}
-  .status .who b{color:var(--ink);font-weight:500}
-  .status .home-link{display:inline-flex;align-items:center;gap:6px;color:var(--ink);text-decoration:none;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;transition:color .15s}
-  .status .home-link svg{transition:transform .2s}
-  .status .home-link:hover{color:var(--amber)}
-  .status .home-link:hover svg{transform:translateX(-3px)}
-  .status .nav-x{color:var(--muted);text-decoration:none;font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;transition:color .15s}
-  .status .nav-x:hover{color:var(--amber)}
-  .status .snav-logo{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:15px;letter-spacing:-0.01em;color:var(--ink);text-decoration:none;transition:color .15s}
-  .status .snav-logo:hover{color:var(--amber)}
-  .status .nav-right{display:flex;align-items:center;gap:18px}
-  /* Case Studies dropdown */
-  .status .work-dropdown{position:relative;display:inline-flex}
-  #workToggle{background:none;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:5px}
-  #workChev{transition:transform .2s;color:var(--amber)}
-  .status .work-menu{position:absolute;top:calc(100% + 12px);right:0;min-width:244px;background:rgba(24,28,37,.98);
-    border:1px solid var(--line);border-radius:12px;box-shadow:0 18px 40px rgba(0,0,0,.5);padding:8px;overflow:hidden;
-    opacity:0;transform:translateY(-8px) scale(.98);pointer-events:none;transition:opacity .18s,transform .18s;z-index:70}
-  .status .work-menu.open{opacity:1;transform:none;pointer-events:auto}
-  .status .work-item{display:block;padding:10px 12px;border-radius:8px;font-family:"Inter",sans-serif;font-size:13px;
-    color:var(--ink);text-decoration:none;letter-spacing:0;text-transform:none;transition:background .16s,padding-left .2s}
-  .status .work-item:hover{background:var(--panel-2);padding-left:16px;color:var(--ink)}
-  .status .work-item .sub{display:block;font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--faint);margin-top:2px;letter-spacing:.04em}
-  .status .work-item.is-current{color:var(--amber)}
-  .nav-cta-x{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
-    color:var(--void);background:var(--amber);padding:7px 14px;border-radius:30px;text-decoration:none;transition:background .15s}
-  .nav-cta-x:hover{background:var(--amber-soft)}
-  /* hamburger (mobile) */
-  .status .nav-burger{display:none;flex-direction:column;justify-content:center;gap:4px;width:36px;height:36px;padding:7px;background:none;border:none;cursor:pointer}
-  .status .nav-burger span{display:block;height:2px;width:100%;background:var(--ink);border-radius:2px;transition:transform .25s,opacity .2s}
-  .status .nav-burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6px) rotate(45deg)}
-  .status .nav-burger[aria-expanded="true"] span:nth-child(2){opacity:0}
-  .status .nav-burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
-  @media(max-width:760px){
-    .status .nav-burger{display:flex}
-    .status .nav-right{position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
-      background:rgba(12,14,19,.98);border-bottom:1px solid var(--line);box-shadow:0 18px 40px rgba(0,0,0,.5);
-      padding:0 30px;max-height:0;overflow:hidden;opacity:0;pointer-events:none;
-      transition:max-height .32s ease,opacity .25s ease,padding .32s ease}
-    .status .nav-right.open{max-height:80vh;opacity:1;pointer-events:auto;padding:6px 30px 14px}
-    .status .nav-right > .nav-x,.status .nav-right > .nav-cta-x{width:100%;text-align:left;padding:12px 0;display:block}
-    .status .nav-cta-x{background:none;color:var(--amber);border-radius:0}
-    .status .work-dropdown{width:100%;display:block}
-    .status .work-menu{position:static;opacity:1;transform:none;pointer-events:auto;min-width:0;background:transparent;border:none;box-shadow:none;padding:0 0 6px}
-    #workToggle{width:100%;justify-content:space-between;padding:12px 0}
+  /* ── Nav ── */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
   }
+  .nav.scrolled {
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--glass-edge);
+    box-shadow: 0 6px 30px rgba(27,35,46,0.06);
+  }
+  .nav-inner {
+    max-width: 1200px; margin: 0 auto; padding: 0 3rem;
+    display: flex; align-items: center; justify-content: space-between; height: 72px;
+  }
+  .nav-logo { font-family: var(--serif); font-size: 1.36rem; font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
+  .nav-link {
+    font-family: var(--serif); font-size: 0.74rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); background: none; border: none; padding: 0; transition: color 0.2s;
+    display: inline-flex; align-items: center; cursor: pointer;
+  }
+  .nav-link:hover { color: var(--shell-accent); }
+  .nav-cta {
+    color: #fff; background: var(--shell-accent); font-family: var(--serif);
+    padding: 8px 24px; border-radius: 40px;
+    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
+    font-weight: 600; transition: background 0.2s, transform 0.2s; border: none;
+  }
+  .nav-cta:hover { background: var(--shell-accent-deep); transform: translateY(-1px); }
+
+  /* hamburger (mobile) */
+  .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; padding: 8px; background: none; border: none; cursor: pointer; }
+  .nav-burger span { display: block; height: 2px; width: 100%; background: var(--ink); border-radius: 2px; transition: transform 0.25s ease, opacity 0.2s ease; }
+  .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .nav-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+  .nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  @media (max-width: 720px) {
+    .nav-inner { padding: 0 1.5rem; }
+    .nav-burger { display: flex; }
+    .nav-links {
+      position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; align-items: stretch; gap: 0;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid var(--glass-edge); box-shadow: 0 16px 40px rgba(27,35,46,0.12);
+      padding: 0 1.5rem; max-height: 0; overflow: hidden; opacity: 0; pointer-events: none;
+      transition: max-height 0.32s ease, opacity 0.25s ease, padding 0.32s ease;
+    }
+    .nav-links.open { max-height: 80vh; opacity: 1; pointer-events: auto; padding: 0.5rem 1.5rem 1rem; }
+    .nav-links > .nav-link, .nav-links > .nav-cta { width: 100%; text-align: left; justify-content: flex-start; padding: 14px 0; }
+    .nav-cta { background: none; color: var(--shell-accent); border-radius: 0; }
+    .work-dropdown { width: 100%; }
+    .work-menu { position: static; opacity: 1; transform: none; pointer-events: auto; min-width: 0; background: transparent; border: none; box-shadow: none; padding: 0 0 8px; }
+    #workToggle { width: 100%; justify-content: space-between; padding: 14px 0; }
+  }
+
+  .work-dropdown { position: relative; }
+  .work-menu {
+    position: absolute; top: calc(100% + 16px); right: 0; min-width: 246px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-edge); border-radius: 16px;
+    box-shadow: var(--glass-shadow), var(--glass-inset); padding: 8px; overflow: hidden;
+    opacity: 0; transform: translateY(-8px) scale(0.97); pointer-events: none;
+    transition: opacity 0.18s, transform 0.18s;
+  }
+  .work-menu.open { opacity: 1; transform: none; pointer-events: auto; }
+  .work-item {
+    display: block; padding: 11px 16px; border-radius: 10px;
+    font-family: var(--sans); font-size: 0.86rem; color: var(--ink);
+    transition: background 0.16s, padding-left 0.2s;
+  }
+  .work-item:hover { background: var(--shell-accent-soft); padding-left: 20px; }
+  .work-item.is-current { color: var(--shell-accent); background: var(--shell-accent-soft); }
+  .work-item .sub { display: block; font-size: 0.72rem; color: var(--muted-soft); margin-top: 2px; }
 
   /* title-safe framing motif */
   .safe{position:relative;border:1px dashed var(--line);border-radius:4px}
@@ -94,7 +139,7 @@
   .safe::after{bottom:-1px;right:-1px;border-left:0;border-top:0;border-radius:0 0 4px 0}
 
   /* hero */
-  .hero{padding:120px 0 80px}
+  .hero{padding:64px 0 80px}
   .hero .eyebrow{font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.18em;
     text-transform:uppercase;color:var(--amber)}
   .hero h1{font-size:clamp(54px,10vw,120px);font-weight:800;margin-top:20px;letter-spacing:-0.045em}
@@ -467,7 +512,7 @@
 
   /* ===================== ADDED: case-study structure ===================== */
   /* sticky section nav */
-  .subnav{position:sticky;top:48px;z-index:45;background:rgba(12,14,19,.92);backdrop-filter:blur(12px);
+  .subnav{position:sticky;top:72px;z-index:45;background:rgba(12,14,19,.92);backdrop-filter:blur(12px);
     border-bottom:1px solid var(--line)}
   .subnav .inner{display:flex;gap:4px;overflow-x:auto;height:44px;align-items:center;scrollbar-width:none}
   .subnav .inner::-webkit-scrollbar{display:none}
@@ -978,31 +1023,170 @@
     .regtable th,.tomx th,.pmx th,.platx th{font-size:9px}
   }
 
+  /* ═══════════════════════════════════════════════
+     GLASS / SLATE SKIN — adopted from index.html
+     Inverts the broadcast-dark shell to index's light glass system.
+     The interactive prototype + hand-drawn sketch artifacts keep their
+     dark broadcast palette (scoped near the end) and sit in glass frames.
+     ═══════════════════════════════════════════════ */
+
+  body{ background:var(--bg); position:relative;
+    font-family:'Satoshi','Inter',system-ui,sans-serif; }
+
+  /* fonts: General Sans (display) + Satoshi (text), replacing Bricolage/Inter */
+  h1,h2,h3,.jtbd .q,.read .verdict,.rbox .big,.tile .thumb,
+  .easyview .ev-text,.preview .pmain,.stage .cur,.srow .v,.problem .p,.pf .av,
+  .journey tbody th,.opp-row .num,.matrix .total,.ecocard .pn{
+    font-family:'General Sans','Bricolage Grotesque',sans-serif; }
+  .prio .lbl{ font-family:'Satoshi',sans-serif; }
+
+  /* ── Skip link ── */
+  .skip-link{ position:fixed; top:10px; left:50%; transform:translateX(-50%) translateY(-160%);
+    z-index:9999; background:var(--accent); color:#fff; padding:10px 20px; border-radius:30px;
+    font-family:'Satoshi',sans-serif; font-size:0.8rem; font-weight:600; letter-spacing:0.04em;
+    transition:transform 0.2s ease; }
+  .skip-link:focus{ transform:translateX(-50%) translateY(0); }
+
+  /* ── Ambient backdrop (index atmosphere) ── */
+  .atmos{ position:fixed; inset:0; z-index:-2; overflow:hidden; pointer-events:none; }
+  .atmos::before{ content:""; position:absolute; inset:0;
+    background:linear-gradient(165deg,#EEF1F6 0%,#E5E9F0 48%,#E9E8EE 100%); }
+  .orb{ position:absolute; border-radius:50%; filter:blur(80px); opacity:0.55; }
+  .orb-1{ width:46vw; height:46vw; background:var(--orb-cool); top:-10vw; left:-8vw; }
+  .orb-2{ width:38vw; height:38vw; background:var(--orb-warm); top:38%; right:-10vw; opacity:0.45; }
+  .orb-3{ width:40vw; height:40vw; background:var(--orb-aqua); bottom:-12vw; left:22vw; opacity:0.42; }
+  .grain{ position:fixed; inset:0; z-index:-1; pointer-events:none; opacity:0.035;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* ── Custom cursor (index) ── */
+  .cursor{ position:fixed; pointer-events:none; z-index:9999; width:7px; height:7px; border-radius:50%;
+    background:var(--accent); transform:translate(-50%,-50%);
+    transition:width .25s ease,height .25s ease,opacity .25s ease,background .25s ease; }
+  .cursor-ring{ position:fixed; pointer-events:none; z-index:9998; width:34px; height:34px; border-radius:50%;
+    border:1px solid color-mix(in srgb,var(--accent) 45%,transparent); transform:translate(-50%,-50%);
+    transition:width .28s ease,height .28s ease,border-color .28s ease,opacity .25s ease,background .28s ease; }
+  .cursor-ring.lg{ width:58px; height:58px; background:color-mix(in srgb,var(--accent) 6%,transparent); }
+  .cursor.hide,.cursor-ring.hide{ opacity:0; }
+  @media(max-width:900px){ .cursor,.cursor-ring{ display:none; } }
+
+  /* ── Glass surface helper ── */
+  .glass{ background:var(--glass); backdrop-filter:blur(20px) saturate(160%);
+    -webkit-backdrop-filter:blur(20px) saturate(160%); border:1px solid var(--glass-edge);
+    box-shadow:var(--glass-shadow),var(--glass-inset); }
+
+  /* ── Frost the shell card surfaces into glass ── */
+  .jtbd,.card,.q-card,.heur,.panelbox,.fogg-svgwrap,.read,.rbox,.concept,.ia-note div,
+  .metrics,.a11y div,.score,.snapwrap,.contrib,.problem,.rbox2,.track2 div,.ctable,.acluster,
+  .pf,.journey,.opp-row,.prio,.prin,.matrix,.iacol,.flowcard,.sw,.typescale,.tokens,.compcard,
+  .tp,.iter,.ocard,.why-card,.svgwrap,.duo .card2,.whynot .wn,.iguide,.confstage,.scorecard,
+  .a11ygrid .ac,.checklist,.keymap .km,.vphase .vp,.deflist,.reflect div,.pcard,.snaphead,
+  .iter .ihead,.mmcol{
+    backdrop-filter:blur(16px) saturate(150%); -webkit-backdrop-filter:blur(16px) saturate(150%); }
+
+  /* ── Nav styles mapped to system block above ── */
+
+  /* ── Sticky section subnav → glass ── */
+  .subnav{ background:rgba(255,255,255,0.5); backdrop-filter:blur(14px) saturate(150%);
+    -webkit-backdrop-filter:blur(14px) saturate(150%); border-bottom:1px solid var(--glass-edge); }
+  .subnav a{ color:var(--muted-soft); }
+  .subnav a:hover{ color:var(--ink); background:color-mix(in srgb,var(--accent) 8%,transparent); }
+  .subnav a.on{ color:var(--accent); }
+
+  /* ── Transport reading-progress → solid accent (index system) ── */
+  .transport .play{ background:var(--accent); }
+
+  /* ── Footer: index light skin (shared bottom chrome) ── */
+  .site-footer__inner{ border-top:1px solid var(--line); }
+  .sf-brand .sf-logo{ color:var(--ink); } .sf-brand .sf-logo em{ color:var(--shell-accent); }
+  .sf-brand p{ color:var(--muted); }
+  .sf-col h4{ color:var(--shell-accent); } .sf-col a{ color:var(--muted); } .sf-col a:hover{ color:var(--shell-accent); }
+  .site-footer__bottom{ border-top:1px solid var(--line); color:var(--muted-soft); }
+  .site-footer__bottom .sf-meta{ color:var(--muted-soft); }
+
+  /* ── Glass frame for the kept-dark artifacts (prototype + sketches) ── */
+  .artifact-frame{ margin-top:18px; padding:14px; border-radius:20px; background:var(--glass);
+    backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--glass-edge); box-shadow:var(--glass-shadow),var(--glass-inset); }
+  .artifact-cap{ font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--muted-soft); margin:2px 4px 12px;
+    display:flex; align-items:center; gap:8px; }
+  .artifact-cap::before{ content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); }
+
+  /* ── Keep dark broadcast palette for product/prototype + hand-drawn artifacts ── */
+  .sim-bar, .app, .sketchwrap, .crazy8, .c8{
+    --void:#0C0E13; --base:#11141B; --surf:#0A0C10; --panel:#181C25; --panel-2:#1F2530;
+    --line:#2C333F; --line-soft:#222834; --ink:#EEF1F6; --muted:#AFB8C4; --faint:#828D9B;
+    --amber:#FFA23E; --amber-soft:#FFC081; --program:#FF4B4F; --preview:#37D27F; --accent:#FFA23E;
+  }
+  .sketchwrap, .c8{ background:#181C25; border-color:#2C333F; }
+
+  /* ── Hero overview meta bar (glass .cs-overview, added up front) ── */
+  .cs-overview-bar{ display:grid; grid-template-columns:repeat(5,1fr); gap:1px; margin-top:24px;
+    border-radius:18px; overflow:hidden; background:var(--glass);
+    backdrop-filter:blur(18px) saturate(160%); -webkit-backdrop-filter:blur(18px) saturate(160%);
+    border:1px solid var(--glass-edge); box-shadow:var(--glass-shadow),var(--glass-inset); }
+  .cs-overview-item{ padding:16px 18px; background:rgba(255,255,255,0.18); }
+  .cs-overview-item.is-outcome{ background:var(--accent-soft); }
+  .cs-overview-label{ font-family:'Satoshi',sans-serif; font-size:10px; font-weight:700;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--accent); margin-bottom:6px; }
+  .cs-overview-value{ font-family:'General Sans',sans-serif; font-size:15px; color:var(--ink); line-height:1.3; }
+  @media(max-width:860px){ .cs-overview-bar{ grid-template-columns:1fr 1fr; } }
+  @media(max-width:480px){ .cs-overview-bar{ grid-template-columns:1fr; } }
+
+  /* ── Keep Reading / Next project (index pattern) ── */
+  .cs-keep{ max-width:760px; margin:0 auto; }
+  .cs-keep-title{ font-family:'Satoshi',sans-serif; font-size:11px; font-weight:700; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--muted-soft); margin-bottom:18px; }
+  .cs-keep-row{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
+  .cs-keep-link{ display:inline-flex; align-items:center; gap:8px; font-family:'General Sans',sans-serif;
+    font-size:22px; color:var(--ink); text-decoration:none; transition:color .2s, gap .2s; }
+  .cs-keep-link:hover{ color:var(--accent); gap:12px; }
+  .cs-back-link{ font-family:'Satoshi',sans-serif; font-size:13px; font-weight:600; letter-spacing:.04em;
+    color:var(--accent); text-decoration:none; }
+
+  /* ── Reduced motion: hide cursor ── */
+  @media(prefers-reduced-motion:reduce){ .cursor,.cursor-ring{ display:none; } }
+
 </style>
 </head>
+<body>
+
+<a class="skip-link" href="#mainContent">Skip to content</a>
+
+<!-- ambient backdrop (index atmosphere) -->
+<div class="atmos" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
 
 <div class="transport"><div class="play" id="play"></div></div>
 
-<div class="status"><div class="wrap"><div class="row">
-  <a class="snav-logo" href="index.html">In This Vessel</a>
-  <span class="pgm"><i></i>PGM</span>
-  <span class="sp"></span>
-  <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navRight">
-    <span></span><span></span><span></span>
-  </button>
-  <div class="nav-right" id="navRight">
-    <a class="nav-x" href="index.html">Home</a>
-    <div class="work-dropdown" id="workDD">
-      <button class="nav-x" id="workToggle" aria-haspopup="true" aria-expanded="false">Case Studies
-        <svg width="11" height="11" viewBox="0 0 12 12" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies"></div>
+<!-- NAV -->
+<nav class="nav" id="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top" data-scroll="#top" data-hover>In This Vessel</a>
+    <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-link" data-scroll="#top" data-hover>Home</button>
+      <div class="work-dropdown" id="workDD">
+        <button class="nav-link" id="workToggle" aria-haspopup="true" aria-expanded="false" data-hover>
+          Case Studies
+          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--shell-accent);transition:transform 0.2s" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies"></div>
+      </div>
+      <button class="nav-link" data-open-about data-hover>About</button>
+      <button class="nav-link" data-scroll="#resume" data-hover>Resume</button>
+      <button class="nav-cta" data-scroll="#contact" data-hover>Contact</button>
     </div>
-    <a class="nav-x" href="index.html#about-overlay">About</a>
-    <a class="nav-x" href="index.html#resume">Resume</a>
-    <a class="nav-cta-x" href="index.html#contact">Contact</a>
   </div>
-</div></div></div>
+</nav>
 
 <nav class="subnav" aria-label="Case study sections"><div class="wrap"><div class="inner">
   <a href="#snapshot">Snapshot</a>
@@ -1034,10 +1218,10 @@
   <a href="#why">Why RV</a>
 </div></div></nav>
 
-<header class="hero"><div class="wrap">
+<header class="hero" id="mainContent" tabindex="-1"><div class="wrap">
   <div class="hero-shell safe">
     <span class="frame-note mono">TITLE&nbsp;SAFE</span>
-    <span class="eyebrow">Self-initiated concept project · UX Designer II</span>
+    <span class="eyebrow">Self-initiated concept project · UX Designer I</span>
     <h1>First<br>Service<em>.</em></h1>
     <p class="deck">A power-user production tool, <b>run by a volunteer</b> covering Sunday at the last minute. This project redesigns the first hour at the controls so a first-timer can run a live service without fear of breaking it.</p>
     <div class="pillrow">
@@ -1047,6 +1231,14 @@
       <span class="pill">Platforms · <b>macOS &amp; Windows</b></span>
       <span class="pill">Surface · <b>ProPresenter's real UI</b></span>
     </div>
+  </div>
+
+  <div class="cs-overview-bar" aria-label="Project overview">
+    <div class="cs-overview-item"><div class="cs-overview-label">Role</div><div class="cs-overview-value">UX Designer</div></div>
+    <div class="cs-overview-item"><div class="cs-overview-label">Timeline</div><div class="cs-overview-value">2 weeks, self-initiated</div></div>
+    <div class="cs-overview-item"><div class="cs-overview-label">Team</div><div class="cs-overview-value">Solo concept project</div></div>
+    <div class="cs-overview-item"><div class="cs-overview-label">Tools</div><div class="cs-overview-value">Claude Code · Figma</div></div>
+    <div class="cs-overview-item is-outcome"><div class="cs-overview-label">Outcome</div><div class="cs-overview-value">~55% → 90%+ task success</div></div>
   </div>
 </div></header>
 
@@ -1060,14 +1252,14 @@
     <div class="snapgrid">
       <div class="wide"><div class="k">Project</div><div class="v"><b>Volunteer Onboarding Experience for ProPresenter</b></div></div>
       <div><div class="k">Role</div><div class="v">UX Designer (solo)</div></div>
-      <div><div class="k">Timeline</div><div class="v">4 weeks, self-initiated</div></div>
+      <div><div class="k">Timeline</div><div class="v">2 weeks, self-initiated</div></div>
 
-      <div><div class="k">Problem</div><div class="v small">A deep production tool is routinely operated by anxious, low-fluency volunteers under live pressure.</div></div>
+      <div><div class="k">Problem</div><div class="v small">A deep production tool is routinely operated by anxious volunteers under live pressure.</div></div>
       <div><div class="k">For whom</div><div class="v small">Last-minute fill-in operators, the volunteers churches most fear losing.</div></div>
       <div><div class="k">Platforms</div><div class="v small">macOS and Windows, one shared interface.</div></div>
       <div><div class="k">Team</div><div class="v small">Solo concept project, grounded in published operator reviews and Renewed Vision's own training collateral.</div></div>
 
-      <div class="wide"><div class="k">Methods</div><div class="v small">User research (secondary corpus + primary protocol), heuristic evaluation, journey mapping, competitive analysis, information architecture, interaction design, prototyping, usability test design.</div></div>
+      <div class="wide"><div class="k">Methods</div><div class="v small">User research, heuristic evaluation, journey mapping, competitive analysis, information architecture, interaction design, prototyping, usability test design.</div></div>
       <div class="wide"><div class="k">Deliverables</div><div class="v small">Research synthesis, personas, journey map, user flows, wireframes, an interactive cross-platform prototype, a documented design system, and a usability test plan.</div></div>
 
       <div class="full"><div class="k">Key outcome (target)</div><div class="v">Cut onboarding friction and raise operator confidence during live events. <b>Projected</b> task success from roughly 55% to 90% or higher, with a one-tap recovery path for every destructive action.</div></div>
@@ -1095,10 +1287,10 @@
   <div class="deflist">
     <div><div class="k">Title</div><div class="v">First Service: Volunteer Onboarding for ProPresenter</div></div>
     <div><div class="k">Role</div><div class="v">UX Designer, end to end</div></div>
-    <div><div class="k">Timeline</div><div class="v">4 weeks, self-initiated</div></div>
+    <div><div class="k">Timeline</div><div class="v">2 weeks, self-initiated</div></div>
     <div><div class="k">Team</div><div class="v">Solo, evidence-grounded</div></div>
     <div><div class="k">Platforms</div><div class="v">macOS, Windows</div></div>
-    <div><div class="k">Tools</div><div class="v">Figma, paper sketching, hand-coded HTML/CSS/JS prototype</div></div>
+    <div><div class="k">Tools</div><div class="v">Figma, paper sketching, vibe-coded HTML/CSS/JS prototype</div></div>
     <div class="full"><div class="k">Deliverables</div><div class="v">Research synthesis, competitive teardown, personas, journey map, user flows, fidelity ladder of wireframes, a working cross-platform prototype, a documented design system, and a usability test plan with target metrics.</div></div>
   </div>
 </div></section>
@@ -1113,7 +1305,7 @@
     <div class="card built"><div class="tag">Who buys it</div><h3>Churches and venues</h3>
       <p>A media director or worship leader selects and configures the system. They care about reliability, output quality, and a team that can run it without them in the booth.</p></div>
     <div class="card"><div class="tag">Who actually operates it</div><h3>Rotating volunteers</h3>
-      <p>The week-to-week operator is often a volunteer, sometimes filling in last minute, with low software fluency and no rehearsal before the service begins.</p></div>
+      <p>The operator is often a volunteer, sometimes filling in last minute, with low software fluency and no rehearsal before the service begins.</p></div>
   </div>
 
   <div class="kicker">Why volunteer onboarding is a product problem, not a support problem</div>
@@ -1326,9 +1518,9 @@
       <h5>The first hour</h5>
       <div class="meta">8 min &middot; locate the confidence drop</div>
       <ol>
-        <li>Think back to your very first time alone at the controls. What was the first thing you weren&rsquo;t sure about?</li>
+        <li>What was the first thing you weren&rsquo;t sure about?</li>
         <li>Was there a moment you were afraid to click something? What was it, and what did you think would happen?</li>
-        <li>Show me what you do to get a service ready. <em>Observe rather than ask; note hesitation, backtracking, mouse hovering.</em></li>
+        <li>Show me what you do to get a service ready. <em>Observe rather than ask. Note hesitation, backtracking, mouse hovering.</em></li>
       </ol>
     </div>
     <div class="seg">
@@ -2090,6 +2282,8 @@
     <div class="done"><div class="tk">How interactions support the goals</div><p>Confidence rises with each landed cue, a mis-click drops it and exposes the safe button, and one tap restores known-good output, making the principle of recovery over prevention tangible.</p></div>
   </div>
 
+  <div class="artifact-frame">
+  <div class="artifact-cap">Interactive prototype · ProPresenter — artifact on display</div>
   <div class="sim-bar">
     <div class="seg" aria-label="Operating system"><span class="oslabel">OS</span>
       <button id="osMac" class="on">macOS</button><button id="osWin">Windows</button></div>
@@ -2153,6 +2347,7 @@
       </div>
     </div>
     <div class="mediabin"><span class="mh">MEDIA BIN</span><div class="mthumb"></div><div class="mthumb"></div><div class="mthumb"></div><div class="mthumb"></div><div class="mthumb"></div><div class="mthumb"></div></div>
+  </div>
   </div>
 
   <div class="ia-note">
@@ -2369,20 +2564,22 @@
   </div>
 </div></section>
 
+
+
 <!-- ====== SITE FOOTER ====== -->
 <section class="sec" id="continue"><div class="wrap fade">
   <footer class="site-footer">
     <div class="site-footer__inner">
       <div class="sf-brand">
-        <a class="sf-logo" href="index.html">In This <em>Vessel</em></a>
-        <p>UX designer with a psychology background — designing for the people systems leave behind.</p>
+        <a class="sf-logo" href="#top" data-scroll="#top">In This <em>Vessel</em></a>
+        <p>Behavioral product designer</p>
       </div>
       <nav class="sf-col" aria-label="Explore">
         <h4>Explore</h4>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="index.html#about-overlay">About</a></li>
-          <li><a href="index.html#contact">Contact</a></li>
+          <li><a href="#top" data-scroll="#top">Home</a></li>
+          <li><a data-open-about href="#about-overlay">About</a></li>
+          <li><a href="#contact" data-scroll="#contact">Contact</a></li>
         </ul>
       </nav>
       <nav class="sf-col" aria-label="Case studies">
@@ -2395,14 +2592,14 @@
       <nav class="sf-col" aria-label="Connect">
         <h4>Connect</h4>
         <ul>
-          <li><a href="index.html#resume">Resume</a></li>
+          <li><a href="#resume" data-scroll="#resume">Resume</a></li>
           <li><a href="https://www.linkedin.com/in/jennynegrete" target="_blank" rel="noopener">LinkedIn</a></li>
         </ul>
       </nav>
     </div>
     <div class="site-footer__bottom">
       <div class="sf-sign">In This Vessel — Portfolio 2026</div>
-      <div class="sf-meta">where psychology meets design</div>
+      <div class="sf-meta">Understanding behavior. Designing better outcomes.</div>
     </div>
   </footer>
 </div></section>
@@ -2715,73 +2912,125 @@ var rough=function(){"use strict";function t(t,e,s){if(t&&t.length){const[n,o]=e
 <!-- ───────── Standardized site navigation ───────── -->
 <script>
   (function () {
-    // Add future case studies here and they appear in the dropdown automatically.
-    var CASE_STUDIES = [
+    const caseStudies = [
       { title: 'Closing the Care Gap', sub: 'Health equity · service design', href: 'closing-the-care-gap.html' },
       { title: 'First Service', sub: 'ProPresenter onboarding · Renewed Vision', href: 'first-service.html' }
     ];
-    var here = location.pathname.split('/').pop() || 'index.html';
-    var menu = document.getElementById('workMenu');
+    const here = location.pathname.split('/').pop() || 'index.html';
+    
+    // Render dropdown
+    const menu = document.getElementById('workMenu');
     if (menu) {
-      menu.innerHTML = CASE_STUDIES.map(function (cs) {
-        var cur = cs.href === here ? ' is-current' : '';
-        var aria = cs.href === here ? ' aria-current="page"' : '';
-        return '<a class="work-item' + cur + '" role="menuitem"' + aria + ' href="' + cs.href + '">' +
-          cs.title + '<span class="sub">' + cs.sub + '</span></a>';
+      menu.innerHTML = caseStudies.map(cs => {
+        const cur = cs.href === here ? ' is-current' : '';
+        const aria = cs.href === here ? ' aria-current="page"' : '';
+        return `<a class="work-item${cur}" role="menuitem"${aria} href="${cs.href}" data-hover>${cs.title}<span class="sub">${cs.sub}</span></a>`;
       }).join('');
     }
-    var toggle = document.getElementById('workToggle');
-    var dd = document.getElementById('workDD');
-    var chev = document.getElementById('workChev');
+
+    // Scroll listener for scrolled state
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      if (nav) {
+        if (window.scrollY > 40) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Dropdown toggling
+    const toggle = document.getElementById('workToggle');
+    const dd = document.getElementById('workDD');
+    const chev = document.getElementById('workChev');
+    const setMenu = (open) => {
+      if (menu) menu.classList.toggle('open', open);
+      if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+      if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+
     if (toggle && menu && dd) {
-      toggle.addEventListener('click', function (e) {
+      toggle.addEventListener('click', e => {
         e.stopPropagation();
-        var open = menu.classList.toggle('open');
-        if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        setMenu(!menu.classList.contains('open'));
       });
-      var setMenu = function (o) {
-        menu.classList.toggle('open', o);
-        if (chev) chev.style.transform = o ? 'rotate(180deg)' : '';
-        toggle.setAttribute('aria-expanded', o ? 'true' : 'false');
-      };
-      toggle.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowDown') { e.preventDefault(); setMenu(true); var f = menu.querySelector('.work-item'); if (f) f.focus(); }
+      toggle.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setMenu(true);
+          const first = menu.querySelector('.work-item');
+          if (first) first.focus();
+        }
       });
-      menu.addEventListener('keydown', function (e) {
-        var items = Array.prototype.slice.call(menu.querySelectorAll('.work-item'));
-        var idx = items.indexOf(document.activeElement);
+      menu.addEventListener('keydown', e => {
+        const items = [...menu.querySelectorAll('.work-item')];
+        const idx = items.indexOf(document.activeElement);
         if (e.key === 'ArrowDown') { e.preventDefault(); (items[idx + 1] || items[0]).focus(); }
         else if (e.key === 'ArrowUp') { e.preventDefault(); (items[idx - 1] || items[items.length - 1]).focus(); }
         else if (e.key === 'Escape') { setMenu(false); toggle.focus(); }
       });
-      document.addEventListener('click', function (e) {
-        if (!dd.contains(e.target)) { menu.classList.remove('open'); if (chev) chev.style.transform = ''; toggle.setAttribute('aria-expanded', 'false'); }
+      document.addEventListener('click', e => {
+        if (!dd.contains(e.target)) setMenu(false);
       });
     }
-    var burger = document.getElementById('navBurger');
-    var right = document.getElementById('navRight');
-    if (burger && right) {
-      burger.addEventListener('click', function () {
-        var open = right.classList.toggle('open');
+
+    // Mobile hamburger menu
+    const burger = document.getElementById('navBurger');
+    const links = document.getElementById('navLinks');
+    if (burger && links) {
+      burger.addEventListener('click', () => {
+        const open = links.classList.toggle('open');
         burger.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
-      right.addEventListener('click', function (e) {
-        if (e.target.closest('.nav-x, .nav-cta-x, .work-item')) {
-          right.classList.remove('open');
+      links.addEventListener('click', e => {
+        if (e.target.closest('.nav-link, .nav-cta, .work-item')) {
+          links.classList.remove('open');
           burger.setAttribute('aria-expanded', 'false');
         }
       });
     }
-    document.addEventListener('keydown', function (e) {
+
+    // Intercept data-scroll & data-open-about for navigation from case study pages back to home sections
+    document.querySelectorAll('[data-scroll]').forEach(el => {
+      el.addEventListener('click', e => {
+        const target = el.getAttribute('data-scroll');
+        if (target) {
+          e.preventDefault();
+          window.location.href = 'index.html' + target;
+        }
+      });
+    });
+    document.querySelectorAll('[data-open-about]').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        window.location.href = 'index.html#about-overlay';
+      });
+    });
+
+    // ESC key to close all nav overlays
+    document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        if (menu) menu.classList.remove('open');
-        if (chev) chev.style.transform = '';
-        if (toggle) toggle.setAttribute('aria-expanded', 'false');
-        if (right) right.classList.remove('open');
+        setMenu(false);
+        if (links) links.classList.remove('open');
         if (burger) burger.setAttribute('aria-expanded', 'false');
       }
     });
+  })();
+</script>
+
+<!-- ───────── Custom cursor (index parity) ───────── -->
+<script>
+  (function () {
+    var c = document.getElementById('cursor');
+    var cl = document.getElementById('cursor-ring');
+    if (!c || !cl || window.matchMedia('(max-width:900px)').matches) return;
+    var tx = innerWidth / 2, ty = innerHeight / 2, lx = tx, ly = ty;
+    document.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; c.style.left = tx + 'px'; c.style.top = ty + 'px'; });
+    (function tick() { lx += (tx - lx) * 0.18; ly += (ty - ly) * 0.18; cl.style.left = lx + 'px'; cl.style.top = ly + 'px'; requestAnimationFrame(tick); })();
+    document.addEventListener('mouseleave', function () { c.classList.add('hide'); cl.classList.add('hide'); });
+    document.addEventListener('mouseenter', function () { c.classList.remove('hide'); cl.classList.remove('hide'); });
+    document.body.addEventListener('mouseover', function (e) { if (e.target.closest('a, button, [role=tab], [role=switch], .tile, .clearbtn')) cl.classList.add('lg'); });
+    document.body.addEventListener('mouseout', function (e) { if (e.target.closest('a, button, [role=tab], [role=switch], .tile, .clearbtn')) cl.classList.remove('lg'); });
   })();
 </script>
 </body>

@@ -3,31 +3,58 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Closing the Care Gap — Jenny Negrete</title>
+<title>Closing the Care Gap — In This Vessel</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,300;1,6..72,400;1,6..72,500;1,6..72,600&family=Mulish:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --paper:      #FAF7F1;
-    --paper-2:    #FFFFFF;
-    --mist:       #EDF3F1;
-    --ink:        #18302E;
-    --ink-soft:   #4C5E5C;
-    --ink-faint:  #6E807E;
-    --teal:       #2C6E72;
-    --teal-deep:  #184A4E;
-    --teal-soft:  #7FB0AE;
-    --coral:      #DD7355;
-    --coral-deep: #C25C3F;
-    --gold:       #E2A33C;
-    --line:       rgba(24,74,78,0.14);
-    --line-soft:  rgba(24,74,78,0.08);
-    --serif: 'Newsreader', Georgia, serif;
-    --sans:  'Mulish', system-ui, sans-serif;
-    --shadow-sm: 0 2px 14px rgba(24,48,46,0.06);
-    --shadow-md: 0 14px 40px rgba(24,48,46,0.10);
-    --shadow-lg: 0 22px 60px rgba(24,48,46,0.13);
+    /* ── index.html design system (source of truth) ── */
+    --bg: #E8EBF1;
+    --ink: #1B232E;
+    --muted: #525C6B;
+    --muted-soft: #616B7A;
+    /* per-study accent — teal-leaning slate (Care Gap) */
+    --accent: #2C6E72;
+    --accent-deep: #1D4B4E;
+    --accent-soft: rgba(44,110,114,0.12);
+    /* atmosphere orbs (one accent-tinted) */
+    --orb-cool: #C7D3EC;
+    --orb-warm: #EADFDD;
+    --orb-aqua: #CDE2E6;
+    /* universal shell accent */
+    --shell-accent: #3D5A80;
+    --shell-accent-deep: #2C435F;
+    --shell-accent-soft: rgba(61,90,128,0.12);
+    /* glass */
+    --glass: rgba(255,255,255,0.45);
+    --glass-2: rgba(255,255,255,0.62);
+    --glass-3: rgba(255,255,255,0.80);
+    --glass-edge: rgba(255,255,255,0.72);
+    --glass-shadow: 0 14px 44px rgba(27,35,46,0.10);
+    --glass-inset: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 0 0 1px rgba(255,255,255,0.18);
+
+    /* ── compatibility remap: existing page tokens → the glass/slate system ──
+       (the whole page re-skins through these aliases; only --accent changes per study) */
+    --paper:      var(--bg);
+    --paper-2:    var(--glass-2);
+    --mist:       rgba(255,255,255,0.22);
+    --ink-soft:   var(--muted);
+    --ink-faint:  var(--muted-soft);
+    --teal:       var(--accent);
+    --teal-deep:  var(--accent-deep);
+    --teal-soft:  #7FA6AA;
+    --coral:      var(--muted);
+    --coral-deep: #3C4654;
+    --line:       rgba(27,35,46,0.10);
+    --line-soft:  rgba(27,35,46,0.06);
+    --serif: 'General Sans', 'Inter', system-ui, sans-serif;
+    --sans:  'Satoshi', 'Inter', system-ui, sans-serif;
+    --shadow-sm: 0 2px 14px rgba(27,35,46,0.06);
+    --shadow-md: var(--glass-shadow);
+    --shadow-lg: 0 22px 60px rgba(27,35,46,0.13);
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -135,66 +162,38 @@
   }
   .term { color: var(--teal-deep); font-weight: 700; }
 
-  /* ───────── Navbar ───────── */
+  /* ── Nav ── */
   .nav {
-    position: fixed; inset: 0 0 auto 0; z-index: 90;
-    transition: background 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
-    border-bottom: 1px solid transparent;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
   }
   .nav.scrolled {
-    background: rgba(250,247,241,0.9);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--line);
-    box-shadow: 0 1px 18px rgba(24,48,46,0.05);
+    background: rgba(255,255,255,0.55);
+    backdrop-filter: blur(18px) saturate(160%);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border-bottom: 1px solid var(--glass-edge);
+    box-shadow: 0 6px 30px rgba(27,35,46,0.06);
   }
   .nav-inner {
-    max-width: 1140px; margin: 0 auto; padding: 0 2.4rem;
-    display: flex; align-items: center; justify-content: space-between; height: 70px;
+    max-width: 1200px; margin: 0 auto; padding: 0 3rem;
+    display: flex; align-items: center; justify-content: space-between; height: 72px;
   }
-  .nav-logo {
-    font-family: var(--serif); font-size: 1.3rem; font-weight: 500;
-    color: var(--teal-deep); letter-spacing: -0.01em;
-  }
-  .nav-logo em { font-style: italic; color: var(--coral); }
-  .nav-right { display: flex; align-items: center; gap: 2rem; }
+  .nav-logo { font-family: var(--serif); font-size: 1.36rem; font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
+  .nav-links { display: flex; align-items: center; gap: 2rem; }
   .nav-link {
-    font-family: var(--sans); font-size: 0.74rem; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--ink-soft); background: none; border: none; padding: 0;
-    transition: color 0.2s; display: inline-flex; align-items: center; gap: 0.5rem;
+    font-family: var(--serif); font-size: 0.74rem; font-weight: 500;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--ink); background: none; border: none; padding: 0; transition: color 0.2s;
+    display: inline-flex; align-items: center; cursor: pointer;
   }
-  .nav-link:hover { color: var(--teal); }
-  .nav-back svg { transition: transform 0.25s ease; }
-  .nav-back:hover svg { transform: translateX(-3px); }
+  .nav-link:hover { color: var(--shell-accent); }
   .nav-cta {
-    color: #fff; background: var(--teal);
-    padding: 9px 20px; border-radius: 40px;
+    color: #fff; background: var(--shell-accent); font-family: var(--serif);
+    padding: 8px 24px; border-radius: 40px;
     font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-    font-weight: 700; transition: background 0.2s; border: none;
+    font-weight: 600; transition: background 0.2s, transform 0.2s; border: none;
   }
-  .nav-cta:hover { background: var(--teal-deep); }
-  .nav-link { cursor: pointer; }
-  /* Case Studies dropdown */
-  .work-dropdown { position: relative; }
-  .work-menu {
-    position: absolute; top: calc(100% + 14px); right: 0; min-width: 248px;
-    background: rgba(255,255,255,0.97);
-    backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--line); border-radius: 14px;
-    box-shadow: var(--shadow-md); padding: 8px; overflow: hidden;
-    opacity: 0; transform: translateY(-8px) scale(0.98); pointer-events: none;
-    transition: opacity 0.18s, transform 0.18s;
-  }
-  .work-menu.open { opacity: 1; transform: none; pointer-events: auto; }
-  .work-item {
-    display: block; padding: 10px 14px; border-radius: 9px;
-    font-family: var(--sans); font-size: 0.92rem; font-weight: 600; color: var(--ink);
-    text-transform: none; letter-spacing: 0; transition: background 0.16s, padding-left 0.2s;
-  }
-  .work-item:hover { background: rgba(44,110,114,0.10); padding-left: 18px; }
-  .work-item .sub { display: block; font-size: 0.74rem; font-weight: 400; color: var(--ink-faint); margin-top: 2px; letter-spacing: 0; text-transform: none; }
-  .work-item.is-current { color: var(--teal-deep); background: rgba(44,110,114,0.08); }
-  #workChev { margin-left: 4px; vertical-align: middle; color: var(--teal); transition: transform 0.2s; }
+  .nav-cta:hover { background: var(--shell-accent-deep); transform: translateY(-1px); }
 
   /* hamburger (mobile) */
   .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; padding: 8px; background: none; border: none; cursor: pointer; }
@@ -204,24 +203,44 @@
   .nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
   @media (max-width: 720px) {
-    .nav-inner { padding: 0 1.2rem; }
+    .nav-inner { padding: 0 1.5rem; }
     .nav-burger { display: flex; }
-    .nav-right {
+    .nav-links {
       position: absolute; top: 100%; left: 0; right: 0;
       flex-direction: column; align-items: stretch; gap: 0;
-      background: rgba(250,247,241,0.97);
-      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md);
-      padding: 0 1.2rem; max-height: 0; overflow: hidden; opacity: 0; pointer-events: none;
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
+      border-bottom: 1px solid var(--glass-edge); box-shadow: 0 16px 40px rgba(27,35,46,0.12);
+      padding: 0 1.5rem; max-height: 0; overflow: hidden; opacity: 0; pointer-events: none;
       transition: max-height 0.32s ease, opacity 0.25s ease, padding 0.32s ease;
     }
-    .nav-right.open { max-height: 80vh; opacity: 1; pointer-events: auto; padding: 0.4rem 1.2rem 0.9rem; }
-    .nav-right > .nav-link, .nav-right > .nav-cta { width: 100%; text-align: left; padding: 13px 0; }
-    .nav-cta { background: none; color: var(--teal); border-radius: 0; }
+    .nav-links.open { max-height: 80vh; opacity: 1; pointer-events: auto; padding: 0.5rem 1.5rem 1rem; }
+    .nav-links > .nav-link, .nav-links > .nav-cta { width: 100%; text-align: left; justify-content: flex-start; padding: 14px 0; }
+    .nav-cta { background: none; color: var(--shell-accent); border-radius: 0; }
     .work-dropdown { width: 100%; }
-    .work-menu { position: static; opacity: 1; transform: none; pointer-events: auto; min-width: 0; background: transparent; border: none; box-shadow: none; padding: 0 0 6px; }
-    #workToggle { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 13px 0; }
+    .work-menu { position: static; opacity: 1; transform: none; pointer-events: auto; min-width: 0; background: transparent; border: none; box-shadow: none; padding: 0 0 8px; }
+    #workToggle { width: 100%; justify-content: space-between; padding: 14px 0; }
   }
+
+  .work-dropdown { position: relative; }
+  .work-menu {
+    position: absolute; top: calc(100% + 16px); right: 0; min-width: 246px;
+    background: rgba(255,255,255,0.6);
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-edge); border-radius: 16px;
+    box-shadow: var(--glass-shadow), var(--glass-inset); padding: 8px; overflow: hidden;
+    opacity: 0; transform: translateY(-8px) scale(0.97); pointer-events: none;
+    transition: opacity 0.18s, transform 0.18s;
+  }
+  .work-menu.open { opacity: 1; transform: none; pointer-events: auto; }
+  .work-item {
+    display: block; padding: 11px 16px; border-radius: 10px;
+    font-family: var(--sans); font-size: 0.86rem; color: var(--ink);
+    transition: background 0.16s, padding-left 0.2s;
+  }
+  .work-item:hover { background: var(--shell-accent-soft); padding-left: 20px; }
+  .work-item.is-current { color: var(--shell-accent); background: var(--shell-accent-soft); }
+  .work-item .sub { display: block; font-size: 0.72rem; color: var(--muted-soft); margin-top: 2px; }
 
   /* ───────── Reading progress ───────── */
   .read-progress {
@@ -233,7 +252,7 @@
   /* ───────── Section TOC (sticky) ───────── */
   html { scroll-behavior: smooth; scroll-padding-top: 124px; }
   .toc {
-    position: sticky; top: 60px; z-index: 80;
+    position: sticky; top: 72px; z-index: 80;
     background: rgba(250,247,241,0.82);
     backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
     border-bottom: 1px solid var(--line);
@@ -260,13 +279,13 @@
   @media (max-width: 720px) { .toc-inner { padding: 0 1.1rem; } .toc-link { padding: 0.8rem 0.65rem; font-size: 0.72rem; } }
 
   /* ───────── HERO ───────── */
-  .hero { padding: 10rem 0 5.5rem 0; position: relative; }
+  .hero { padding: 4rem 0 5.5rem 0; position: relative; }
   .hero-grid {
     display: grid; grid-template-columns: 1.15fr 0.85fr;
     gap: 3.5rem; align-items: center;
   }
   @media (max-width: 880px) {
-    .hero { padding: 8.5rem 0 3.5rem 0; }
+    .hero { padding: 3rem 0 3.5rem 0; }
     .hero-grid { grid-template-columns: 1fr; gap: 2.6rem; }
   }
   .hero-tag {
@@ -548,9 +567,7 @@
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.5s cubic-bezier(0.22,0.61,0.36,1);
   }
-  .psych-card:hover .pic { transform: rotate(7deg) scale(1.05); }
-  .psych-card .pic svg { transition: transform 0.45s; }
-  .psych-card:hover .pic svg.spin { transform: rotate(-18deg); }
+  .psych-card:hover .pic { transform: scale(1.05); }
   .psych-label {
     font-family: var(--sans); font-size: 0.62rem; font-weight: 700;
     letter-spacing: 0.16em; text-transform: uppercase; color: var(--coral);
@@ -1052,32 +1069,216 @@
   .comment-pin span { position: absolute; inset: 0; background: var(--coral); border-radius: 50% 50% 50% 3px; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; font-weight: 600; }
   @media (max-width: 760px) { .cursor-tag, .comment-pin { display: none; } }
   .foot-links { display: flex; gap: 1.8rem; }
+
+  /* ───────── Behavior + Systems + Outcomes framework ───────── */
+  .bso { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2.4rem 0 0; }
+  @media (max-width: 600px) { .bso { grid-template-columns: 1fr; } }
+  .bso-cell {
+    padding: 1.2rem 1.3rem; border-radius: 16px;
+    border: 1px solid var(--line); background: var(--paper-2);
+    box-shadow: var(--shadow-sm);
+  }
+  .bso-cell:nth-child(1) { border-top: 3px solid var(--teal); }
+  .bso-cell:nth-child(2) { border-top: 3px solid var(--coral); }
+  .bso-cell:nth-child(3) { border-top: 3px solid var(--teal-deep); }
+  .bso-cell .bso-k {
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); margin: 0 0 0.45rem;
+  }
+  .bso-cell:nth-child(2) .bso-k { color: var(--coral-deep); }
+  .bso-cell:nth-child(3) .bso-k { color: var(--teal-deep); }
+  .bso-cell .bso-v { font-family: var(--sans); font-size: 0.86rem; line-height: 1.55; color: var(--ink-soft); margin: 0; }
+
+  /* ───────── Psychology lens inline annotation ───────── */
+  .psych-lens {
+    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.8rem;
+  }
+  .psych-lens span {
+    font-family: var(--sans); font-size: 0.58rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--teal-deep); background: rgba(44,110,114,0.1);
+    border: 1px solid rgba(44,110,114,0.18); padding: 3px 10px; border-radius: 20px;
+  }
+  .psych-lens.coral span {
+    color: var(--coral-deep); background: rgba(221,115,85,0.1);
+    border-color: rgba(221,115,85,0.2);
+  }
+
+  /* ───────── Step behavioral tag ───────── */
+  .step-psych {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    font-family: var(--sans); font-size: 0.6rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--teal-deep); background: rgba(44,110,114,0.08);
+    border: 1px solid rgba(44,110,114,0.16); padding: 4px 11px; border-radius: 20px;
+    margin-bottom: 0.6rem;
+  }
+
+  /* ═══════════════════════════════════════════════
+     GLASS / SLATE SKIN — adopted from index.html
+     Shell layers, atmosphere, and component overrides that turn the
+     editorial paper system into index's glass/slate vocabulary.
+     ═══════════════════════════════════════════════ */
+
+  body { background: var(--bg); position: relative; }
+
+  /* ── Accessibility: skip link (matches index) ── */
+  .skip-link {
+    position: fixed; top: 10px; left: 50%;
+    transform: translateX(-50%) translateY(-160%);
+    z-index: 9999; background: var(--accent); color: #fff;
+    padding: 10px 20px; border-radius: 30px; font-family: var(--sans);
+    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em;
+    transition: transform 0.2s ease;
+  }
+  .skip-link:focus { transform: translateX(-50%) translateY(0); }
+
+  /* ── Ambient backdrop (index's atmosphere) ── */
+  .atmos { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
+  .atmos::before {
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(165deg, #EEF1F6 0%, #E5E9F0 48%, #E9E8EE 100%);
+  }
+  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.55; }
+  .orb-1 { width: 46vw; height: 46vw; background: var(--orb-cool); top: -10vw; left: -8vw; }
+  .orb-2 { width: 38vw; height: 38vw; background: var(--orb-warm); top: 38%; right: -10vw; opacity: 0.45; }
+  .orb-3 { width: 40vw; height: 40vw; background: var(--orb-aqua); bottom: -12vw; left: 22vw; opacity: 0.42; }
+  .grain {
+    position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ── Custom cursor (index) ── */
+  .cursor {
+    position: fixed; pointer-events: none; z-index: 9999;
+    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
+    transform: translate(-50%, -50%);
+    transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease, background 0.25s ease;
+  }
+  .cursor-ring {
+    position: fixed; pointer-events: none; z-index: 9998;
+    width: 34px; height: 34px; border-radius: 50%;
+    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
+    transform: translate(-50%, -50%);
+    transition: width 0.28s ease, height 0.28s ease, border-color 0.28s ease, opacity 0.25s ease, background 0.28s ease;
+  }
+  .cursor-ring.lg { width: 58px; height: 58px; background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  .cursor.hide, .cursor-ring.hide { opacity: 0; }
+  @media (max-width: 900px) { .cursor, .cursor-ring { display: none; } }
+
+  /* ── Shared glass surface helper ── */
+  .glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
+    border: 1px solid var(--glass-edge);
+    box-shadow: var(--glass-shadow), var(--glass-inset);
+  }
+
+  /* ── Bands become translucent so the atmosphere refracts through ── */
+  .band--paper2 { background: rgba(255,255,255,0.16); }
+  .band--mist   { background: rgba(255,255,255,0.30); }
+  .band--deep   { background: var(--accent-deep); }
+
+  /* ── Frost the editorial cards into glass surfaces ── */
+  .snapcard, .thesis, .overview .arch, .arch, .pullquote, .psych-pull, .psych-card,
+  .failure-card, .tracker, .dd-phase, .method-chip, .rmethod, .viz-card, .refl-card,
+  .declog-row, .comp, .jmap-frame, .canvas-chrome, .bso-cell, .bp-card, .bp-tabs,
+  .packet-item, .credentials-card, .annot-card, .sb-illo {
+    backdrop-filter: blur(16px) saturate(150%);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+  }
+
+  /* ── Nav styles mapped to system block above ── */
+
+  /* ── Sticky section TOC → glass ── */
+  .toc {
+    background: rgba(255,255,255,0.45);
+    backdrop-filter: blur(14px) saturate(150%); -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border-bottom: 1px solid var(--glass-edge);
+  }
+
+  /* ── Reading progress → solid accent (index system) ── */
+  .read-progress { background: var(--accent); }
+
+  /* ── Hero overview meta bar (glass .cs-overview, added up front) ── */
+  .cs-overview-bar {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; margin-top: 2.4rem;
+    border-radius: 18px; overflow: hidden;
+    background: var(--glass);
+    backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
+    border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow), var(--glass-inset);
+  }
+  .cs-overview-item { padding: 1.15rem 1.3rem; background: rgba(255,255,255,0.18); }
+  .cs-overview-item.is-outcome { background: var(--accent-soft); }
+  .cs-overview-label { font-family: var(--sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
+  .cs-overview-value { font-family: var(--serif); font-size: 1.02rem; color: var(--ink); line-height: 1.25; }
+  @media (max-width: 860px) { .cs-overview-bar { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 480px) { .cs-overview-bar { grid-template-columns: 1fr; } }
+
+  /* ── Keep Reading / Next project (index pattern) ── */
+  .cs-keep { max-width: 760px; margin: 0 auto; padding: 1rem 2.4rem 0; position: relative; z-index: 2; }
+  .cs-keep-title { font-family: var(--sans); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-soft); margin-bottom: 1.2rem; }
+  .cs-keep-row { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
+  .cs-keep-link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--serif); font-size: 1.4rem; color: var(--ink); transition: color 0.2s, gap 0.2s; }
+  .cs-keep-link:hover { color: var(--accent); gap: 12px; }
+  .cs-back-link { font-family: var(--sans); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; color: var(--accent); }
+
+  /* ── Footer: index's light skin (shared bottom chrome) ── */
+  .band--deep.next { background: transparent; color: var(--ink); }
+  .site-footer__inner { border-top: 1px solid var(--line); }
+  .sf-brand .sf-logo { color: var(--ink); }
+  .sf-brand .sf-logo em { color: var(--shell-accent); }
+  .sf-brand p { color: var(--muted); }
+  .sf-col h4 { color: var(--shell-accent); }
+  .sf-col a { color: var(--muted); }
+  .sf-col a:hover { color: var(--shell-accent); }
+  .site-footer__bottom { border-top: 1px solid var(--line); color: var(--muted-soft); }
+  .site-footer__bottom .sf-sign { color: var(--ink); }
+  .site-footer__bottom .sf-meta { color: var(--muted-soft); }
+
+  /* ── Reduced motion: hide cursor + calm orbs ── */
+  @media (prefers-reduced-motion: reduce) {
+    .cursor, .cursor-ring { display: none; }
+    .orb { animation: none; }
+  }
 </style>
 </head>
 <body>
 
+<a class="skip-link" href="#mainContent">Skip to content</a>
+
+<!-- ambient backdrop (index atmosphere) -->
+<div class="atmos" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursor-ring"></div>
+
 <!-- ───────── READING PROGRESS ───────── -->
 <div class="read-progress" id="readProgress" aria-hidden="true"></div>
 
-<!-- ───────── NAV ───────── -->
+<!-- NAV -->
 <nav class="nav" id="nav" aria-label="Primary">
   <div class="nav-inner">
-    <a class="nav-logo" href="index.html">In This Vessel</a>
-    <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navRight">
+    <a class="nav-logo" href="#top" data-scroll="#top" data-hover>In This Vessel</a>
+    <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
       <span></span><span></span><span></span>
     </button>
-    <div class="nav-right" id="navRight">
-      <a class="nav-link" href="index.html">Home</a>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-link" data-scroll="#top" data-hover>Home</button>
       <div class="work-dropdown" id="workDD">
-        <button class="nav-link" id="workToggle" aria-haspopup="true" aria-expanded="false">
+        <button class="nav-link" id="workToggle" aria-haspopup="true" aria-expanded="false" data-hover>
           Case Studies
-          <svg width="11" height="11" viewBox="0 0 12 12" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--shell-accent);transition:transform 0.2s" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
         <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies"></div>
       </div>
-      <a class="nav-link" href="index.html#about-overlay">About</a>
-      <a class="nav-link" href="index.html#resume">Resume</a>
-      <a class="nav-cta" href="index.html#contact">Contact</a>
+      <button class="nav-link" data-open-about data-hover>About</button>
+      <button class="nav-link" data-scroll="#resume" data-hover>Resume</button>
+      <button class="nav-cta" data-scroll="#contact" data-hover>Contact</button>
     </div>
   </div>
 </nav>
@@ -1097,7 +1298,7 @@
   </div>
 </nav>
 
-<main>
+<main id="mainContent" tabindex="-1">
 
   <!-- ═════════ HERO ═════════ -->
   <section class="hero">
@@ -1107,6 +1308,9 @@
           <div class="hero-tag reveal"><span class="dot"></span> Service Design · Health Equity</div>
           <h1 class="hero-title reveal">Closing the<br /><em>Care Gap</em></h1>
           <p class="hero-sub reveal">Redesigning the specialist referral workflow at a free community clinic so that underserved patients are actually seen.</p>
+          <div class="psych-lens reveal" style="margin-top:1.4rem">
+            <span>Behavior + Systems + Outcomes</span>
+          </div>
         </div>
         <div class="reveal">
           <div class="arch" role="img" aria-label="Photo placeholder representing Mercy Health Center in Athens, Georgia">
@@ -1140,10 +1344,14 @@
         </div>
       </div>
 
-      <div class="scroll-cue reveal" aria-hidden="true">
-        <div class="scroll-line"><span class="scroll-dot"></span></div>
-        <div class="scroll-label">Scroll</div>
+      <div class="cs-overview-bar reveal" aria-label="Project overview">
+        <div class="cs-overview-item"><div class="cs-overview-label">Role</div><div class="cs-overview-value">Patient Rep &amp; Referral Specialist</div></div>
+        <div class="cs-overview-item"><div class="cs-overview-label">Timeline</div><div class="cs-overview-value">3 months of iteration</div></div>
+        <div class="cs-overview-item"><div class="cs-overview-label">Team</div><div class="cs-overview-value">Solo + clinic staff</div></div>
+        <div class="cs-overview-item"><div class="cs-overview-label">Tools</div><div class="cs-overview-value">eClinicalWorks · Epic · Excel</div></div>
+        <div class="cs-overview-item is-outcome"><div class="cs-overview-label">Outcome</div><div class="cs-overview-value">12+ months → ~2 weeks</div></div>
       </div>
+
     </div>
   </section>
 
@@ -1162,6 +1370,7 @@
           <div class="snapcell wide"><div class="k">Research methods</div><div class="v">Year-plus referral audit, provider &amp; specialist-office interviews, case-by-case backlog triage, on-site observation</div></div>
           <div class="snapcell wide"><div class="k">Solution</div><div class="v">A documented referral SOP, a master tracker, per-specialist checklists, and a dependable follow-up rhythm — the system that was supposed to exist.</div></div>
           <div class="snapcell wide"><div class="k">Outcome</div><div class="v serif">Average processing fell from <em>12+ months to ~2 weeks</em> — and the system kept running after I handed it off.</div></div>
+          <div class="snapcell wide"><div class="k">Design Lens</div><div class="v">Behavioral psychology (learned helplessness, cognitive load) applied as a strategic frame — not a section, but the through-line for every design decision.</div></div>
         </div>
       </div>
 
@@ -1268,6 +1477,21 @@
           <span class="method-chip"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>Artifact &amp; process audit</span>
           <span class="method-chip"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h10M4 17h13"/></svg>Service blueprinting</span>
           <span class="method-chip"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>Iterative rollout</span>
+        </div>
+
+        <div class="bso reveal">
+          <div class="bso-cell">
+            <div class="bso-k">Behavior</div>
+            <div class="bso-v">Why patients disengage. Why staff defer. What the system asks versus what people actually have capacity to give — mapped through behavioral psychology.</div>
+          </div>
+          <div class="bso-cell">
+            <div class="bso-k">Systems</div>
+            <div class="bso-v">Each failure point traces to a structural gap. Each design decision closes a specific gap — and feeds the next component. Nothing is isolated.</div>
+          </div>
+          <div class="bso-cell">
+            <div class="bso-k">Outcomes</div>
+            <div class="bso-v">Measured change in processing time, closure rate, and system durability — not just while I was there, but after I handed it off.</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1488,18 +1712,21 @@
             <span class="failure-num">Failure 03</span>
             <h4 class="failure-title">No tracking layer</h4>
             <p class="failure-body">Once a referral left Mercy, no one could see where it was or whether it had stalled.</p>
+            <div class="psych-lens"><span>◎ Invisible systems</span></div>
           </article>
           <article class="failure-card">
             <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v8"/><path d="M8 8l4-4 4 4"/><rect x="4" y="13" width="16" height="6" rx="1.5"/><path d="M8 16h8"/></svg></div>
             <span class="failure-num">Failure 04</span>
             <h4 class="failure-title">Patient effort assumed, not supported</h4>
             <p class="failure-body">Applications expected a level of independent document-gathering most patients couldn't meet without help.</p>
+            <div class="psych-lens"><span>◎ Cognitive load</span></div>
           </article>
           <article class="failure-card">
             <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/><circle cx="5" cy="21" r="1.4" fill="currentColor"/></svg></div>
             <span class="failure-num">Failure 05</span>
             <h4 class="failure-title">No closure point</h4>
             <p class="failure-body">There was no defined moment when a referral counted as "done" — so referrals never reached one.</p>
+            <div class="psych-lens"><span>◎ Learned helplessness</span></div>
           </article>
         </div>
         <p class="close">These five failures became the design brief for what came next.</p>
@@ -1746,6 +1973,7 @@
           <div>
             <h3 class="step-title">A Standard Operating Procedure</h3>
             <p class="step-solving">Solving: no shared mental model</p>
+            <div class="step-psych">◎ Counters diffusion of responsibility — one owner, one process</div>
             <div class="step-body"><p>The first thing I built was a step-by-step process document covering everything between a provider's referral order and a patient sitting in a specialist's exam room. The SOP defined who does what, in what order, and where the handoffs live. It also formalized the Referrals Coordinator role as the single point of accountability — referrals were no longer "everyone's job and therefore no one's job."</p></div>
           </div>
         </article>
@@ -1755,6 +1983,7 @@
           <div>
             <h3 class="step-title">A Master Tracking Spreadsheet</h3>
             <p class="step-solving">Solving: no tracking layer</p>
+            <div class="step-psych">◎ Counters learned helplessness — every case is visible, nothing stalls silently</div>
             <div class="step-body"><p>I built a centralized Excel tracker that gave every active referral a visible status. Columns included patient name and DOB, specialty needed (orthopedics, optometry, cardiology, imaging, labs), referral date, financial aid status, date referral was sent to the specialist, appointment scheduled (yes/no), next action, and an overall status (Open / Awaiting Documents / Sent / Scheduled / Closed). The tracker became the single source of truth and the engine that drove the daily workflow — no referral could stall silently because every row carried a date and a next action.</p></div>
 
             <div class="iter-tag lo reveal" style="margin-bottom:0.55rem">Lo-fi · first paper sketch</div>
@@ -1825,6 +2054,7 @@
           <div>
             <h3 class="step-title">Per-Specialist Checklists &amp; a Contact Directory</h3>
             <p class="step-solving">Solving: one-size-fits-all packets</p>
+            <div class="step-psych">◎ Reduces extraneous cognitive load — correct by default, not by effort</div>
             <div class="step-body"><p>Every conversation I had during Discovery became a working reference. Each specialty office got its own checklist of required documents — the exact financial aid application, the income verification format, the clinical notes they needed — and a contact card recording their preferred method of contact, direct phone numbers, and the name of the financial aid representative. Packets stopped bouncing back because they were being built to specification the first time.</p></div>
           </div>
         </article>
@@ -1834,6 +2064,7 @@
           <div>
             <h3 class="step-title">Patient-Facing Materials &amp; In-Person Document Assembly</h3>
             <p class="step-solving">Solving: patient effort assumed, not supported</p>
+            <div class="step-psych">◎ Absorbs cognitive load the old process silently offloaded onto sick people</div>
             <div class="step-body"><p>I created reusable patient-facing materials — fax cover sheets, support letter templates, prep guides for the financial aid application — but the more important change was how I structured my own time. Rather than handing patients a list of documents to gather on their own, I sat down with each one during dedicated in-office appointments. We made the calls to the Georgia Department of Labor together. We filled out applications in person. For patients who couldn't easily return to the clinic, I made the calls and gathered the documents on their behalf. This was the part of the system that explicitly absorbed the cognitive and logistical load that the old process had silently offloaded onto the patient.</p></div>
           </div>
         </article>
@@ -1843,6 +2074,7 @@
           <div>
             <h3 class="step-title">Daily Follow-Up &amp; Specialist Partner Relationships</h3>
             <p class="step-solving">Solving: no closure point</p>
+            <div class="step-psych">◎ Earns back the expectation that effort will be rewarded — counters learned helplessness</div>
             <div class="step-body"><p>The tracker drove a daily review. Each morning I worked through every row with a stale "next action" date — calls made, documents chased, patients updated. Beyond that daily rhythm, I held standing meetings with our largest specialist partners, including St. Mary's Hospital in Athens, to walk through specific patient cases and accelerate scheduling. Knowing the financial aid contact at St. Mary's personally meant patients whose cases might have sat in a queue for weeks could now be expedited in days. The relationships weren't transactional; they were the closure mechanism the old system had never had.</p></div>
           </div>
         </article>
@@ -2115,21 +2347,31 @@
     </div>
   </section>
 
+  <!-- ═════════ KEEP READING / NEXT PROJECT ═════════ -->
+  <section class="band cs-keep" style="padding-bottom:1rem">
+    <p class="cs-keep-title reveal">Keep Reading</p>
+    <div class="cs-keep-row reveal">
+      <div></div>
+      <a class="cs-keep-link" href="first-service.html" data-hover>Next project · First Service →</a>
+    </div>
+    <div class="reveal"><a class="cs-back-link" href="index.html" data-hover>← Back to Home</a></div>
+  </section>
+
   <!-- ═════════ NEXT / FOOTER ═════════ -->
   <section class="band band--deep next">
     <div class="wrap">
       <footer class="site-footer">
         <div class="site-footer__inner">
           <div class="sf-brand">
-            <a class="sf-logo" href="index.html">In This <em>Vessel</em></a>
-            <p>UX designer with a psychology background — designing for the people systems leave behind.</p>
+            <a class="sf-logo" href="#top" data-scroll="#top">In This <em>Vessel</em></a>
+            <p>Behavioral product designer</p>
           </div>
           <nav class="sf-col" aria-label="Explore">
             <h4>Explore</h4>
             <ul>
-              <li><a href="index.html">Home</a></li>
-              <li><a href="index.html#about-overlay">About</a></li>
-              <li><a href="index.html#contact">Contact</a></li>
+              <li><a href="#top" data-scroll="#top">Home</a></li>
+              <li><a data-open-about href="#about-overlay">About</a></li>
+              <li><a href="#contact" data-scroll="#contact">Contact</a></li>
             </ul>
           </nav>
           <nav class="sf-col" aria-label="Case studies">
@@ -2142,14 +2384,14 @@
           <nav class="sf-col" aria-label="Connect">
             <h4>Connect</h4>
             <ul>
-              <li><a href="index.html#resume">Resume</a></li>
+              <li><a href="#resume" data-scroll="#resume">Resume</a></li>
               <li><a href="https://www.linkedin.com/in/jennynegrete" target="_blank" rel="noopener">LinkedIn</a></li>
             </ul>
           </nav>
         </div>
         <div class="site-footer__bottom">
           <div class="sf-sign">In This Vessel — Portfolio 2026</div>
-          <div class="sf-meta">where psychology meets design</div>
+          <div class="sf-meta">Understanding behavior. Designing better outcomes.</div>
         </div>
       </footer>
     </div>
@@ -2158,18 +2400,15 @@
 </main>
 
 <script>
-  // Nav scroll state
-  var nav = document.getElementById('nav');
+  // Nav scroll progress
   var readProgress = document.getElementById('readProgress');
-  function onScroll() {
-    if (window.scrollY > 16) nav.classList.add('scrolled');
-    else nav.classList.remove('scrolled');
+  function onScrollProgress() {
     var h = document.documentElement;
     var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
     readProgress.style.width = (Math.min(1, Math.max(0, scrolled)) * 100) + '%';
   }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+  window.addEventListener('scroll', onScrollProgress, { passive: true });
+  onScrollProgress();
 
   // Section scrollspy for sticky TOC
   var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
@@ -2218,73 +2457,125 @@
 <!-- ───────── Standardized site navigation ───────── -->
 <script>
   (function () {
-    // Add future case studies here and they appear in the dropdown automatically.
-    var CASE_STUDIES = [
+    const caseStudies = [
       { title: 'Closing the Care Gap', sub: 'Health equity · service design', href: 'closing-the-care-gap.html' },
       { title: 'First Service', sub: 'ProPresenter onboarding · Renewed Vision', href: 'first-service.html' }
     ];
-    var here = location.pathname.split('/').pop() || 'index.html';
-    var menu = document.getElementById('workMenu');
+    const here = location.pathname.split('/').pop() || 'index.html';
+    
+    // Render dropdown
+    const menu = document.getElementById('workMenu');
     if (menu) {
-      menu.innerHTML = CASE_STUDIES.map(function (cs) {
-        var cur = cs.href === here ? ' is-current' : '';
-        var aria = cs.href === here ? ' aria-current="page"' : '';
-        return '<a class="work-item' + cur + '" role="menuitem"' + aria + ' href="' + cs.href + '">' +
-          cs.title + '<span class="sub">' + cs.sub + '</span></a>';
+      menu.innerHTML = caseStudies.map(cs => {
+        const cur = cs.href === here ? ' is-current' : '';
+        const aria = cs.href === here ? ' aria-current="page"' : '';
+        return `<a class="work-item${cur}" role="menuitem"${aria} href="${cs.href}" data-hover>${cs.title}<span class="sub">${cs.sub}</span></a>`;
       }).join('');
     }
-    var toggle = document.getElementById('workToggle');
-    var dd = document.getElementById('workDD');
-    var chev = document.getElementById('workChev');
+
+    // Scroll listener for scrolled state
+    const nav = document.getElementById('nav');
+    const onScroll = () => {
+      if (nav) {
+        if (window.scrollY > 40) nav.classList.add('scrolled');
+        else nav.classList.remove('scrolled');
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // Dropdown toggling
+    const toggle = document.getElementById('workToggle');
+    const dd = document.getElementById('workDD');
+    const chev = document.getElementById('workChev');
+    const setMenu = (open) => {
+      if (menu) menu.classList.toggle('open', open);
+      if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+      if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    };
+
     if (toggle && menu && dd) {
-      toggle.addEventListener('click', function (e) {
+      toggle.addEventListener('click', e => {
         e.stopPropagation();
-        var open = menu.classList.toggle('open');
-        if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
-        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+        setMenu(!menu.classList.contains('open'));
       });
-      var setMenu = function (o) {
-        menu.classList.toggle('open', o);
-        if (chev) chev.style.transform = o ? 'rotate(180deg)' : '';
-        toggle.setAttribute('aria-expanded', o ? 'true' : 'false');
-      };
-      toggle.addEventListener('keydown', function (e) {
-        if (e.key === 'ArrowDown') { e.preventDefault(); setMenu(true); var f = menu.querySelector('.work-item'); if (f) f.focus(); }
+      toggle.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setMenu(true);
+          const first = menu.querySelector('.work-item');
+          if (first) first.focus();
+        }
       });
-      menu.addEventListener('keydown', function (e) {
-        var items = Array.prototype.slice.call(menu.querySelectorAll('.work-item'));
-        var idx = items.indexOf(document.activeElement);
+      menu.addEventListener('keydown', e => {
+        const items = [...menu.querySelectorAll('.work-item')];
+        const idx = items.indexOf(document.activeElement);
         if (e.key === 'ArrowDown') { e.preventDefault(); (items[idx + 1] || items[0]).focus(); }
         else if (e.key === 'ArrowUp') { e.preventDefault(); (items[idx - 1] || items[items.length - 1]).focus(); }
         else if (e.key === 'Escape') { setMenu(false); toggle.focus(); }
       });
-      document.addEventListener('click', function (e) {
-        if (!dd.contains(e.target)) { menu.classList.remove('open'); if (chev) chev.style.transform = ''; toggle.setAttribute('aria-expanded', 'false'); }
+      document.addEventListener('click', e => {
+        if (!dd.contains(e.target)) setMenu(false);
       });
     }
-    var burger = document.getElementById('navBurger');
-    var right = document.getElementById('navRight');
-    if (burger && right) {
-      burger.addEventListener('click', function () {
-        var open = right.classList.toggle('open');
+
+    // Mobile hamburger menu
+    const burger = document.getElementById('navBurger');
+    const links = document.getElementById('navLinks');
+    if (burger && links) {
+      burger.addEventListener('click', () => {
+        const open = links.classList.toggle('open');
         burger.setAttribute('aria-expanded', open ? 'true' : 'false');
       });
-      right.addEventListener('click', function (e) {
+      links.addEventListener('click', e => {
         if (e.target.closest('.nav-link, .nav-cta, .work-item')) {
-          right.classList.remove('open');
+          links.classList.remove('open');
           burger.setAttribute('aria-expanded', 'false');
         }
       });
     }
-    document.addEventListener('keydown', function (e) {
+
+    // Intercept data-scroll & data-open-about for navigation from case study pages back to home sections
+    document.querySelectorAll('[data-scroll]').forEach(el => {
+      el.addEventListener('click', e => {
+        const target = el.getAttribute('data-scroll');
+        if (target) {
+          e.preventDefault();
+          window.location.href = 'index.html' + target;
+        }
+      });
+    });
+    document.querySelectorAll('[data-open-about]').forEach(el => {
+      el.addEventListener('click', e => {
+        e.preventDefault();
+        window.location.href = 'index.html#about-overlay';
+      });
+    });
+
+    // ESC key to close all nav overlays
+    document.addEventListener('keydown', e => {
       if (e.key === 'Escape') {
-        if (menu) menu.classList.remove('open');
-        if (chev) chev.style.transform = '';
-        if (toggle) toggle.setAttribute('aria-expanded', 'false');
-        if (right) right.classList.remove('open');
+        setMenu(false);
+        if (links) links.classList.remove('open');
         if (burger) burger.setAttribute('aria-expanded', 'false');
       }
     });
+  })();
+</script>
+
+<!-- ───────── Custom cursor (index parity) ───────── -->
+<script>
+  (function () {
+    var c = document.getElementById('cursor');
+    var cl = document.getElementById('cursor-ring');
+    if (!c || !cl || window.matchMedia('(max-width:900px)').matches) return;
+    var tx = innerWidth / 2, ty = innerHeight / 2, lx = tx, ly = ty;
+    document.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; c.style.left = tx + 'px'; c.style.top = ty + 'px'; });
+    (function tick() { lx += (tx - lx) * 0.18; ly += (ty - ly) * 0.18; cl.style.left = lx + 'px'; cl.style.top = ly + 'px'; requestAnimationFrame(tick); })();
+    document.addEventListener('mouseleave', function () { c.classList.add('hide'); cl.classList.add('hide'); });
+    document.addEventListener('mouseenter', function () { c.classList.remove('hide'); cl.classList.remove('hide'); });
+    document.body.addEventListener('mouseover', function (e) { if (e.target.closest('[data-hover], a, button')) cl.classList.add('lg'); });
+    document.body.addEventListener('mouseout', function (e) { if (e.target.closest('[data-hover], a, button')) cl.classList.remove('lg'); });
   })();
 </script>
 </body>
