@@ -164,7 +164,7 @@
 
   /* ── Nav ── */
   .nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 80;
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
   }
   .nav.scrolled {
@@ -225,6 +225,7 @@
   .work-dropdown { position: relative; }
   .work-menu {
     position: absolute; top: calc(100% + 16px); right: 0; min-width: 246px;
+    z-index: 101;
     background: rgba(255,255,255,0.6);
     backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
     border: 1px solid var(--glass-edge); border-radius: 16px;
@@ -246,13 +247,13 @@
   .read-progress {
     position: fixed; top: 0; left: 0; height: 3px; width: 0%;
     background: linear-gradient(90deg, var(--teal), var(--coral));
-    z-index: 100; transition: width 0.1s linear;
+    z-index: 120; transition: width 0.1s linear;
   }
 
   /* ───────── Section TOC (sticky) ───────── */
   html { scroll-behavior: smooth; scroll-padding-top: 124px; }
   .toc {
-    position: sticky; top: 72px; z-index: 80;
+    position: sticky; top: 72px; z-index: 70;
     background: rgba(250,247,241,0.82);
     backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
     border-bottom: 1px solid var(--line);
@@ -1148,23 +1149,7 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  /* ── Custom cursor (index) ── */
-  .cursor {
-    position: fixed; pointer-events: none; z-index: 9999;
-    width: 7px; height: 7px; border-radius: 50%; background: var(--accent);
-    transform: translate(-50%, -50%);
-    transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease, background 0.25s ease;
-  }
-  .cursor-ring {
-    position: fixed; pointer-events: none; z-index: 9998;
-    width: 34px; height: 34px; border-radius: 50%;
-    border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent);
-    transform: translate(-50%, -50%);
-    transition: width 0.28s ease, height 0.28s ease, border-color 0.28s ease, opacity 0.25s ease, background 0.28s ease;
-  }
-  .cursor-ring.lg { width: 58px; height: 58px; background: color-mix(in srgb, var(--accent) 6%, transparent); }
-  .cursor.hide, .cursor-ring.hide { opacity: 0; }
-  @media (max-width: 900px) { .cursor, .cursor-ring { display: none; } }
+
 
   /* ── Shared glass surface helper ── */
   .glass {
@@ -1236,9 +1221,8 @@
   .site-footer__bottom .sf-sign { color: var(--ink); }
   .site-footer__bottom .sf-meta { color: var(--muted-soft); }
 
-  /* ── Reduced motion: hide cursor + calm orbs ── */
+  /* ── Reduced motion: calm orbs ── */
   @media (prefers-reduced-motion: reduce) {
-    .cursor, .cursor-ring { display: none; }
     .orb { animation: none; }
   }
 </style>
@@ -1254,8 +1238,6 @@
   <div class="orb orb-3"></div>
 </div>
 <div class="grain" aria-hidden="true"></div>
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursor-ring"></div>
 
 <!-- ───────── READING PROGRESS ───────── -->
 <div class="read-progress" id="readProgress" aria-hidden="true"></div>
@@ -2563,20 +2545,5 @@
   })();
 </script>
 
-<!-- ───────── Custom cursor (index parity) ───────── -->
-<script>
-  (function () {
-    var c = document.getElementById('cursor');
-    var cl = document.getElementById('cursor-ring');
-    if (!c || !cl || window.matchMedia('(max-width:900px)').matches) return;
-    var tx = innerWidth / 2, ty = innerHeight / 2, lx = tx, ly = ty;
-    document.addEventListener('mousemove', function (e) { tx = e.clientX; ty = e.clientY; c.style.left = tx + 'px'; c.style.top = ty + 'px'; });
-    (function tick() { lx += (tx - lx) * 0.18; ly += (ty - ly) * 0.18; cl.style.left = lx + 'px'; cl.style.top = ly + 'px'; requestAnimationFrame(tick); })();
-    document.addEventListener('mouseleave', function () { c.classList.add('hide'); cl.classList.add('hide'); });
-    document.addEventListener('mouseenter', function () { c.classList.remove('hide'); cl.classList.remove('hide'); });
-    document.body.addEventListener('mouseover', function (e) { if (e.target.closest('[data-hover], a, button')) cl.classList.add('lg'); });
-    document.body.addEventListener('mouseout', function (e) { if (e.target.closest('[data-hover], a, button')) cl.classList.remove('lg'); });
-  })();
-</script>
 </body>
 </html>
