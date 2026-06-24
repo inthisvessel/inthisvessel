@@ -860,11 +860,11 @@
   .rmethod .l { font-family: var(--sans); font-size: 0.72rem; font-weight: 600; color: var(--ink-soft); line-height: 1.35; margin-top: 0.5rem; display: block; }
 
   /* ───────── Service journey map (Before / After) ───────── */
-  .bp-tabs { display: inline-flex; background: var(--paper-2); border: 1px solid var(--line); border-radius: 40px; padding: 4px; margin-bottom: 1.8rem; box-shadow: var(--shadow-sm); }
+  .bp-tabs { display: inline-flex; background: var(--paper-2); border: 1px solid var(--line); border-radius: 40px; padding: 3px; margin-bottom: 1.8rem; box-shadow: var(--shadow-sm); }
   .bp-tab {
     border: none; background: none; cursor: pointer;
     font-family: var(--sans); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-soft); padding: 0.6rem 1.3rem; border-radius: 40px; transition: background 0.25s, color 0.25s;
+    color: var(--ink-soft); padding: 0.55rem 1rem; border-radius: 40px; transition: background 0.25s, color 0.25s;
   }
   .bp-tab.is-active { background: var(--teal); color: #fff; }
   .bp-tab.is-active.is-before { background: var(--coral); }
@@ -873,16 +873,28 @@
   .bp-legend { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-bottom: 1rem; }
   .bp-leg { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--sans); font-size: 0.72rem; font-weight: 600; color: var(--ink-soft); }
   .bp-leg .sw { width: 14px; height: 14px; border-radius: 5px; }
-  .bp-scroll { overflow-x: auto; padding-bottom: 0.8rem; -webkit-overflow-scrolling: touch; }
-  .bp-track {
+.bp-scroll {
+  padding-left: 0;
+}
+.bp-content {
+  max-width: 1360px;
+  margin: 0 auto;
+}
+.bp-track {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(6, minmax(0, 170px));
+  justify-content: center;
   gap: 12px;
 }
 
 .bp-stage {
-  width: auto;
-} 
+  position: relative;
+  min-width: 0;
+}
+
+.bp-card {
+  min-width: 0;
+}
 .bp-stage:not(:last-child)::after {
   content: "";
   position: absolute;
@@ -903,7 +915,8 @@
 }
   .bp-step {
     font-family: var(--sans); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-faint); height: 34px; display: flex; align-items: center;
+    color: var(--ink-faint); height: auto;
+    margin-bottom: 8px; display: flex; justify-content: center;
   }
   .bp-card {
     background: var(--paper-2); border: 1px solid var(--line); border-radius: 14px;
@@ -1810,11 +1823,10 @@ Reviewing the referral backlog exposed recurring breakdowns in documentation, co
           <span class="bp-leg"><span class="sw" style="background:rgba(127,176,174,0.22)"></span>Specialist</span>
           <span class="bp-leg"><span class="sw" style="background:rgba(221,115,85,0.18)"></span>No owner</span>
         </div>
-        <p class="bp-hint">Scroll the blueprint sideways to follow the full path →</p>
 
         <!-- BEFORE -->
         <div class="bp-panel is-active is-before" data-bp="before">
-            <div style="width:1128px">
+            <div class="bp-content">
               <div class="bp-track">
                 <div class="bp-stage"><div class="bp-step">Stage One</div>
                   <div class="bp-card"><h5>Referral written</h5><p>A provider writes a specialist referral order in the chart.</p><span class="bp-owner mercy">Mercy</span></div></div>
@@ -1836,10 +1848,10 @@ Reviewing the referral backlog exposed recurring breakdowns in documentation, co
 
         <!-- AFTER -->
         <div class="bp-panel" data-bp="after">
-            <div style="width:1128pxs">
+            <div class="bp-content">
               <div class="bp-track">
                 <div class="bp-stage"><div class="bp-step">Stage One</div>
-                  <div class="bp-card"><h5>Referral written</h5><p>A provider writes the order — the one step that already worked.</p><span class="bp-owner mercy">Mercy</span></div></div>
+                  <div class="bp-card"><h5>Referral written</h5><p>A provider writes the order.</p><span class="bp-owner mercy">Mercy</span></div></div>
                 <div class="bp-stage"><div class="bp-step">Stage Two</div>
                   <div class="bp-card"><h5>Coordinator owns it</h5><p>The SOP assigns one accountable owner the moment the order lands.</p><span class="bp-flag good">✓ SOP</span><span class="bp-owner mercy">Mercy</span></div></div>
                 <div class="bp-stage"><div class="bp-step">Stage Three</div>
