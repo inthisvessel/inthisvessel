@@ -350,19 +350,8 @@
   }
   .think-loop em { font-style: italic; color: var(--accent); }
 
-  /* ── PROJECT CARD SNAPSHOT (Problem · Approach · Outcome) ── */
-  .cs-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin: 0 0 1.3rem; padding-bottom: 1.3rem; border-bottom: 1px solid var(--line); }
-  .cs-meta > div { display: flex; flex-direction: column; gap: 0.18rem; }
-  .cs-meta .k { font-family: var(--sans); font-size: 0.58rem; font-weight: 600; letter-spacing: 0.13em; text-transform: uppercase; color: var(--muted-soft); }
-  .cs-meta .v { font-family: var(--sans); font-size: 0.82rem; font-weight: 500; line-height: 1.3; color: var(--ink); }
-  @media (max-width: 380px) { .cs-meta { grid-template-columns: 1fr 1fr; } }
-  .cs-snapshot { display: flex; flex-direction: column; gap: 0.7rem; margin: 0 0 1.4rem; }
-  .cs-snap-row { display: grid; grid-template-columns: 76px 1fr; gap: 0.8rem; align-items: baseline; }
-  .cs-snap-k {
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 600; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--muted-soft); padding-top: 0.1rem;
-  }
-  .cs-snap-v { font-family: var(--sans); font-size: 0.84rem; font-weight: 400; line-height: 1.5; color: var(--ink); }
+  /* Detailed Role/Duration/Skill and Problem·Approach·Outcome snapshots now live
+     on the case-study pages only — homepage cards are doorways, not case studies. */
 
   /* ── ABOUT ── */
   .about-wrap { padding: 7rem 0; }
@@ -411,30 +400,39 @@
   .work-note { font-family: var(--sans); font-size: 0.82rem; font-weight: 300; color: var(--muted); max-width: 320px; margin: 0; }
   .cs-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem; }
   @media (max-width: 760px) { .cs-grid { grid-template-columns: 1fr; } .work-wrap { padding: 4rem 0; } }
+  /* ── Recruiter-first card: Title → Summary → Outcome → CTA, nothing else.
+     One focal hierarchy, generous whitespace, an obvious doorway into the case study. ── */
   .cs-card {
-    position: relative; display: block; padding: 2.4rem 2.2rem 2.2rem; border-radius: 22px; overflow: hidden;
+    position: relative; display: flex; flex-direction: column; height: 100%;
+    padding: 2.8rem 2.6rem; border-radius: 22px; overflow: hidden;
     background: var(--glass); backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
     border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow), var(--glass-inset);
-    transition: transform 0.34s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.34s;
+    transition: transform 0.34s cubic-bezier(0.22,0.61,0.36,1), box-shadow 0.34s, border-color 0.34s;
   }
   .cs-card::before { content: ""; position: absolute; inset: 0; background: var(--accent-bg, transparent); opacity: 0; transition: opacity 0.34s; }
   .cs-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(27,35,46,0.16), var(--glass-inset); }
   .cs-card:hover::before { opacity: 1; }
   .cs-card > * { position: relative; }
-  .cs-num { font-family: var(--serif); font-weight: 300; font-size: 3.4rem; line-height: 1; }
-  .cs-label { font-family: var(--sans); font-size: 0.66rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; display: block; margin: 0.4rem 0 0.8rem; }
-  .cs-title { font-family: var(--serif); font-weight: 400; font-size: 1.7rem; line-height: 1.1; color: var(--ink); margin: 0 0 0.7rem; }
-  .cs-desc { font-family: var(--sans); font-size: 0.92rem; font-weight: 300; line-height: 1.6; color: var(--muted); margin: 0 0 1.4rem; }
-  .cs-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1.6rem; }
-  .cs-tag { font-family: var(--sans); font-size: 0.68rem; font-weight: 500; color: var(--muted); padding: 5px 11px; border-radius: 20px; background: rgba(255,255,255,0.5); border: 1px solid var(--line); }
-  .cs-cta { display: inline-flex; align-items: center; gap: 7px; font-family: var(--sans); font-size: 0.78rem; font-weight: 600; letter-spacing: 0.02em; }
-  /* Equal-height cards: both inherit the tallest card's height, with the tag row
-     and CTA pinned to a shared baseline so the pair reads as one system. */
+
+  .cs-card-head { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.4rem; }
+  .cs-index { font-family: var(--serif); font-weight: 300; font-size: 0.95rem; color: var(--muted-soft); letter-spacing: 0.02em; }
+  .cs-index::after { content: ""; display: inline-block; width: 18px; height: 1px; background: var(--line); vertical-align: middle; margin-left: 0.7rem; }
+  .cs-label { font-family: var(--sans); font-size: 0.64rem; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; }
+  .cs-title { font-family: var(--serif); font-weight: 400; font-size: clamp(1.9rem, 3.2vw, 2.4rem); line-height: 1.08; letter-spacing: -0.015em; color: var(--ink); margin: 0 0 0.9rem; }
+  .cs-summary { font-family: var(--sans); font-size: 1rem; font-weight: 300; line-height: 1.65; color: var(--muted); margin: 0; max-width: 38ch; }
+
+  /* foot: outcome highlight + CTA, pinned to a shared baseline across cards */
+  .cs-foot { margin-top: auto; padding-top: 2rem; display: flex; flex-direction: column; gap: 1.3rem; }
+  .cs-outcome { display: inline-flex; align-items: center; gap: 0.6rem; align-self: flex-start; padding: 0.5rem 0.95rem 0.5rem 0.8rem; border-radius: 30px; background: color-mix(in srgb, var(--cs-accent) 10%, transparent); border: 1px solid color-mix(in srgb, var(--cs-accent) 22%, transparent); }
+  .cs-outcome-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cs-accent); flex-shrink: 0; box-shadow: 0 0 0 3px color-mix(in srgb, var(--cs-accent) 18%, transparent); }
+  .cs-outcome-text { font-family: var(--sans); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.01em; color: var(--ink); }
+  .cs-cta { display: inline-flex; align-items: center; gap: 8px; font-family: var(--sans); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.02em; transition: gap 0.25s ease; }
+  .cs-cta svg { transition: transform 0.25s ease; }
+  .cs-card:hover .cs-cta { gap: 12px; }
+  .cs-card:hover .cs-cta svg { transform: translateX(3px); }
   .cs-grid { align-items: stretch; }
   .cs-grid > .reveal { display: flex; }
-  .cs-card { display: flex; flex-direction: column; height: 100%; }
-  .cs-desc { min-height: 4.8em; }       /* aligns the Problem · Approach · Outcome rows */
-  .cs-tags { margin-top: auto; }        /* pins the tag row + CTA to the card bottom */
+  @media (max-width: 760px) { .cs-card { padding: 2.2rem 1.8rem; } }
 
   /* ── EXPERIENCE ── */
   .xp-wrap { padding: 6rem 0; }
@@ -1066,6 +1064,8 @@ const caseStudies = [
     label: "Health Equity",
     title: "Closing the Care Gap",
     desc: "Redesigning preventive care workflows to reduce disparities in underserved communities.",
+    summary: "Rebuilt the referral workflow at a community clinic so uninsured patients stop falling through the cracks.",
+    outcomeHighlight: "73% lift in patient follow-through",
     tags: ["Service Design", "Health Equity", "Research"],
     accent: "#4F7A86",
     num: "01",
@@ -1104,6 +1104,8 @@ const caseStudies = [
     label: "Product · Onboarding",
     title: "First Service",
     desc: "Redesigning the first hour at the controls of ProPresenter so a last-minute volunteer can run a live church service without fear of breaking it.",
+    summary: "Reworking ProPresenter's first hour so a last-minute volunteer can run a live service without fear of breaking it.",
+    outcomeHighlight: "Projected task success ~55% → 90%+",
     tags: ["Product Design", "Onboarding", "Information Architecture"],
     accent: "#C2783C",
     num: "02",
@@ -1154,23 +1156,20 @@ const ICON = {
 function renderCS() {
   document.getElementById('csGrid').innerHTML = caseStudies.map((cs, i) => `
     <div class="reveal" style="transition-delay:${i*0.1}s">
-      <a class="cs-card" data-cs="${cs.id}" style="--accent-bg:${cs.accent}14" data-hover>
-        <div class="cs-num" style="color:${cs.accent}30">${cs.num}</div>
-        <span class="cs-label" style="color:${cs.accent}">${cs.label}</span>
+      <a class="cs-card" data-cs="${cs.id}" style="--accent-bg:${cs.accent}14;--cs-accent:${cs.accent}" data-hover aria-label="View case study: ${cs.title}">
+        <div class="cs-card-head">
+          <span class="cs-index">${cs.num}</span>
+          <span class="cs-label" style="color:${cs.accent}">${cs.label}</span>
+        </div>
         <h3 class="cs-title">${cs.title}</h3>
-        <p class="cs-desc">${cs.desc}</p>
-        ${(cs.role || cs.duration || cs.skill) ? `<div class="cs-meta">
-          <div><span class="k">Role</span><span class="v">${cs.role || '—'}</span></div>
-          <div><span class="k">Duration</span><span class="v">${cs.duration || '—'}</span></div>
-          <div><span class="k">Key skill</span><span class="v">${cs.skill || '—'}</span></div>
-        </div>` : ''}
-        ${cs.snapshot ? `<div class="cs-snapshot">
-          <div class="cs-snap-row"><span class="cs-snap-k" style="color:${cs.accent}">Problem</span><span class="cs-snap-v">${cs.snapshot.problem}</span></div>
-          <div class="cs-snap-row"><span class="cs-snap-k" style="color:${cs.accent}">Approach</span><span class="cs-snap-v">${cs.snapshot.approach}</span></div>
-          <div class="cs-snap-row"><span class="cs-snap-k" style="color:${cs.accent}">Outcome</span><span class="cs-snap-v">${cs.snapshot.outcome}</span></div>
-        </div>` : ''}
-        <div class="cs-tags">${cs.tags.map(t => `<span class="cs-tag">${t}</span>`).join('')}</div>
-        <div class="cs-cta" style="color:${cs.accent}">Read case study ${ICON.arrow}</div>
+        <p class="cs-summary">${cs.summary || cs.desc}</p>
+        <div class="cs-foot">
+          ${cs.outcomeHighlight ? `<div class="cs-outcome" style="--cs-accent:${cs.accent}">
+            <span class="cs-outcome-dot" aria-hidden="true"></span>
+            <span class="cs-outcome-text">${cs.outcomeHighlight}</span>
+          </div>` : ''}
+          <div class="cs-cta" style="color:${cs.accent}">View Case Study ${ICON.arrow}</div>
+        </div>
       </a>
     </div>`).join('');
 }
