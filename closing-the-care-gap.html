@@ -617,7 +617,6 @@
     width: 52px; height: 52px; border: 1px dashed rgba(44,110,114,0.45);
     border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--teal);
   }
-  .placeholder .ph-cap { font-family: var(--serif); font-style: italic; font-weight: 300; color: var(--ink-soft); font-size: 1.02rem; max-width: 420px; line-height: 1.5; }
   .placeholder .ph-tag { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--coral); }
 
   /* ───────── Solution steps ───────── */
@@ -684,7 +683,6 @@
 
   /* ───────── Outcomes ───────── */
   .headline-stat { margin: 1.8rem 0 2.6rem; display: flex; flex-direction: column; gap: 0.5rem; }
-  .headline-stat .cap { font-family: var(--sans); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--coral); margin: 0; }
   .headline-stat .big { font-family: var(--serif); font-weight: 400; font-size: clamp(1.9rem, 4.4vw, 3rem); line-height: 1.05; color: var(--ink); margin: 0; }
   .headline-stat .big em { font-style: italic; color: var(--teal); margin: 0 0.15em; }
 
@@ -876,24 +874,46 @@
   .bp-leg { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--sans); font-size: 0.72rem; font-weight: 600; color: var(--ink-soft); }
   .bp-leg .sw { width: 14px; height: 14px; border-radius: 5px; }
   .bp-scroll { overflow-x: auto; padding-bottom: 0.8rem; -webkit-overflow-scrolling: touch; }
-  .bp-track { display: flex; min-width: max-content; }
-  .bp-stage { width: 188px; flex: 0 0 188px; padding: 0 0.45rem; position: relative; }
-  .bp-stage:not(:last-child)::after {
-    content: ""; position: absolute; top: 34px; right: -6px; width: 14px; height: 2px;
-    background: var(--teal-soft); z-index: 2;
-  }
-  .bp-panel.is-before .bp-stage:not(:last-child)::after { background: repeating-linear-gradient(90deg, var(--coral) 0 4px, transparent 4px 8px); }
+  .bp-track {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.bp-stage {
+  width: auto;
+} 
+.bp-stage:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: calc(100% - 4px);
+  width: 16px;
+  height: 2px;
+  transform: translateY(-50%);
+  background: var(--teal-soft);
+  z-index: 2;
+}
+.bp-panel.is-before .bp-stage:not(:last-child)::after {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--coral) 0 4px,
+    transparent 4px 8px
+  );
+}
   .bp-step {
     font-family: var(--sans); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
     color: var(--ink-faint); height: 34px; display: flex; align-items: center;
   }
   .bp-card {
     background: var(--paper-2); border: 1px solid var(--line); border-radius: 14px;
-    padding: 0.85rem 0.8rem; box-shadow: var(--shadow-sm); min-height: 132px;
-    display: flex; flex-direction: column; gap: 0.5rem;
+    padding: 0.65rem 0.65rem; box-shadow: var(--shadow-sm); height: 100%; min-height: 140px;
+    display: flex; flex-direction: column; gap: 0.68rem;
   }
-  .bp-card h5 { font-family: var(--serif); font-weight: 600; font-size: 0.95rem; line-height: 1.2; color: var(--ink); margin: 0; }
-  .bp-card p { font-family: var(--sans); font-size: 0.74rem; font-weight: 400; line-height: 1.45; color: var(--ink-soft); margin: 0; }
+  .bp-card h5 { font-family: var(--serif); font-weight: 600; font-size: 0.85rem; line-height: 1.2; color: var(--ink); margin: 0; min-height: 2.6em;
+   display: flex;
+   align-items: flex-start;}
+  .bp-card p { font-family: var(--sans); font-size: 0.68rem; font-weight: 400; line-height: 1.45; color: var(--ink-soft); margin: 0; }
   .bp-owner {
     margin-top: auto; align-self: flex-start;
     font-family: var(--sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
@@ -912,7 +932,6 @@
   .bp-flag.good { color: var(--teal); }
   .bp-sentiment { margin-top: 0.6rem; }
   .bp-sentiment svg { display: block; width: 100%; height: 72px; overflow: visible; }
-  .bp-sent-cap { font-family: var(--sans); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-faint); margin: 0.4rem 0 0; }
   .bp-hint { font-family: var(--sans); font-size: 0.72rem; color: var(--ink-faint); margin-top: 0.6rem; display: none; }
   @media (max-width: 760px) { .bp-hint { display: block; } }
 
@@ -920,7 +939,6 @@
   .sysmap { margin-top: 1rem; }
   .sysmap svg { width: 100%; height: auto; display: block; overflow: visible; }
   .sysmap-node rect { transition: fill 0.25s; }
-  .sysmap-cap { font-family: var(--sans); font-size: 0.78rem; color: var(--ink-faint); margin-top: 0.8rem; text-align: center; }
 
   /* ───────── Lo-fi → refined ───────── */
   .iter { display: grid; grid-template-columns: 0.85fr auto 1.15fr; gap: 1.4rem; align-items: center; margin: 1.8rem 0; }
@@ -1036,8 +1054,6 @@
   .sb-frame:hover .sb-illo { transform: translateY(-4px); box-shadow: var(--shadow-md); }
   .sb-illo svg { width: 80%; height: 80%; }
   .sb-frame.solved .sb-illo { background: linear-gradient(160deg, #D7ECE6, #E8F3EF); border-color: rgba(44,110,114,0.4); }
-  .sb-cap { font-family: var(--sans); font-size: 0.78rem; line-height: 1.5; color: var(--ink-soft); margin: 0.75rem 0 0; }
-  .sb-cap b { color: var(--ink); font-weight: 700; }
 
   /* Journey map (FigJam matrix) */
   .jmap-frame { background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-md); padding: 1.1rem 1.1rem 1.3rem; }
@@ -1529,7 +1545,6 @@
               <path d="M70 81h12" stroke="#DD7355" stroke-dasharray="2 3"/>
             </svg>
           </div>
-          <p class="sb-cap"><b>A provider writes a specialist referral.</b> The one step that always worked.</p>
         </div>
 
         <div class="sb-frame">
@@ -1543,7 +1558,6 @@
               <path d="M150 86l6 6" stroke="#DD7355"/><circle cx="153" cy="89" r="9" stroke="#DD7355"/>
             </svg>
           </div>
-          <p class="sb-cap"><b>Weeks pass with no call.</b> No one downstream owns the next step.</p>
         </div>
 
         <div class="sb-frame">
@@ -1558,7 +1572,6 @@
               <circle cx="140" cy="34" r="7"/>
             </svg>
           </div>
-          <p class="sb-cap"><b>Months pass.</b> For one patient with cirrhosis, the disease advanced while the referral sat untouched.</p>
         </div>
 
         <div class="sb-frame solved">
@@ -1571,7 +1584,6 @@
               <circle cx="138" cy="104" r="16" fill="#2C6E72" stroke="none"/><path d="M131 104l5 5 9-10" stroke="#fff"/>
             </svg>
           </div>
-          <p class="sb-cap"><b>Rebuilt from scratch, the same patient was seen,</b> under the new system.</p>
         </div>
       </div>
 
@@ -1802,30 +1814,21 @@ Reviewing the referral backlog exposed recurring breakdowns in documentation, co
 
         <!-- BEFORE -->
         <div class="bp-panel is-active is-before" data-bp="before">
-          <div class="bp-scroll">
             <div style="width:1128px">
               <div class="bp-track">
-                <div class="bp-stage"><div class="bp-step">Stage 01</div>
+                <div class="bp-stage"><div class="bp-step">Stage One</div>
                   <div class="bp-card"><h5>Referral written</h5><p>A provider writes a specialist referral order in the chart.</p><span class="bp-owner mercy">Mercy</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 02</div>
+                <div class="bp-stage"><div class="bp-step">Stage Two</div>
                   <div class="bp-card gap"><h5>Handoff</h5><p>The order enters the office with no defined owner downstream.</p><span class="bp-flag">⚠ No owner</span><span class="bp-owner none">None</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 03</div>
+                <div class="bp-stage"><div class="bp-step">Stage Three</div>
                   <div class="bp-card"><h5>Packet sent</h5><p>The same generic packet is faxed to every specialist, regardless of requirements.</p><span class="bp-owner mercy">Mercy</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 04</div>
+                <div class="bp-stage"><div class="bp-step">Stage Four</div>
                   <div class="bp-card"><h5>Bounced or buried</h5><p>The office returns it for missing items, or it simply sits unread.</p><span class="bp-owner specialist">Specialist</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 05</div>
+                <div class="bp-stage"><div class="bp-step">Stage Five</div>
                   <div class="bp-card gap"><h5>No follow-up</h5><p>No one chases status. The referral goes silent and falls off everyone's radar.</p><span class="bp-flag">⚠ No closure point</span><span class="bp-owner none">None</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 06</div>
+                <div class="bp-stage"><div class="bp-step">Stage Six</div>
                   <div class="bp-card"><h5>Patient waits</h5><p>12+ months pass. Symptoms worsen while the referral sits unclosed.</p><span class="bp-flag">⚠ Learned helplessness</span><span class="bp-owner patient">Patient</span></div></div>
               </div>
-              <div class="bp-sentiment">
-                <svg viewBox="0 0 1128 72" preserveAspectRatio="none" aria-label="Patient sentiment falls from hopeful to resigned">
-                  <polyline points="94,25 282,36 470,41 658,46 846,50 1034,55" fill="none" stroke="#DD7355" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="94" cy="25" r="4" fill="#DD7355"/><circle cx="282" cy="36" r="4" fill="#DD7355"/><circle cx="470" cy="41" r="4" fill="#DD7355"/><circle cx="658" cy="46" r="4" fill="#DD7355"/><circle cx="846" cy="50" r="4" fill="#DD7355"/><circle cx="1034" cy="55" r="5" fill="#DD7355"/>
-                  <text x="94" y="16" font-family="Mulish, sans-serif" font-size="11" font-weight="700" fill="#6E807E">Hopeful</text>
-                  <text x="1034" y="68" text-anchor="end" font-family="Mulish, sans-serif" font-size="11" font-weight="700" fill="#C25C3F">Resigned</text>
-                </svg>
-                <p class="bp-sent-cap">Patient sentiment</p>
               </div>
             </div>
           </div>
@@ -1833,32 +1836,21 @@ Reviewing the referral backlog exposed recurring breakdowns in documentation, co
 
         <!-- AFTER -->
         <div class="bp-panel" data-bp="after">
-          <div class="bp-scroll">
-            <div style="width:1316px">
+            <div style="width:1128pxs">
               <div class="bp-track">
-                <div class="bp-stage"><div class="bp-step">Stage 01</div>
+                <div class="bp-stage"><div class="bp-step">Stage One</div>
                   <div class="bp-card"><h5>Referral written</h5><p>A provider writes the order — the one step that already worked.</p><span class="bp-owner mercy">Mercy</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 02</div>
+                <div class="bp-stage"><div class="bp-step">Stage Two</div>
                   <div class="bp-card"><h5>Coordinator owns it</h5><p>The SOP assigns one accountable owner the moment the order lands.</p><span class="bp-flag good">✓ SOP</span><span class="bp-owner mercy">Mercy</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 03</div>
+                <div class="bp-stage"><div class="bp-step">Stage Three</div>
                   <div class="bp-card"><h5>Docs assembled</h5><p>An in-person session builds the financial aid packet together with the patient.</p><span class="bp-owner mercy">Mercy + patient</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 04</div>
-                  <div class="bp-card"><h5>Built to spec</h5><p>A per-specialist checklist means the packet is complete the first time.</p><span class="bp-flag good">✓ Checklist</span><span class="bp-owner system">Checklist</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 05</div>
+                <div class="bp-stage"><div class="bp-step">Stage Four</div>
                   <div class="bp-card"><h5>Tracked daily</h5><p>Every row carries a status, a next action, and a date. Nothing stalls silently.</p><span class="bp-flag good">✓ Tracker</span><span class="bp-owner system">Tracker</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 06</div>
+                <div class="bp-stage"><div class="bp-step">Stage Five</div>
                   <div class="bp-card"><h5>Expedited</h5><p>A named partner contact accelerates scheduling from weeks to days.</p><span class="bp-owner specialist">Specialist</span></div></div>
-                <div class="bp-stage"><div class="bp-step">Stage 07</div>
+                <div class="bp-stage"><div class="bp-step">Stage Six</div>
                   <div class="bp-card"><h5>Seen &amp; closed</h5><p>The appointment is kept and the referral is formally closed.</p><span class="bp-flag good">✓ Trust rebuilt</span><span class="bp-owner patient">Patient</span></div></div>
               </div>
-              <div class="bp-sentiment">
-                <svg viewBox="0 0 1316 72" preserveAspectRatio="none" aria-label="Patient sentiment rises as trust is rebuilt">
-                  <polyline points="94,31 282,29 470,31 658,26 846,23 1034,19 1222,14" fill="none" stroke="#2C6E72" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-                  <circle cx="94" cy="31" r="4" fill="#2C6E72"/><circle cx="282" cy="29" r="4" fill="#2C6E72"/><circle cx="470" cy="31" r="4" fill="#2C6E72"/><circle cx="658" cy="26" r="4" fill="#2C6E72"/><circle cx="846" cy="23" r="4" fill="#2C6E72"/><circle cx="1034" cy="19" r="4" fill="#2C6E72"/><circle cx="1222" cy="14" r="5" fill="#2C6E72"/>
-                  <text x="94" y="48" font-family="Mulish, sans-serif" font-size="11" font-weight="700" fill="#6E807E">Wary</text>
-                  <text x="1222" y="8" text-anchor="end" font-family="Mulish, sans-serif" font-size="11" font-weight="700" fill="#184A4E">Trusting</text>
-                </svg>
-                <p class="bp-sent-cap">Patient sentiment</p>
               </div>
             </div>
           </div>
@@ -1924,7 +1916,6 @@ Reviewing the referral backlog exposed recurring breakdowns in documentation, co
             <text x="102" y="209" text-anchor="middle" font-family="Mulish, sans-serif" font-size="10" fill="#6E807E">+ partner relationships</text>
           </g>
         </svg>
-        <p class="sysmap-cap">Five components, one hub. The SOP defines accountability, checklists and patient materials feed complete referrals into the tracker, and the daily follow-up cadence reads the tracker to drive every next action.</p>
       </div>
 
       <div class="steps">
@@ -2156,7 +2147,6 @@ Reviewing the referral backlog exposed recurring breakdowns in documentation, co
       </div>
 
       <div class="headline-stat reveal">
-        <p class="cap">Average referral processing time</p>
         <p class="big">12+ months <em>→</em> 2 weeks</p>
       </div>
 
