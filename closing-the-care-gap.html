@@ -603,12 +603,21 @@ grid-template-columns:1fr;
 
   /* failure cards */
   .failures { margin: 1.6rem 0 1.2rem; }
-  .failures .lede { font-family: var(--sans); font-weight: 400; font-size: 1.0rem; line-height: 1.8; color: var(--ink-soft); margin: 0 0 1.6rem; max-width: 660px; }
-  .failures .close { font-family: var(--sans); font-weight: 400; font-size: 1.0rem; line-height: 1.8; color: var(--ink-soft); margin: 1.6rem 0 0; max-width: 660px; }
-  .failure-row { display: grid; gap: 0.9rem; grid-template-columns: repeat(5, 1fr); }
+  .failures .lede { font-family: var(--sans); font-weight: 400; font-size: 1.0rem; line-height: 1.8; color: var(--ink-soft); margin: 0 0 1.6rem; max-width: 920px; margin:0 auto 40px; }
+.failures .close{
+    max-width:1320px;
+    margin:36px auto 0;
+}
+ .failure-row{
+    display:grid;
+    grid-template-columns:repeat(5,minmax(0,1fr));
+    gap:24px;
+    align-items:stretch;
+
+    max-width:1320px;
+    margin:40px auto;
+ }
   @media (max-width: 1040px) { .failure-row { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 680px) { .failure-row { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 440px) { .failure-row { grid-template-columns: 1fr; } }
   .failure-card {
     padding: 1.3rem 1.1rem; background: var(--paper-2); border: 1px solid var(--line);
     border-radius: 16px; box-shadow: var(--shadow-sm);
@@ -1464,9 +1473,12 @@ The problem wasn't simply delayed referrals. It was the absence of an operationa
   <section class="band band--paper2" id="problem">
     <div class="wrap-narrow">
       <div class="eyebrow reveal"><span class="dot"></span> Discovery</div>
-      <h2 class="sec-title reveal">Understanding a system<br><em>that no one could explain.</em></h2>
-      <p class="sec-lede reveal">
-There wasn't a documented workflow I could study. I had to reconstruct it by observing how referrals actually moved through the clinic, speaking with providers, and following each referral until it either succeeded or failed.
+      <h2 class="sec-title reveal">
+Understanding a system<br><em>that no one could explain.</em>
+</h2>
+
+<p class="sec-lede reveal">
+There wasn't a documented workflow I could study. I reconstructed it by following referrals from beginning to end, interviewing providers, and learning how each specialist office actually accepted patients.
 </p>
 
 
@@ -1518,59 +1530,14 @@ The investigation revealed that referral failures were driven less by patient be
     </div>
   </section>
 
-  <!-- ═════════ Discovery ═════════ -->
-  <section class="band band--mist" id="Discovery">
-    <div class="wrap-narrow">
-      <div class="eyebrow reveal"><span class="dot"></span>Discovery</div>
 
-      <div class="failures reveal">
-        <p class="lede">
-Across interviews, referral reviews, and conversations with providers, the same patterns appeared repeatedly. These weren't isolated mistakes—they were symptoms of a system that lacked clear ownership, visibility, and standardized workflows.
-</p>
-        <div class="failure-row">
-          <article class="failure-card">
-            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M6 8v2M18 8v2M8 7h8" stroke-dasharray="2 2"/><path d="M9 16l2-4M15 16l-2-4"/></svg></div>
-            <span class="failure-num">Failure 01</span>
-            <h4 class="failure-title">No shared mental model</h4>
-            <p class="failure-body">Providers, the coordinator role, and specialist offices each assumed someone else was responsible for follow-up.</p>
-          </article>
-          <article class="failure-card">
-            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7" width="17" height="12" rx="1.5"/><path d="M3.5 10h17"/><path d="M8 7V5h8v2"/><path d="M10 14h4"/></svg></div>
-            <span class="failure-num">Failure 02</span>
-            <h4 class="failure-title">One-size-fits-all packets</h4>
-            <p class="failure-body">Mercy was sending the same materials to every specialist, regardless of what each office actually required.</p>
-          </article>
-          <article class="failure-card">
-            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/><path d="M8 11h6M11 8v6" stroke-dasharray="2 2"/></svg></div>
-            <span class="failure-num">Failure 03</span>
-            <h4 class="failure-title">No tracking layer</h4>
-            <p class="failure-body">Once a referral left Mercy, no one could see where it was or whether it had stalled.</p>
-            <div class="psych-lens"><span>◎ Invisible systems</span></div>
-          </article>
-          <article class="failure-card">
-            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v8"/><path d="M8 8l4-4 4 4"/><rect x="4" y="13" width="16" height="6" rx="1.5"/><path d="M8 16h8"/></svg></div>
-            <span class="failure-num">Failure 04</span>
-            <h4 class="failure-title">Patient effort assumed, not supported</h4>
-            <p class="failure-body">Applications expected a level of independent document-gathering most patients couldn't meet without help.</p>
-            <div class="psych-lens"><span>◎ Cognitive load</span></div>
-          </article>
-          <article class="failure-card">
-            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/><circle cx="5" cy="21" r="1.4" fill="currentColor"/></svg></div>
-            <span class="failure-num">Failure 05</span>
-            <h4 class="failure-title">No closure point</h4>
-            <p class="failure-body">There was no defined moment when a referral counted as "done" — so referrals never reached one.</p>
-            <div class="psych-lens"><span>◎ Learned helplessness</span></div>
-          </article>
-        </div>
-        <p class="close">These five failures became the design brief for what came next.</p>
-      </div>
     </div>
   </section>
 
-  <!-- ═════════ Problem Solved═════════ -->
+  <!-- ═════════ Research Findings═════════ -->
   <section class="band band--paper2">
     <div class="wrap">
-      <div class="eyebrow reveal"><span class="dot"></span> Service Blueprint</div>
+      <div class="eyebrow reveal"><span class="dot"></span> Research Findings</div>
       <h2 class="sec-title reveal">The referral journey, <em>before and after</em></h2>
       <p class="sec-lede reveal">Same patient, same clinic, same specialists. What changed was where ownership lived and whether anyone could see the whole path.</p>
 
@@ -1631,13 +1598,59 @@ Across interviews, referral reviews, and conversations with providers, the same 
           </div>
         </div>
       </div>
-    </div>
+    </div> 
+    <section class="band">
+  <div class="wrap">
+      <div class="sub-head reveal">
+What I learned
+</div>
+
+<p class="sec-lede">
+Across interviews, referral reviews, and conversations with providers, the same patterns surfaced repeatedly. These weren't isolated mistakes—they were predictable symptoms of a process with no shared ownership, no visibility, and no standardized workflow.
+</p>
+        <div class="failure-row">
+          <article class="failure-card">
+            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M6 8v2M18 8v2M8 7h8" stroke-dasharray="2 2"/><path d="M9 16l2-4M15 16l-2-4"/></svg></div>
+            <span class="failure-num">Failure 01</span>
+            <h4 class="failure-title">No shared mental model</h4>
+            <p class="failure-body">Providers, the coordinator role, and specialist offices each assumed someone else was responsible for follow-up.</p>
+          </article>
+          <article class="failure-card">
+            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7" width="17" height="12" rx="1.5"/><path d="M3.5 10h17"/><path d="M8 7V5h8v2"/><path d="M10 14h4"/></svg></div>
+            <span class="failure-num">Failure 02</span>
+            <h4 class="failure-title">One-size-fits-all packets</h4>
+            <p class="failure-body">Mercy was sending the same materials to every specialist, regardless of what each office actually required.</p>
+          </article>
+          <article class="failure-card">
+            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/><path d="M8 11h6M11 8v6" stroke-dasharray="2 2"/></svg></div>
+            <span class="failure-num">Failure 03</span>
+            <h4 class="failure-title">No tracking layer</h4>
+            <p class="failure-body">Once a referral left Mercy, no one could see where it was or whether it had stalled.</p>
+            <div class="psych-lens"><span>◎ Invisible systems</span></div>
+          </article>
+          <article class="failure-card">
+            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v8"/><path d="M8 8l4-4 4 4"/><rect x="4" y="13" width="16" height="6" rx="1.5"/><path d="M8 16h8"/></svg></div>
+            <span class="failure-num">Failure 04</span>
+            <h4 class="failure-title">Patient effort assumed, not supported</h4>
+            <p class="failure-body">Applications expected a level of independent document-gathering most patients couldn't meet without help.</p>
+            <div class="psych-lens"><span>◎ Cognitive load</span></div>
+          </article>
+          <article class="failure-card">
+            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/><circle cx="5" cy="21" r="1.4" fill="currentColor"/></svg></div>
+            <span class="failure-num">Failure 05</span>
+            <h4 class="failure-title">No closure point</h4>
+            <p class="failure-body">There was no defined moment when a referral counted as "done" — so referrals never reached one.</p>
+            <div class="psych-lens"><span>◎ Learned helplessness</span></div>
+          </article>
+        </div>
+        <p class="close">These five failures became the design brief for what came next.</p></div>
+      </div>
   </section>
 
-  <!-- ═════════ THE Operating System ═════════ -->
-  <section class="band" id="solution">
+  <!-- ═════════ The Operating System ═════════ -->
+  <section class="band" id="The Operating System">
     <div class="wrap-narrow">
-      <div class="eyebrow reveal"><span class="dot"></span> The Solution</div>
+      <div class="eyebrow reveal"><span class="dot"></span> Operating System</div>
       <h2 class="sec-title reveal">Building the system <em>that was supposed to exist</em></h2>
       <p class="sec-lede reveal">Five interlocking pieces that turned referrals from an abandoned task into an actively managed process.</p>
 
