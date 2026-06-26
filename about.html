@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>In This Vessel | UX + Product Design</title>
+<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
+<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/about.css">
+
+</head>
+
+<body>
+    <!-- ambient backdrop -->
+<div class="atmos" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+</div>
+<div class="grain" aria-hidden="true"></div>
+    <nav class="nav" id="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="nav-logo" href="#top" data-scroll="#top" data-hover>In This Vessel</a>
+    <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-link" data-scroll="#top" data-hover>Home</button>
+      <div class="work-dropdown" id="workDD">
+       <button class="nav-link" id="workToggle" aria-haspopup="true" aria-expanded="false" data-hover>
+          Case Studies
+          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--shell-accent);transition:transform 0.2s" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies"></div>
+      </div>
+      <a class="nav-link active" href="about.html" aria-current="page">
+    About
+</a>
+<a class="nav-link" href="index.html#resume">Resume</a>
+      <a class="nav-cta" href="index.html#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+  <div class="about-page">
+    <div class="about-page-inner">
+      <div class="about-eyebrow reveal">About me</div>
+      <h1 class="about-hero reveal">The <em>mind</em> behind the <em>vessel</em></h1>
+      <p class="about-lede reveal">What shapes the way I think, what I'm into right now, and the path that led me to design.</p>
+
+      <div class="about-roots-grid">
+        <div>
+          <div class="about-eyebrow reveal">Background</div>
+          <p class="about-pull reveal">Every role I've held has been about the same thing: seeing who the system leaves behind and figuring out why.</p>
+          <p class="about-body reveal">From coordinating patient referrals at a community health clinic to working the fraud lines at a bank, I've spent years in the spaces where systems meet real people.</p>
+        </div>
+        <div class="reveal credentials-card">
+          <div class="about-eyebrow" style="margin-bottom:1rem">Credentials</div>
+          <ul class="cred-list">
+            <li>B.S. Psychology</li>
+            <li>Women in Tech Campus Mentee</li>
+            <li>Google User Experience Foundations</li>
+            <li>Agile Project Management</li>
+            <li>IBM Business Analyst</li>
+            <li>Vibe Coding + Prompt Engineering</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="about-bottom-grid">
+        <div class="reveal">
+          <div class="about-eyebrow" style="margin-bottom:1.4rem">A few human details</div>
+          <dl class="fun-facts">
+            <div><dt>Based in</dt><dd>Atlanta, Georgia · Open to Remote or Relocation</dd></div>
+            <div><dt>Roots</dt><dd>First-generation student</dd></div>
+            <div><dt>Languages</dt><dd>English · Spanish</dd></div>
+            <div><dt>Superpower</dt><dd>Adaptability. I've had to read a new system almost every year of my life</dd></div>
+            <div><dt>Can't resist</dt><dd>A good salmon pasta</dd></div>
+            <div><dt>Off the clock</dt><dd>Building oddly specific playlists for every mood</dd></div>
+          </dl>
+        </div>
+        <div class="reveal">
+          <div class="about-eyebrow" style="margin-bottom:1.4rem">The path</div>
+          <ol class="path-timeline">
+            <li><span class="dot"></span><div class="yr">University</div><div class="ev">Kennesaw State University</div><div class="sub">Senior · B.S. Psychology, Data Science minor</div></li>
+            <li><span class="dot dot-now"></span><div class="yr now">Community</div><div class="ev">WIT Campus Mentee</div><div class="sub">Women in Technology · campus mentee program</div></li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="widgets-section reveal">
+        <div class="widgets-grid">
+          <div class="widget widget-spotify">
+            <div class="widget-head"><span>Now spinning</span><span class="muted">spotify</span></div>
+            <iframe style="border-radius:12px;width:100%;border:0" src="https://open.spotify.com/embed/track/74y1VgzL668hynrvA59WQB?utm_source=generator" width="100%" height="352" frameBorder="0" scrolling="no" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+          <div class="widget widget-currently">
+            <div class="widget-head"><span>Currently</span></div>
+            <dl class="currently">
+              <div><dt>Watching</dt><dd>Dawson's Creek</dd></div>
+              <div><dt>Drinking</dt><dd>Apple kombucha</dd></div>
+              <div><dt>Cooking</dt><dd>Recipes I'll actually repeat</dd></div>
+              <div><dt>Collecting</dt><dd>Trinkets</dd></div>
+            </dl>
+          </div>
+          <div class="widget widget-shelf" id="shelfWidget">
+            <div class="widget-head"><span>On the shelf</span></div>
+            <div class="shelf-stage" id="shelfStage">
+              <div class="shelf-book" data-idx="0"><img src="https://covers.openlibrary.org/b/isbn/9780525559733-L.jpg" alt="Bunny by Mona Awad" loading="lazy" /></div>
+              <div class="shelf-book" data-idx="1"><img src="https://covers.openlibrary.org/b/isbn/0593300262-L.jpg" alt="Lapvona by Ottessa Moshfegh" loading="lazy" /></div>
+              <div class="shelf-book" data-idx="2"><img src="https://covers.openlibrary.org/b/isbn/0441013597-L.jpg" alt="Dune by Frank Herbert" loading="lazy" /></div>
+              <div class="shelf-book" data-idx="3"><img src="https://covers.openlibrary.org/b/isbn/0593135202-L.jpg" alt="Project Hail Mary by Andy Weir" loading="lazy" /></div>
+            </div>
+            <div class="shelf-meta">
+              <span class="now-label">Now reading</span>
+              <span class="shelf-title" id="shelfTitle">Bunny</span>
+              <span class="shelf-author" id="shelfAuthor">Mona Awad</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-cta reveal">
+        <p class="connect-q">Want to work together?</p>
+        <a class="connect-btn" href="index.html#contact">Let's connect →</a>
+      </div>
+    </div>
+  </div>
+</div>
+<script src="js/about.js"></script>
+
+</body>
+
+
+
+</html>

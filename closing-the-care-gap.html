@@ -9,1283 +9,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    /* ── index.html design system (source of truth) ── */
-    --bg: #E8EBF1;
-    --ink: #1B232E;
-    --muted: #525C6B;
-    --muted-soft: #616B7A;
-    /* per-study accent — teal-leaning slate (Care Gap) */
-    --accent: #2C6E72;
-    --accent-deep: #1D4B4E;
-    --accent-soft: rgba(44,110,114,0.12);
-    /* atmosphere orbs (one accent-tinted) */
-    --orb-cool: #C7D3EC;
-    --orb-warm: #EADFDD;
-    --orb-aqua: #CDE2E6;
-    /* universal shell accent */
-    --shell-accent: #3D5A80;
-    --shell-accent-deep: #2C435F;
-    --shell-accent-soft: rgba(61,90,128,0.12);
-    /* glass */
-    --glass: rgba(255,255,255,0.45);
-    --glass-2: rgba(255,255,255,0.62);
-    --glass-3: rgba(255,255,255,0.80);
-    --glass-edge: rgba(255,255,255,0.72);
-    --glass-shadow: 0 14px 44px rgba(27,35,46,0.10);
-    --glass-inset: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 0 0 1px rgba(255,255,255,0.18);
-
-    /* ── compatibility remap: existing page tokens → the glass/slate system ──
-       (the whole page re-skins through these aliases; only --accent changes per study) */
-    --paper:      var(--bg);
-    --paper-2:    var(--glass-2);
-    --mist:       rgba(255,255,255,0.22);
-    --ink-soft:   var(--muted);
-    --ink-faint:  var(--muted-soft);
-    --teal:       var(--accent);
-    --teal-deep:  var(--accent-deep);
-    --teal-soft:  #7FA6AA;
-    --coral:      var(--muted);
-    --coral-deep: #3C4654;
-    --line:       rgba(27,35,46,0.10);
-    --line-soft:  rgba(27,35,46,0.06);
-    --serif: 'General Sans', 'Inter', system-ui, sans-serif;
-    --sans:  'Satoshi', 'Inter', system-ui, sans-serif;
-    --shadow-sm: 0 2px 14px rgba(27,35,46,0.06);
-    --shadow-md: var(--glass-shadow);
-    --shadow-lg: 0 22px 60px rgba(27,35,46,0.13);
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-weight: 400;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-    line-height: 1.6;
-  }
-  a { text-decoration: none; color: inherit; }
-  button { font-family: inherit; cursor: pointer; }
-  img { max-width: 100%; display: block; }
-  ::selection { background: rgba(44,110,114,0.18); }
-  :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 3px; }
-
-  /* ───────── Reveal ───────── */
-  .reveal {
-    opacity: 0; transform: translateY(22px);
-    transition: opacity 0.7s cubic-bezier(0.22,0.61,0.36,1),
-                transform 0.7s cubic-bezier(0.22,0.61,0.36,1);
-    will-change: opacity, transform;
-  }
-  .reveal.in { opacity: 1; transform: none; }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1; transform: none; transition: none; }
-    html { scroll-behavior: auto; }
-    .scroll-dot { animation: none !important; }
-  }
-
-  /* ───────── Layout shells ───────── */
-  main { position: relative; z-index: 1; }
-  .wrap { max-width: 1140px; margin: 0 auto; padding: 0 2.4rem; }
-  .wrap-narrow { max-width: 760px; margin: 0 auto; padding: 0 2.4rem; }
-  .band { padding: 6.5rem 0; position: relative; }
-  .band--mist { background: var(--mist); }
-  .band--paper2 { background: var(--paper-2); }
-  .band--deep {
-    background: var(--teal-deep);
-    color: #EAF2F0;
-  }
-  @media (max-width: 760px) { .band { padding: 4.5rem 0; } }
-
-  /* ───────── Section intro ───────── */
-  .eyebrow {
-    display: inline-flex; align-items: center; gap: 0.7rem;
-    font-family: var(--sans); font-size: 0.72rem; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase;
-    color: var(--teal);
-    margin: 0 0 1.2rem 0;
-  }
-  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); }
-  .band--deep .eyebrow { color: var(--teal-soft); }
-
-  .sec-title {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(2rem, 3.8vw, 3rem);
-    line-height: 1.08; letter-spacing: -0.01em;
-    color: var(--ink); margin: 0 0 1rem 0;
-  }
-  .sec-title em { font-style: italic; color: var(--teal); }
-  .band--deep .sec-title { color: #FCFBF8; }
-  .sec-lede {
-    font-family: var(--serif); font-style: italic; font-weight: 300;
-    font-size: clamp(1.15rem, 1.9vw, 1.5rem);
-    line-height: 1.45; color: var(--ink-soft);
-    margin: 0 0 2.8rem 0; max-width: 640px;
-  }
-  .band--deep .sec-lede { color: #BFD6D2; }
-
-  .sub-head {
-    font-family: var(--sans); font-size: 0.74rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase;
-    color: var(--teal-deep);
-    margin: 3rem 0 1rem 0;
-    display: flex; align-items: center; gap: 0.8rem;
-  }
-  .sub-head::before {
-    content: ""; width: 22px; height: 2px; background: var(--coral); border-radius: 2px;
-  }
-
-  /* ───────── Prose ───────── */
-  .prose p {
-    font-family: var(--sans); font-size: 1.04rem; font-weight: 400;
-    line-height: 1.82; color: var(--ink-soft);
-    max-width: 660px; margin: 0 0 1.2rem 0;
-  }
-  .prose ul, .prose ol {
-    font-size: 1.0rem; color: var(--ink-soft);
-    line-height: 1.8; max-width: 660px;
-    padding-left: 1.3rem; margin: 0 0 1.5rem 0;
-  }
-  .prose li { margin-bottom: 0.4rem; }
-  .prose li::marker { color: var(--teal); }
-  .hl {
-    background: linear-gradient(180deg, transparent 58%, rgba(221,115,85,0.24) 58%);
-    padding: 0 0.1em; color: var(--ink);
-  }
-  .lead-em {
-    font-family: var(--serif); font-style: italic; font-weight: 500;
-    color: var(--teal-deep); font-size: 1.06em;
-  }
-  .term { color: var(--teal-deep); font-weight: 700; }
-
-  /* ── Nav ── */
-  .nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
-  }
-  .nav.scrolled {
-    background: rgba(255,255,255,0.55);
-    backdrop-filter: blur(18px) saturate(160%);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    border-bottom: 1px solid var(--glass-edge);
-    box-shadow: 0 6px 30px rgba(27,35,46,0.06);
-  }
-  .nav-inner {
-    max-width: 1200px; margin: 0 auto; padding: 0 3rem;
-    display: flex; align-items: center; justify-content: space-between; height: 72px;
-  }
-  .nav-logo { font-family: var(--serif); font-size: 1.36rem; font-weight: 500; letter-spacing: -0.01em; color: var(--ink); }
-  .nav-links { display: flex; align-items: center; gap: 2rem; }
-  .nav-link {
-    font-family: var(--serif); font-size: 0.74rem; font-weight: 500;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--ink); background: none; border: none; padding: 0; transition: color 0.2s;
-    display: inline-flex; align-items: center; cursor: pointer;
-  }
-  .nav-link:hover { color: var(--shell-accent); }
-  .nav-cta {
-    color: #fff; background: var(--shell-accent); font-family: var(--serif);
-    padding: 8px 24px; border-radius: 40px;
-    font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase;
-    font-weight: 600; transition: background 0.2s, transform 0.2s; border: none;
-  }
-  .nav-cta:hover { background: var(--shell-accent-deep); transform: translateY(-1px); }
-
-  /* hamburger (mobile) */
-  .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; padding: 8px; background: none; border: none; cursor: pointer; }
-  .nav-burger span { display: block; height: 2px; width: 100%; background: var(--ink); border-radius: 2px; transition: transform 0.25s ease, opacity 0.2s ease; }
-  .nav-burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .nav-burger[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-  .nav-burger[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-  @media (max-width: 720px) {
-    .nav-inner { padding: 0 1.5rem; }
-    .nav-burger { display: flex; }
-    .nav-links {
-      position: absolute; top: 100%; left: 0; right: 0;
-      flex-direction: column; align-items: stretch; gap: 0;
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
-      border-bottom: 1px solid var(--glass-edge); box-shadow: 0 16px 40px rgba(27,35,46,0.12);
-      padding: 0 1.5rem; max-height: 0; overflow: hidden; opacity: 0; pointer-events: none;
-      transition: max-height 0.32s ease, opacity 0.25s ease, padding 0.32s ease;
-    }
-    .nav-links.open { max-height: 80vh; opacity: 1; pointer-events: auto; padding: 0.5rem 1.5rem 1rem; }
-    .nav-links > .nav-link, .nav-links > .nav-cta { width: 100%; text-align: left; justify-content: flex-start; padding: 14px 0; }
-    .nav-cta { background: none; color: var(--shell-accent); border-radius: 0; }
-    .work-dropdown { width: 100%; }
-    .work-menu { position: static; opacity: 1; transform: none; pointer-events: auto; min-width: 0; background: transparent; border: none; box-shadow: none; padding: 0 0 8px; }
-    #workToggle { width: 100%; justify-content: space-between; padding: 14px 0; }
-  }
-
-  .work-dropdown { position: relative; }
-  .work-menu {
-    position: absolute; top: calc(100% + 16px); right: 0; min-width: 246px;
-    z-index: 101;
-    background: rgba(255,255,255,0.6);
-    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid var(--glass-edge); border-radius: 16px;
-    box-shadow: var(--glass-shadow), var(--glass-inset); padding: 8px; overflow: hidden;
-    opacity: 0; transform: translateY(-8px) scale(0.97); pointer-events: none;
-    transition: opacity 0.18s, transform 0.18s;
-  }
-  .work-menu.open { opacity: 1; transform: none; pointer-events: auto; }
-  .work-item {
-    display: block; padding: 11px 16px; border-radius: 10px;
-    font-family: var(--sans); font-size: 0.86rem; color: var(--ink);
-    transition: background 0.16s, padding-left 0.2s;
-  }
-  .work-item:hover { background: var(--shell-accent-soft); padding-left: 20px; }
-  .work-item.is-current { color: var(--shell-accent); background: var(--shell-accent-soft); }
-  .work-item .sub { display: block; font-size: 0.72rem; color: var(--muted-soft); margin-top: 2px; }
-
-  /* ───────── Reading progress ───────── */
-  .read-progress {
-    position: fixed; top: 0; left: 0; height: 3px; width: 0%;
-    background: linear-gradient(90deg, var(--teal), var(--coral));
-    z-index: 120; transition: width 0.1s linear;
-  }
-
-  /* ───────── Section TOC (sticky) ───────── */
-  html { scroll-behavior: smooth; scroll-padding-top: 124px; }
-  .toc {
-    position: sticky; top: 72px; z-index: 70;
-    background: rgba(250,247,241,0.82);
-    backdrop-filter: blur(14px) saturate(140%); -webkit-backdrop-filter: blur(14px) saturate(140%);
-    border-bottom: 1px solid var(--line);
-  }
-  .toc-inner {
-    max-width: 1180px; margin: 0 auto; padding: 0 2.4rem;
-    display: flex; gap: 0.4rem; overflow-x: auto; scrollbar-width: none;
-  }
-  .toc-inner::-webkit-scrollbar { display: none; }
-  .toc-link {
-    flex: 0 0 auto; position: relative;
-    font-family: var(--sans); font-size: 0.76rem; font-weight: 600;
-    letter-spacing: 0.04em; color: var(--ink-faint); text-decoration: none;
-    padding: 0.95rem 0.85rem; transition: color 0.2s; white-space: nowrap;
-  }
-  .toc-link::after {
-    content: ""; position: absolute; left: 0.85rem; right: 0.85rem; bottom: 0;
-    height: 2px; background: var(--teal); transform: scaleX(0); transform-origin: left;
-    transition: transform 0.28s ease;
-  }
-  .toc-link:hover { color: var(--ink); }
-  .toc-link.is-active { color: var(--teal-deep); }
-  .toc-link.is-active::after { transform: scaleX(1); }
-  @media (max-width: 720px) { .toc-inner { padding: 0 1.1rem; } .toc-link { padding: 0.8rem 0.65rem; font-size: 0.72rem; } }
-
-  /* ───────── HERO ───────── */
-  .hero { padding: 4rem 0 5.5rem 0; position: relative; }
-  .hero-grid {
-    display: grid; grid-template-columns: 1.15fr 0.85fr;
-    gap: 3.5rem; align-items: center;
-  }
-  @media (max-width: 880px) {
-    .hero { padding: 3rem 0 3.5rem 0; }
-    .hero-grid { grid-template-columns: 1fr; gap: 2.6rem; }
-  }
-  .hero-tag {
-    display: inline-flex; align-items: center; gap: 0.7rem;
-    font-family: var(--sans); font-size: 0.74rem; font-weight: 700;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal);
-    margin-bottom: 1.6rem;
-  }
-  .hero-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); }
-  .hero-title {
-    font-family: var(--serif); font-weight: 400;
-    font-size: clamp(3rem, 7.5vw, 6rem);
-    line-height: 1.0; letter-spacing: -0.02em;
-    color: var(--ink); margin: 0 0 1.5rem 0;
-  }
-  .hero-title em { font-style: italic; color: var(--teal); }
-  .hero-sub {
-    font-family: var(--sans); font-weight: 400;
-    font-size: 1.18rem; line-height: 1.6; color: var(--ink-soft);
-    max-width: 460px; margin: 0;
-  }
-
-  /* arched image frame — the signature motif */
-  .arch {
-    position: relative; width: 100%;
-    border-radius: 180px 180px 18px 18px;
-    overflow: hidden;
-    background:
-      radial-gradient(120% 90% at 50% 0%, rgba(127,176,174,0.35), transparent 60%),
-      linear-gradient(165deg, #DCEAE7 0%, #EEE7DC 100%);
-    border: 1px solid var(--line);
-    box-shadow: var(--shadow-md);
-    aspect-ratio: 3 / 4;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 1rem; padding: 2rem; text-align: center;
-  }
-  .arch--wide { aspect-ratio: 4 / 3; border-radius: 24px 24px 18px 18px; }
-  .arch__icon {
-    width: 64px; height: 64px; border-radius: 50%;
-    background: rgba(44,110,114,0.12); color: var(--teal-deep);
-    display: flex; align-items: center; justify-content: center;
-    border: 1px solid rgba(44,110,114,0.2);
-  }
-  .arch__cap {
-    font-family: var(--sans); font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal-deep);
-    background: rgba(255,255,255,0.7); padding: 6px 14px; border-radius: 24px;
-  }
-  .arch__note {
-    font-family: var(--serif); font-style: italic; font-weight: 300;
-    font-size: 0.95rem; color: var(--ink-faint); max-width: 240px; line-height: 1.45;
-  }
-
-  /* before → after thesis card */
-  .thesis {
-    margin-top: 3rem;
-    background: var(--paper-2);
-    border: 1px solid var(--line);
-    border-radius: 22px;
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-    max-width: 1140px;
-  }
-  .thesis__label {
-    font-family: var(--sans); font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-faint);
-    padding: 1.3rem 2rem 0;
-  }
-  .thesis__row {
-    display: grid; grid-template-columns: 1fr auto 1fr;
-    align-items: center; gap: 1.5rem;
-    padding: 0.8rem 2rem 1.6rem;
-  }
-  .thesis__cell .k {
-    font-family: var(--sans); font-size: 0.66rem; font-weight: 700;
-    letter-spacing: 0.2em; text-transform: uppercase; color: var(--coral);
-    margin-bottom: 0.4rem;
-  }
-  .thesis__cell.right { text-align: right; }
-  .thesis__v {
-    font-family: var(--serif); font-weight: 400; line-height: 1;
-    font-size: clamp(2rem, 4.5vw, 3.4rem);
-  }
-  .thesis__v.before {
-    color: var(--ink-faint); text-decoration: line-through;
-    text-decoration-color: rgba(110,128,126,0.5); text-decoration-thickness: 1px;
-  }
-  .thesis__v.after { color: var(--teal); font-style: italic; }
-  .thesis__arrow { font-family: var(--serif); font-style: italic; color: var(--coral); font-size: 2.2rem; line-height: 1; }
-  .thesis__foot {
-    border-top: 1px solid var(--line-soft);
-    background: var(--mist);
-    padding: 1.3rem 2rem;
-    font-family: var(--serif); font-style: italic; font-weight: 300;
-    font-size: 1.02rem; line-height: 1.5; color: var(--ink-soft);
-  }
-  @media (max-width: 600px) {
-    .thesis__row { grid-template-columns: 1fr; gap: 0.9rem; text-align: center; }
-    .thesis__cell.right { text-align: center; }
-    .thesis__arrow { transform: rotate(90deg); }
-  }
-
-  .scroll-cue {
-    display: flex; flex-direction: column; align-items: center; gap: 0.7rem;
-    margin-top: 4rem; color: var(--ink-faint);
-  }
-  .scroll-line {
-    width: 1px; height: 64px; position: relative;
-    background: linear-gradient(to bottom, transparent, var(--teal-soft), transparent);
-  }
-  .scroll-dot {
-    position: absolute; left: 50%; top: 0; width: 6px; height: 6px; border-radius: 50%;
-    background: var(--coral); transform: translateX(-50%);
-    animation: scrollDot 2.4s cubic-bezier(0.4,0,0.4,1) infinite;
-  }
-  @keyframes scrollDot { 0%{top:0;opacity:0} 20%{opacity:1} 80%{opacity:1} 100%{top:100%;opacity:0} }
-  .scroll-label {
-    font-family: var(--sans); font-size: 0.64rem; font-weight: 700;
-    letter-spacing: 0.3em; text-transform: uppercase; color: var(--ink-faint);
-  }
-
-  /* ───────── Project Snapshot ───────── */
-.overview-card{
-    display:grid;
-    grid-template-columns:repeat(3,1fr);
-    gap:40px;
-    padding:48px;
-    background:#fff;
-    border-radius:24px;
-}
-
-.overview-item{
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-}
-
-.overview-label{
-    font-size:.72rem;
-    text-transform:uppercase;
-    letter-spacing:.18em;
-    font-weight:700;
-    color:var(--teal);
-}
-
-.overview-item p{
-    margin:0;
-    font-size:1rem;
-    line-height:1.7;
-    color:var(--ink);
-}
-
-@media(max-width:900px){
-
-.overview-card{
-
-grid-template-columns:repeat(2,1fr);
-
-}
-
-}
-
-@media(max-width:650px){
-
-.overview-card{
-
-grid-template-columns:1fr;
-
-}
-
-}
-  .snapcard { background: var(--paper-2); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow-sm); overflow: hidden; margin: 1.6rem 0 2.8rem; }
-  .snapcard__head { display: flex; align-items: center; gap: 0.6rem; padding: 1rem 1.6rem; background: var(--mist); }
-  .snapcard__head .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--coral); }
-  .snapcard__head span { font-family: var(--sans); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-deep); }
-  .snapcell .k { font-family: var(--sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.4rem; }
-  .snapcell .v { font-family: var(--sans); font-size: 0.9rem; font-weight: 500; color: var(--ink); line-height: 1.5; }
-  .snapcell .v.serif { font-family: var(--serif); font-weight: 500; font-size: 1.08rem; }
-  .snapcell .v em { font-style: italic; color: var(--teal); }
-@media (max-width:480px){
-    .snapgrid{
-        grid-template-columns:1fr;
-    }
-}
-  /* ───────── Packet chips ───────── */
-  .packet {
-    list-style: none; padding: 0; margin: 1.6rem 0 1.8rem;
-    display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.7rem; max-width: 100%;
-  }
-  @media (max-width: 880px) { .packet { grid-template-columns: repeat(3, 1fr); } }
-  @media (max-width: 520px) { .packet { grid-template-columns: repeat(2, 1fr); } }
-  .packet-item {
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px;
-    padding: 1rem 0.6rem 0.85rem;
-    display: flex; flex-direction: column; align-items: center; gap: 0.6rem; text-align: center;
-    transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
-  }
-  .packet-item:hover {
-    transform: translateY(-3px); border-color: rgba(221,115,85,0.45);
-    box-shadow: var(--shadow-sm);
-  }
-  .packet-item .pi {
-    width: 38px; height: 38px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(44,110,114,0.1); color: var(--teal-deep);
-    transition: background 0.25s, color 0.25s;
-  }
-  .packet-item:hover .pi { background: rgba(221,115,85,0.16); color: var(--coral-deep); }
-  .packet-item .pl {
-    font-family: var(--sans); font-size: 0.72rem; font-weight: 600;
-    line-height: 1.3; color: var(--ink); text-wrap: balance;
-  }
-
-  /* ───────── Pull quote (scripture-style) ───────── */
-  .pullquote {
-    margin: 2.6rem 0; max-width: 720px;
-    padding: 2.2rem 2.4rem;
-    background: var(--paper-2); border: 1px solid var(--line);
-    border-left: 3px solid var(--coral); border-radius: 16px;
-    box-shadow: var(--shadow-sm);
-  }
-  .pullquote p {
-    font-family: var(--serif); font-style: italic; font-weight: 300;
-    font-size: clamp(1.2rem, 2vw, 1.5rem); line-height: 1.5; color: var(--ink); margin: 0;
-  }
-  .pullquote .attr {
-    display: block; margin-top: 1.3rem;
-    font-family: var(--sans); font-style: normal; font-size: 0.68rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal);
-  }
-  /* deep-band quote variant */
-  .quote-deep { text-align: center; max-width: 780px; margin: 0 auto; }
-  .quote-deep p {
-    font-family: var(--serif); font-style: italic; font-weight: 300;
-    font-size: clamp(1.4rem, 2.6vw, 2.1rem); line-height: 1.5; color: #F4F1E9; margin: 0;
-  }
-  .quote-deep .attr {
-    display: block; margin-top: 1.6rem;
-    font-family: var(--sans); font-size: 0.7rem; font-weight: 700;
-    letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-soft);
-  }
-
-  /* ───────── Discovery: person + question bubbles ───────── */
-  .think {
-    display: grid; grid-template-columns: 170px 1fr; gap: 2rem; align-items: center;
-    margin: 1.6rem 0 1.6rem; max-width: 720px;
-  }
-  @media (max-width: 700px) { .think { grid-template-columns: 1fr; justify-items: center; } }
-  .think-person { width: 170px; height: 210px; color: var(--teal-deep);
-    display: flex; align-items: center; justify-content: center; }
-  .think-person svg { width: 100%; height: 100%; filter: drop-shadow(0 4px 12px rgba(24,74,78,0.1)); }
-  .bubbles { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
-  @media (max-width: 520px) { .bubbles { grid-template-columns: 1fr; } }
-  .bubble {
-    position: relative; background: var(--paper-2); border: 1px solid var(--line);
-    border-radius: 16px 16px 16px 5px; padding: 0.9rem 1rem;
-    box-shadow: var(--shadow-sm);
-    font-family: var(--serif); font-style: italic; font-weight: 400;
-    font-size: 0.96rem; line-height: 1.4; color: var(--ink-soft);
-    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s, color 0.3s;
-  }
-  .bubble:hover, .bubble:focus-visible {
-    transform: translateY(-3px); color: var(--ink);
-    border-color: rgba(44,110,114,0.4); box-shadow: var(--shadow-md);
-  }
-  .bubble .qn {
-    font-family: var(--serif); font-style: italic; font-weight: 600;
-    color: var(--coral); margin-right: 0.4rem;
-  }
-
-  /* psychology concept cards */
-  .psych-pull {
-    display: flex; gap: 1rem; align-items: center;
-    margin: 0.5rem 0 1.6rem; padding: 1.3rem 1.5rem; max-width: 660px;
-    background: var(--mist); border: 1px solid var(--line); border-radius: 16px;
-  }
-  .psych-pull .pic {
-    flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px;
-    background: rgba(44,110,114,0.12); color: var(--teal-deep);
-    display: flex; align-items: center; justify-content: center;
-  }
-  .psych-pull p {
-    margin: 0; font-family: var(--serif); font-style: italic; font-weight: 500;
-    font-size: 1.08rem; line-height: 1.45; color: var(--ink);
-  }
-  .psych-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
-  @media (max-width: 700px) { .psych-row { grid-template-columns: 1fr; } }
-  .psych-card {
-    display: flex; gap: 1rem; align-items: flex-start;
-    padding: 1.4rem 1.4rem; background: var(--paper-2);
-    border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow-sm);
-    transition: transform 0.3s, box-shadow 0.3s; cursor: default;
-  }
-  .psych-card:hover, .psych-card:focus-visible {
-    transform: translateY(-4px); box-shadow: var(--shadow-md); outline: none;
-  }
-  .psych-card .pic {
-    flex-shrink: 0; width: 50px; height: 50px; border-radius: 14px;
-    background: linear-gradient(150deg, rgba(44,110,114,0.18), rgba(127,176,174,0.12));
-    border: 1px solid rgba(44,110,114,0.16); color: var(--teal-deep);
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.5s cubic-bezier(0.22,0.61,0.36,1);
-  }
-  .psych-card:hover .pic { transform: scale(1.05); }
-  .psych-label {
-    font-family: var(--sans); font-size: 0.62rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--coral);
-  }
-  .psych-term {
-    font-family: var(--serif); font-weight: 600; font-style: italic;
-    font-size: 1.12rem; color: var(--teal-deep); margin: 0.2rem 0;
-  }
-  .psych-def { font-family: var(--sans); font-weight: 400; font-size: 0.85rem; line-height: 1.55; color: var(--ink-soft); margin: 0; }
-
-  /* failure cards */
-  .failures { margin: 1.6rem 0 1.2rem; }
-  .failures .lede { font-family: var(--sans); font-weight: 400; font-size: 1.0rem; line-height: 1.8; color: var(--ink-soft); margin: 0 0 1.6rem; max-width: 920px; margin:0 auto 40px; }
-.failures .close{
-    max-width:1320px;
-    margin:36px auto 0;
-}
- .failure-row{
-    display:grid;
-    grid-template-columns:repeat(5,minmax(0,1fr));
-    gap:24px;
-    align-items:stretch;
-
-    max-width:1320px;
-    margin:40px auto;
- }
-  @media (max-width: 1040px) { .failure-row { grid-template-columns: repeat(3, 1fr); } }
-  .failure-card {
-    padding: 1.3rem 1.1rem; background: var(--paper-2); border: 1px solid var(--line);
-    border-radius: 16px; box-shadow: var(--shadow-sm);
-    display: flex; flex-direction: column; gap: 0.6rem;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  .failure-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-  .failure-icon {
-    width: 36px; height: 36px; border-radius: 11px;
-    background: rgba(44,110,114,0.1); color: var(--teal-deep);
-    display: flex; align-items: center; justify-content: center;
-    transition: transform 0.35s, background 0.3s;
-  }
-  .failure-card:hover .failure-icon { transform: scale(1.08) rotate(-4deg); background: rgba(221,115,85,0.14); color: var(--coral-deep); }
-  .failure-num { font-family: var(--serif); font-style: italic; font-size: 0.76rem; letter-spacing: 0.04em; text-transform: uppercase; color: var(--coral); }
-  .failure-title { font-family: var(--serif); font-weight: 600; font-size: 1.04rem; line-height: 1.25; color: var(--ink); margin: 0; }
-  .failure-body { font-family: var(--sans); font-weight: 400; font-size: 0.82rem; line-height: 1.6; color: var(--ink-soft); margin: 0; }
-
-  /* image / diagram placeholder */
-  .placeholder {
-    width: 100%; max-width: 680px; margin: 2.4rem 0;
-    min-height: 280px; background: var(--mist);
-    border: 1px dashed rgba(44,110,114,0.4); border-radius: 18px;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    gap: 0.9rem; padding: 2rem; text-align: center;
-  }
-  .placeholder .ph-ic {
-    width: 52px; height: 52px; border: 1px dashed rgba(44,110,114,0.45);
-    border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--teal);
-  }
-  .placeholder .ph-tag { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--coral); }
-
-  /* ───────── Solution steps ───────── */
-  .steps { margin-top: 2.5rem; position: relative; }
-  .step {
-    display: grid; grid-template-columns: 86px 1fr; gap: 2rem; align-items: start;
-    padding: 2.2rem 0; position: relative;
-    border-top: 1px solid var(--line);
-  }
-  @media (max-width: 720px) { .step { grid-template-columns: 1fr; gap: 0.8rem; } }
-  .step-num {
-    font-family: var(--serif); font-style: italic; font-weight: 400;
-    font-size: clamp(2.6rem, 4vw, 3.4rem); color: var(--teal-soft); line-height: 0.9;
-    position: relative;
-  }
-  .step-num::after {
-    content: ""; position: absolute; left: 50%; top: 3.4rem; bottom: -2.2rem;
-    width: 2px; background: linear-gradient(var(--teal-soft), transparent);
-    transform: translateX(-50%); opacity: 0.5;
-  }
-  @media (max-width: 720px) { .step-num::after { display: none; } }
-  .step:last-child .step-num::after { display: none; }
-  .step-title { font-family: var(--serif); font-weight: 600; font-size: clamp(1.4rem, 2.2vw, 1.8rem); color: var(--ink); line-height: 1.2; margin: 0 0 0.4rem; }
-  .step-solving { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 0.98rem; color: var(--coral-deep); margin: 0 0 1.2rem; }
-  .step-body p { font-family: var(--sans); font-weight: 400; font-size: 1.0rem; line-height: 1.78; color: var(--ink-soft); margin: 0 0 1rem; max-width: 640px; }
-
-  /* tracker mock */
-  .tracker {
-    margin-top: 1.8rem;
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px;
-    padding: 1.3rem 1.2rem 1.1rem; box-shadow: var(--shadow-sm); overflow: hidden;
-  }
-  .tracker__head {
-    display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap;
-    padding-bottom: 0.9rem; margin-bottom: 0.5rem;
-  }
-  .tracker__title { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.1rem; color: var(--teal-deep); }
-  .tracker__sub { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral); }
-  .tracker__scroll { overflow-x: auto; }
-  .tracker table { width: 100%; border-collapse: collapse; font-family: var(--sans); }
-  .tracker th {
-    text-align: left; font-size: 0.56rem; font-weight: 700; letter-spacing: 0.06em;
-    text-transform: uppercase; color: var(--teal); padding: 0.6rem 0.4rem;
-    border-bottom: 1px solid var(--line); white-space: normal;
-  }
-  .tracker td {
-    font-size: 0.72rem; font-weight: 400; color: var(--ink); padding: 0.55rem 0.4rem;
-    border-bottom: 1px solid var(--line-soft); line-height: 1.35; vertical-align: middle;
-    font-variant-numeric: tabular-nums;
-  }
-  .tracker tbody tr:last-child td { border-bottom: 0; }
-  .tracker tbody tr:hover { background: rgba(44,110,114,0.05); }
-  .pill {
-    display: inline-block; padding: 3px 9px; border-radius: 30px;
-    font-family: var(--sans); font-size: 0.55rem; font-weight: 700;
-    letter-spacing: 0.06em; text-transform: uppercase; white-space: nowrap;
-  }
-  .pill-open      { background: rgba(221,115,85,0.18); color: var(--coral-deep); }
-  .pill-awaiting  { background: rgba(226,163,60,0.2);  color: #9A6A12; }
-  .pill-sent      { background: rgba(110,128,126,0.18); color: var(--ink-faint); }
-  .pill-scheduled { background: rgba(44,110,114,0.16);  color: var(--teal-deep); }
-  .pill-closed    { background: rgba(24,74,78,0.16);    color: var(--teal-deep); }
-  .tracker__cap { font-family: var(--serif); font-style: italic; font-weight: 300; color: var(--ink-faint); font-size: 0.92rem; margin: 1.1rem 0 0; max-width: 620px; }
-
-  /* ───────── Outcomes ───────── */
-  .headline-stat { margin: 1.8rem 0 2.6rem; display: flex; flex-direction: column; gap: 0.5rem; }
-  .headline-stat .big { font-family: var(--serif); font-weight: 400; font-size: clamp(1.9rem, 4.4vw, 3rem); line-height: 1.05; color: var(--ink); margin: 0; }
-  .headline-stat .big em { font-style: italic; color: var(--teal); margin: 0 0.15em; }
-
-  .numbers { border-top: 1px solid var(--line); margin-top: 1rem; }
-  .num-row {
-    display: grid; grid-template-columns: 290px 1fr; gap: 1.6rem;
-    padding: 1.2rem 0; border-bottom: 1px solid var(--line-soft); align-items: baseline;
-  }
-  .num-row dt { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.05rem; color: var(--teal-deep); margin: 0; }
-  .num-row dd { margin: 0; font-family: var(--sans); font-weight: 400; font-size: 1.0rem; color: var(--ink-soft); line-height: 1.6; }
-  @media (max-width: 680px) { .num-row { grid-template-columns: 1fr; gap: 0.3rem; } }
-
-  .mic-drop { margin: 3.5rem 0 0; max-width: 760px; }
-  .mic-drop p { font-family: var(--serif); font-style: italic; font-weight: 300; font-size: clamp(1.5rem, 2.8vw, 2.15rem); line-height: 1.4; color: var(--ink); margin: 0; }
-  .mic-drop .accent { color: var(--teal); }
-
-  /* ───────── Reflection ───────── */
-  .refl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; margin-top: 2.4rem; }
-  @media (max-width: 940px) { .refl-grid { grid-template-columns: 1fr; } }
-  .refl-card {
-    padding: 2rem 1.8rem; background: var(--paper-2); border: 1px solid var(--line);
-    border-radius: 20px; box-shadow: var(--shadow-sm);
-    display: flex; flex-direction: column;
-    transition: transform 0.35s, box-shadow 0.35s;
-  }
-  .refl-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-  .refl-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; }
-  .refl-icon { width: 46px; height: 46px; border-radius: 13px; background: rgba(44,110,114,0.1); color: var(--teal-deep); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(44,110,114,0.14); }
-  .refl-n { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.5rem; color: var(--teal-soft); }
-  .refl-title { font-family: var(--serif); font-weight: 600; font-size: clamp(1.25rem, 1.8vw, 1.45rem); color: var(--ink); line-height: 1.25; margin: 0 0 0.8rem; }
-  .refl-body p { font-family: var(--sans); font-weight: 400; font-size: 0.92rem; line-height: 1.75; color: var(--ink-soft); margin: 0; }
-
-  /* ───────── Decision Log ───────── */
-  .declog { display: flex; flex-direction: column; gap: 1.3rem; margin-top: 2.4rem; }
-  .declog-row {
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 20px;
-    box-shadow: var(--shadow-sm); overflow: hidden;
-    transition: transform 0.35s, box-shadow 0.35s;
-  }
-  .declog-row:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-  .declog-q {
-    display: flex; align-items: baseline; gap: 0.8rem;
-    padding: 1.4rem 1.7rem 1.1rem; border-bottom: 1px solid var(--line-soft);
-  }
-  .declog-q .dq-n { font-family: var(--serif); font-style: italic; font-size: 1.3rem; color: var(--teal-soft); flex-shrink: 0; }
-  .declog-q .dq-t { font-family: var(--serif); font-weight: 600; font-size: clamp(1.15rem, 1.8vw, 1.4rem); line-height: 1.25; color: var(--ink); margin: 0; }
-  .declog-chain { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-soft); }
-  @media (max-width: 800px) { .declog-chain { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 480px) { .declog-chain { grid-template-columns: 1fr; } }
-  .declog-cell { background: var(--paper-2); padding: 1.1rem 1.4rem; }
-  .declog-cell .dc-k { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.4rem; }
-  .declog-cell .dc-k::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--teal-soft); flex-shrink: 0; }
-  .declog-cell.is-decision { background: rgba(44,110,114,0.05); }
-  .declog-cell.is-decision .dc-k { color: var(--teal-deep); }
-  .declog-cell .dc-v { font-family: var(--sans); font-size: 0.86rem; font-weight: 400; line-height: 1.6; color: var(--ink-soft); margin: 0; }
-  .declog-cell .dc-v b { color: var(--ink); font-weight: 600; }
-  .declog-trade { padding: 0.95rem 1.7rem; background: rgba(221,115,85,0.06); border-top: 1px solid var(--line-soft); }
-  .declog-trade .dt-k { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral-deep); }
-  .declog-trade .dt-v { font-family: var(--sans); font-size: 0.86rem; font-weight: 400; line-height: 1.6; color: var(--ink-soft); margin: 0.3rem 0 0; }
-
-  /* ───────── Next / footer ───────── */
-  .next { padding: 6.5rem 0 0; }
-  .next-eyebrow { font-family: var(--sans); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal-soft); margin-bottom: 1.2rem; }
-  .next-title { font-family: var(--serif); font-weight: 400; font-size: clamp(2.4rem, 5.5vw, 4.4rem); line-height: 1.05; color: #FCFBF8; margin: 0 0 0.5rem; }
-  .next-title em { font-style: italic; color: var(--teal-soft); }
-  .next-link {
-    display: inline-flex; align-items: baseline; gap: 0.9rem;
-    font-family: var(--serif); font-size: clamp(1.6rem, 3.5vw, 2.6rem); line-height: 1.1;
-    color: #EAF2F0; transition: gap 0.25s, color 0.25s;
-  }
-  .next-link:hover { color: var(--coral); gap: 1.4rem; }
-  .next-link .arrow { font-style: italic; color: var(--coral); }
-  .foot {
-    border-top: 1px solid rgba(234,242,240,0.16);
-    margin-top: 4rem; padding: 2.2rem 0 3rem;
-    display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem;
-    font-family: var(--sans); font-size: 0.78rem; color: #A9C4C0;
-  }
-  .foot a { transition: color 0.2s; letter-spacing: 0.04em; }
-  .foot a:hover { color: var(--coral); }
-
-  /* ───────── Prev / Next pager ───────── */
-  .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-top: 1rem; }
-  @media (max-width: 640px) { .pager { grid-template-columns: 1fr; } }
-  .pager-card {
-    display: block; padding: 1.6rem 1.8rem; border-radius: 18px;
-    border: 1px solid rgba(234,242,240,0.18); background: rgba(255,255,255,0.04);
-    transition: background 0.25s, border-color 0.25s, transform 0.25s;
-  }
-  .pager-card:hover { background: rgba(255,255,255,0.08); border-color: var(--coral); transform: translateY(-2px); }
-  .pager-card.is-next { text-align: right; }
-  .pager-dir { font-family: var(--sans); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-soft); margin: 0 0 0.5rem; }
-  .pager-name { font-family: var(--serif); font-style: italic; font-size: 1.5rem; color: #FCFBF8; margin: 0; }
-  .pager-card.is-disabled { opacity: 0.4; pointer-events: none; }
-
-  /* ───────── Related projects ───────── */
-  .related-head { font-family: var(--sans); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal-soft); margin: 0 0 1.4rem; }
-  .related-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-  @media (max-width: 640px) { .related-grid { grid-template-columns: 1fr; } }
-  .related-card {
-    display: flex; flex-direction: column; gap: 0.5rem; padding: 1.6rem 1.8rem; border-radius: 18px;
-    border: 1px solid rgba(234,242,240,0.18); background: rgba(255,255,255,0.04);
-    transition: background 0.25s, border-color 0.25s, transform 0.25s;
-  }
-  .related-card:hover { background: rgba(255,255,255,0.08); border-color: var(--coral); transform: translateY(-2px); }
-  .related-card .rc-tag { font-family: var(--sans); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal-soft); }
-  .related-card .rc-title { font-family: var(--serif); font-size: 1.35rem; color: #FCFBF8; margin: 0; }
-  .related-card .rc-desc { font-family: var(--sans); font-size: 0.86rem; line-height: 1.6; color: #A9C4C0; margin: 0; }
-
-  /* ───────── SHARED FOOTER COMPONENT (global site navigation) ─────────
-     Same component as the homepage & First Service — identical IA, layout
-     logic, nav structure, interaction & accessibility. Care Gap skin below
-     (deep teal, editorial). */
-  .site-footer__inner { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 2.4rem; margin-top: 4.5rem; padding-top: 3rem; border-top: 1px solid rgba(234,242,240,0.16); }
-  @media (max-width: 860px) { .site-footer__inner { grid-template-columns: 1fr 1fr; gap: 2.2rem 1.6rem; } }
-  @media (max-width: 480px) { .site-footer__inner { grid-template-columns: 1fr; } }
-  .sf-brand .sf-logo { font-family: var(--serif); font-size: 1.4rem; color: #FCFBF8; display: inline-block; margin-bottom: 0.6rem; }
-  .sf-brand .sf-logo em { font-style: italic; color: var(--teal-soft); }
-  .sf-brand p { font-family: var(--sans); font-size: 0.84rem; line-height: 1.6; color: #A9C4C0; max-width: 260px; margin: 0; }
-  .sf-col h4 { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-soft); margin: 0 0 1rem; }
-  .sf-col ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 0.65rem; }
-  .sf-col a { font-family: var(--sans); font-size: 0.86rem; color: #C8DBD8; transition: color 0.2s, padding-left 0.2s; }
-  .sf-col a:hover { color: var(--coral); padding-left: 3px; }
-  .site-footer__bottom { border-top: 1px solid rgba(234,242,240,0.16); margin-top: 4rem; padding: 2.2rem 0 3rem; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; font-family: var(--sans); font-size: 0.78rem; color: #A9C4C0; }
-  .site-footer__bottom .sf-sign { letter-spacing: 0.02em; }
-  .site-footer__bottom .sf-meta { color: var(--teal-soft); letter-spacing: 0.06em; }
-
-  /* ═══════════════════════════════════════════════
-     NEW VISUAL MODULES
-     ═══════════════════════════════════════════════ */
-
-  /* ───────── problem solved / Double Diamond ───────── */
-  .dd-wrap { margin-top: 2.4rem; }
-  .dd-svg { width: 100%; height: auto; display: block; overflow: visible; }
-  .dd-phases {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 2rem;
-  }
-  @media (max-width: 820px) { .dd-phases { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 480px) { .dd-phases { grid-template-columns: 1fr; } }
-  .dd-phase {
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 16px;
-    padding: 1.3rem 1.2rem; box-shadow: var(--shadow-sm);
-    border-top: 3px solid var(--teal);
-  }
-  .dd-phase:nth-child(2), .dd-phase:nth-child(4) { border-top-color: var(--coral); }
-  .dd-phase h4 {
-    font-family: var(--sans); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.16em;
-    text-transform: uppercase; color: var(--teal); margin: 0 0 0.2rem;
-  }
-  .dd-phase:nth-child(2) h4, .dd-phase:nth-child(4) h4 { color: var(--coral-deep); }
-  .dd-phase .dd-mode { font-family: var(--serif); font-style: italic; font-size: 0.86rem; color: var(--ink-faint); display: block; margin-bottom: 0.7rem; }
-  .dd-phase ul { list-style: none; padding: 0; margin: 0; }
-  .dd-phase li {
-    font-family: var(--sans); font-size: 0.85rem; font-weight: 400; color: var(--ink-soft);
-    line-height: 1.45; padding-left: 1.1rem; position: relative; margin-bottom: 0.45rem;
-  }
-  .dd-phase li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 5px; height: 5px; border-radius: 50%; background: var(--teal-soft); }
-
-  .method-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 2rem; }
-  .method-chip {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 30px;
-    padding: 0.5rem 0.95rem; font-family: var(--sans); font-size: 0.78rem; font-weight: 600; color: var(--ink-soft);
-  }
-  .method-chip svg { color: var(--teal); }
-
-  /* ───────── Research methods strip ───────── */
-  .rmethods { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.6rem 0 0.4rem; max-width: 720px; }
-  @media (max-width: 700px) { .rmethods { grid-template-columns: 1fr 1fr; } }
-  .rmethod {
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 14px;
-    padding: 1.1rem 1rem; text-align: center; box-shadow: var(--shadow-sm);
-  }
-  .rmethod .n { font-family: var(--serif); font-style: italic; font-weight: 500; font-size: 1.9rem; color: var(--teal); line-height: 1; }
-  .rmethod .l { font-family: var(--sans); font-size: 0.72rem; font-weight: 600; color: var(--ink-soft); line-height: 1.35; margin-top: 0.5rem; display: block; }
-
-  /* ───────── Service journey map (Before / After) ───────── */
-  .bp-tabs { display: inline-flex; background: var(--paper-2); border: 1px solid var(--line); border-radius: 40px; padding: 3px; margin-bottom: 1.8rem; box-shadow: var(--shadow-sm); }
-  .bp-tab {
-    border: none; background: none; cursor: pointer;
-    font-family: var(--sans); font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-soft); padding: 0.55rem 1rem; border-radius: 40px; transition: background 0.25s, color 0.25s;
-  }
-  .bp-tab.is-active { background: var(--teal); color: #fff; }
-  .bp-tab.is-active.is-before { background: var(--coral); }
-  .bp-panel { display: none; }
-  .bp-panel.is-active { display: block; }
-  .bp-legend { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-bottom: 1rem; }
-  .bp-leg { display: inline-flex; align-items: center; gap: 0.45rem; font-family: var(--sans); font-size: 0.72rem; font-weight: 600; color: var(--ink-soft); }
-  .bp-leg .sw { width: 14px; height: 14px; border-radius: 5px; }
-.bp-scroll {
-  padding-left: 0;
-}
-.bp-content {
-  max-width: 1360px;
-  margin: 0 auto;
-}
-.bp-track {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(0, 170px));
-  justify-content: center;
-  gap: 12px;
-}
-
-.bp-stage {
-  position: relative;
-  min-width: 0;
-}
-
-.bp-card {
-  min-width: 0;
-}
-.bp-stage:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: calc(100% - 4px);
-  width: 16px;
-  height: 2px;
-  transform: translateY(-50%);
-  background: var(--teal-soft);
-  z-index: 2;
-}
-.bp-panel.is-before .bp-stage:not(:last-child)::after {
-  background: repeating-linear-gradient(
-    90deg,
-    var(--coral) 0 4px,
-    transparent 4px 8px
-  );
-}
-  .bp-step {
-    font-family: var(--sans); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--ink-faint); height: auto;
-    margin-bottom: 8px; display: flex; justify-content: center;
-  }
-  .bp-card {
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 14px;
-    padding: 0.65rem 0.65rem; box-shadow: var(--shadow-sm); height: 100%; min-height: 140px;
-    display: flex; flex-direction: column; gap: 0.68rem;
-  }
-  .bp-card h5 { font-family: var(--serif); font-weight: 600; font-size: 0.85rem; line-height: 1.2; color: var(--ink); margin: 0; min-height: 2.6em;
-   display: flex;
-   align-items: flex-start;}
-  .bp-card p { font-family: var(--sans); font-size: 0.68rem; font-weight: 400; line-height: 1.45; color: var(--ink-soft); margin: 0; }
-  .bp-owner {
-    margin-top: auto; align-self: flex-start;
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-    padding: 3px 9px; border-radius: 20px;
-  }
-  .bp-owner.patient   { background: rgba(226,163,60,0.18); color: #946410; }
-  .bp-owner.mercy     { background: rgba(44,110,114,0.16); color: var(--teal-deep); }
-  .bp-owner.specialist{ background: rgba(127,176,174,0.22); color: var(--teal-deep); }
-  .bp-owner.system    { background: rgba(44,110,114,0.16); color: var(--teal-deep); }
-  .bp-owner.none      { background: rgba(221,115,85,0.18); color: var(--coral-deep); }
-  .bp-card.gap { border-style: dashed; border-color: rgba(221,115,85,0.5); background: rgba(221,115,85,0.04); }
-  .bp-flag {
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 700; color: var(--coral-deep);
-    display: inline-flex; align-items: center; gap: 0.3rem;
-  }
-  .bp-flag.good { color: var(--teal); }
-  .bp-sentiment { margin-top: 0.6rem; }
-  .bp-sentiment svg { display: block; width: 100%; height: 72px; overflow: visible; }
-  .bp-hint { font-family: var(--sans); font-size: 0.72rem; color: var(--ink-faint); margin-top: 0.6rem; display: none; }
-  @media (max-width: 760px) { .bp-hint { display: block; } }
-
-  /* ───────── System map ───────── */
-  .sysmap { margin-top: 1rem; }
-  .sysmap svg { width: 100%; height: auto; display: block; overflow: visible; }
-  .sysmap-node rect { transition: fill 0.25s; }
-
-  /* ───────── Lo-fi → refined ───────── */
-  .iter { display: grid; grid-template-columns: 0.85fr auto 1.15fr; gap: 1.4rem; align-items: center; margin: 1.8rem 0; }
-  @media (max-width: 820px) { .iter { grid-template-columns: 1fr; gap: 1rem; } }
-  .iter-arrow { font-family: var(--serif); font-style: italic; color: var(--coral); font-size: 1.6rem; text-align: center; }
-  @media (max-width: 820px) { .iter-arrow { transform: rotate(90deg); } }
-  .iter-tag { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; margin-bottom: 0.6rem; }
-  .iter-tag.lo { color: var(--ink-faint); }
-  .iter-tag.hi { color: var(--teal); }
-  .lofi {
-    background: #F3F0E8; border: 1.5px dashed rgba(24,74,78,0.35); border-radius: 14px;
-    padding: 1rem; box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
-  }
-  .lofi svg { width: 100%; height: auto; display: block; }
-
-  .annot { margin-top: 1.6rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-  @media (max-width: 760px) { .annot { grid-template-columns: 1fr; } }
-  .annot-card { background: var(--mist); border: 1px solid var(--line); border-radius: 14px; padding: 1.1rem 1.1rem; display: flex; gap: 0.8rem; }
-  .annot-n {
-    flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--teal); color: #fff;
-    font-family: var(--serif); font-style: italic; font-size: 0.9rem; display: flex; align-items: center; justify-content: center;
-  }
-  .annot-card p { margin: 0; font-family: var(--sans); font-size: 0.82rem; line-height: 1.5; color: var(--ink-soft); }
-  .annot-card strong { color: var(--ink); font-weight: 700; }
-
-  /* ───────── Component library ───────── */
-  .complib { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.2rem; margin-top: 1.8rem; }
-  @media (max-width: 760px) { .complib { grid-template-columns: 1fr; } }
-  .comp {
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 18px; overflow: hidden;
-    box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
-  }
-  .comp-head { padding: 1rem 1.2rem 0.8rem; border-bottom: 1px solid var(--line-soft); }
-  .comp-head .ct { font-family: var(--serif); font-weight: 600; font-size: 1.05rem; color: var(--ink); margin: 0; }
-  .comp-head .cs { font-family: var(--sans); font-size: 0.7rem; color: var(--ink-faint); margin: 0.15rem 0 0; }
-  .comp-body { padding: 1.1rem 1.2rem 1.2rem; flex: 1; }
-  /* status taxonomy */
-  .tax-row { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 0.65rem; }
-  .tax-row:last-child { margin-bottom: 0; }
-  .tax-row .pill { flex-shrink: 0; min-width: 92px; text-align: center; }
-  .tax-row span.d { font-family: var(--sans); font-size: 0.78rem; color: var(--ink-soft); line-height: 1.4; }
-  /* contact card mock */
-  .mockcard { font-family: var(--sans); }
-  .mockcard .mc-name { font-family: var(--serif); font-weight: 600; font-size: 1rem; color: var(--teal-deep); }
-  .mockcard .mc-line { display: flex; justify-content: space-between; gap: 1rem; padding: 0.45rem 0; border-bottom: 1px dashed var(--line); font-size: 0.8rem; }
-  .mockcard .mc-line:last-child { border-bottom: 0; }
-  .mockcard .mc-k { color: var(--ink-faint); font-weight: 600; }
-  .mockcard .mc-v { color: var(--ink); text-align: right; }
-  /* checklist */
-  .checklist { list-style: none; padding: 0; margin: 0; }
-  .checklist li { display: flex; align-items: flex-start; gap: 0.6rem; font-family: var(--sans); font-size: 0.82rem; color: var(--ink-soft); margin-bottom: 0.5rem; line-height: 1.4; }
-  .checklist li:last-child { margin-bottom: 0; }
-  .checklist .box { flex-shrink: 0; width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--teal); display: flex; align-items: center; justify-content: center; margin-top: 1px; }
-  .checklist .box.on { background: var(--teal); }
-  .checklist .box svg { color: #fff; }
-  /* prep guide steps */
-  .prepsteps { counter-reset: ps; list-style: none; padding: 0; margin: 0; }
-  .prepsteps li { position: relative; padding-left: 2rem; margin-bottom: 0.7rem; font-family: var(--sans); font-size: 0.82rem; color: var(--ink-soft); line-height: 1.45; }
-  .prepsteps li:last-child { margin-bottom: 0; }
-  .prepsteps li::before {
-    counter-increment: ps; content: counter(ps); position: absolute; left: 0; top: -1px;
-    width: 22px; height: 22px; border-radius: 50%; background: rgba(44,110,114,0.12); color: var(--teal-deep);
-    font-family: var(--serif); font-style: italic; font-size: 0.8rem; display: flex; align-items: center; justify-content: center;
-  }
-
-  /* ───────── Outcomes charts ───────── */
-  .viz { display: grid; grid-template-columns: 1.2fr 1fr 1fr; gap: 1.2rem; margin: 1.8rem 0 1rem; }
-  @media (max-width: 860px) { .viz { grid-template-columns: 1fr; } }
-  .viz-card { background: var(--paper-2); border: 1px solid var(--line); border-radius: 18px; padding: 1.3rem 1.3rem 1.2rem; box-shadow: var(--shadow-sm); }
-  .viz-card h4 { font-family: var(--sans); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral); margin: 0 0 0.9rem; }
-  .viz-card svg { width: 100%; height: auto; display: block; overflow: visible; }
-  .viz-note { font-family: var(--sans); font-size: 0.72rem; color: var(--ink-faint); margin-top: 1rem; font-style: italic; }
-  .viz-big { font-family: var(--serif); font-weight: 400; font-size: 1.9rem; color: var(--teal); line-height: 1; }
-  .viz-big.coral { color: var(--coral); }
-  .viz-sub { font-family: var(--sans); font-size: 0.72rem; color: var(--ink-faint); margin-top: 0.3rem; }
-
-  /* ═══════════ FIGMA-STYLE CANVAS · STORYBOARD · JOURNEY MAP ═══════════ */
-  .band--canvas {
-    background-color: #EBEFEE;
-    background-image: radial-gradient(circle, rgba(24,74,78,0.12) 1.1px, transparent 1.1px);
-    background-size: 24px 24px;
-  }
-  .canvas-inner { position: relative; }
-  .canvas-chrome {
-    display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
-    background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px;
-    padding: 0.55rem 0.95rem; box-shadow: var(--shadow-sm); margin-bottom: 1.8rem;
-  }
-  .canvas-chrome .file { font-family: 'IBM Plex Mono', monospace; font-size: 0.74rem; font-weight: 500; color: var(--ink); }
-  .canvas-chrome .file b { color: var(--teal); font-weight: 600; }
-  .canvas-chrome .sep { width: 1px; height: 18px; background: var(--line); }
-  .canvas-chrome .tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--ink-faint); letter-spacing: 0.03em; }
-  .canvas-chrome .avatars { margin-left: auto; display: flex; }
-  .canvas-chrome .av { width: 23px; height: 23px; border-radius: 50%; border: 2px solid var(--paper-2); margin-left: -7px; font-family: var(--sans); font-size: 0.58rem; font-weight: 800; color: #fff; display: flex; align-items: center; justify-content: center; }
-
-  .frame-label {
-    font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; font-weight: 500;
-    color: #889B99; letter-spacing: 0.02em; margin-bottom: 7px;
-    display: flex; align-items: center; gap: 5px;
-  }
-  .frame-label::before { content: "#"; color: var(--teal-soft); font-weight: 600; }
-
-  /* Storyboard */
-  .storyboard { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.1rem; margin: 1.3rem 0 0.4rem; }
-  @media (max-width: 860px) { .storyboard { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 460px) { .storyboard { grid-template-columns: 1fr; } }
-  .sb-frame { display: flex; flex-direction: column; }
-  .sb-illo {
-    background: linear-gradient(160deg, #EFF3F1, #FBF6EF); border: 1px solid var(--line);
-    border-radius: 10px; aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center;
-    box-shadow: var(--shadow-sm); overflow: hidden; transition: transform .3s, box-shadow .3s; color: var(--teal-deep);
-  }
-  .sb-frame:hover .sb-illo { transform: translateY(-4px); box-shadow: var(--shadow-md); }
-  .sb-illo svg { width: 80%; height: 80%; }
-  .sb-frame.solved .sb-illo { background: linear-gradient(160deg, #D7ECE6, #E8F3EF); border-color: rgba(44,110,114,0.4); }
-
-  /* Journey map (FigJam matrix) */
-  .jmap-frame { background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-md); padding: 1.1rem 1.1rem 1.3rem; }
-  .jmap-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
-  .jmap { display: grid; grid-template-columns: 118px repeat(4, minmax(152px, 1fr)); gap: 9px; min-width: 730px; }
-  .jmap-rl { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-faint); display: flex; align-items: center; }
-  .jmap-stage { background: var(--teal-deep); color: #EAF2F0; border-radius: 8px; padding: 0.55rem 0.7rem; font-family: var(--serif); font-weight: 600; font-size: 0.98rem; line-height: 1.1; }
-  .jmap-stage span { display: block; font-family: 'IBM Plex Mono', monospace; font-size: 0.54rem; font-weight: 500; letter-spacing: 0.1em; color: var(--teal-soft); margin-bottom: 3px; }
-  .sticky { border-radius: 2px 2px 13px 2px; padding: 0.65rem 0.7rem; font-family: var(--sans); font-size: 0.77rem; line-height: 1.34; color: #283937; box-shadow: 2px 3px 0 rgba(24,48,46,0.07); min-height: 76px; display: flex; flex-direction: column; gap: 0.4rem; transition: transform .25s, box-shadow .25s; }
-  .sticky:nth-child(odd) { transform: rotate(-0.5deg); }
-  .sticky:hover { transform: rotate(0deg) translateY(-2px); box-shadow: 4px 6px 0 rgba(24,48,46,0.1); z-index: 2; }
-  .sticky--cream { background: #FBF0D0; }
-  .sticky--coral { background: #F6D1C4; }
-  .sticky--teal  { background: #CCE5DF; }
-  .jmap-flag { align-self: flex-start; margin-top: auto; font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; font-weight: 600; letter-spacing: 0.02em; padding: 2px 7px; border-radius: 20px; display: inline-flex; gap: 4px; align-items: center; }
-  .sticky--coral .jmap-flag { background: rgba(194,92,63,0.18); color: var(--coral-deep); }
-  .sticky--teal .jmap-flag  { background: rgba(44,110,114,0.18); color: var(--teal-deep); }
-  .jmap-feeling { grid-column: 2 / span 4; padding-top: 0.2rem; }
-  .jmap-feeling svg { display: block; width: 100%; height: 78px; overflow: visible; }
-  .jmap-legend { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: 1.1rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--ink-faint); }
-  .jmap-legend span { display: inline-flex; align-items: center; gap: 6px; }
-  .jmap-legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
-
-  /* Multiplayer cursor + comment pin */
-  .cursor-tag { position: absolute; pointer-events: none; z-index: 6; }
-  .cursor-tag svg { filter: drop-shadow(0 1px 2px rgba(0,0,0,0.22)); display: block; }
-  .cursor-tag .nm { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; font-weight: 600; color: #fff; background: var(--teal); padding: 2px 7px; border-radius: 0 9px 9px 9px; white-space: nowrap; position: absolute; left: 12px; top: 13px; }
-  .cursor-tag.coral .nm { background: var(--coral); }
-  .comment-pin { position: absolute; width: 27px; height: 27px; z-index: 6; }
-  .comment-pin span { position: absolute; inset: 0; background: var(--coral); border-radius: 50% 50% 50% 3px; box-shadow: var(--shadow-sm); display: flex; align-items: center; justify-content: center; color: #fff; font-family: 'IBM Plex Mono', monospace; font-size: 0.64rem; font-weight: 600; }
-  @media (max-width: 760px) { .cursor-tag, .comment-pin { display: none; } }
-  .foot-links { display: flex; gap: 1.8rem; }
-
-  /* ───────── Behavior + Systems + Outcomes framework ───────── */
-  .bso { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 2.4rem 0 0; }
-  @media (max-width: 600px) { .bso { grid-template-columns: 1fr; } }
-  .bso-cell {
-    padding: 1.2rem 1.3rem; border-radius: 16px;
-    border: 1px solid var(--line); background: var(--paper-2);
-    box-shadow: var(--shadow-sm);
-  }
-  .bso-cell:nth-child(1) { border-top: 3px solid var(--teal); }
-  .bso-cell:nth-child(2) { border-top: 3px solid var(--coral); }
-  .bso-cell:nth-child(3) { border-top: 3px solid var(--teal-deep); }
-  .bso-cell .bso-k {
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 700;
-    letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); margin: 0 0 0.45rem;
-  }
-  .bso-cell:nth-child(2) .bso-k { color: var(--coral-deep); }
-  .bso-cell:nth-child(3) .bso-k { color: var(--teal-deep); }
-  .bso-cell .bso-v { font-family: var(--sans); font-size: 0.86rem; line-height: 1.55; color: var(--ink-soft); margin: 0; }
-
-  /* ───────── Psychology lens inline annotation ───────── */
-  .psych-lens {
-    display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 0.8rem;
-  }
-  .psych-lens span {
-    font-family: var(--sans); font-size: 0.58rem; font-weight: 700;
-    letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--teal-deep); background: rgba(44,110,114,0.1);
-    border: 1px solid rgba(44,110,114,0.18); padding: 3px 10px; border-radius: 20px;
-  }
-  .psych-lens.coral span {
-    color: var(--coral-deep); background: rgba(221,115,85,0.1);
-    border-color: rgba(221,115,85,0.2);
-  }
-
-  /* ───────── Step behavioral tag ───────── */
-  .step-psych {
-    display: inline-flex; align-items: center; gap: 0.4rem;
-    font-family: var(--sans); font-size: 0.6rem; font-weight: 700;
-    letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--teal-deep); background: rgba(44,110,114,0.08);
-    border: 1px solid rgba(44,110,114,0.16); padding: 4px 11px; border-radius: 20px;
-    margin-bottom: 0.6rem;
-  }
-
-  /* ═══════════════════════════════════════════════
-     GLASS / SLATE SKIN — adopted from index.html
-     Shell layers, atmosphere, and component overrides that turn the
-     editorial paper system into index's glass/slate vocabulary.
-     ═══════════════════════════════════════════════ */
-
-  body { background: var(--bg); position: relative; }
-
-  /* ── Accessibility: skip link (matches index) ── */
-  .skip-link {
-    position: fixed; top: 10px; left: 50%;
-    transform: translateX(-50%) translateY(-160%);
-    z-index: 9999; background: var(--accent); color: #fff;
-    padding: 10px 20px; border-radius: 30px; font-family: var(--sans);
-    font-size: 0.8rem; font-weight: 600; letter-spacing: 0.04em;
-    transition: transform 0.2s ease;
-  }
-  .skip-link:focus { transform: translateX(-50%) translateY(0); }
-
-  /* ── Ambient backdrop (index's atmosphere) ── */
-  .atmos { position: fixed; inset: 0; z-index: -2; overflow: hidden; pointer-events: none; }
-  .atmos::before {
-    content: ""; position: absolute; inset: 0;
-    background: linear-gradient(165deg, #EEF1F6 0%, #E5E9F0 48%, #E9E8EE 100%);
-  }
-  .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.55; }
-  .orb-1 { width: 46vw; height: 46vw; background: var(--orb-cool); top: -10vw; left: -8vw; }
-  .orb-2 { width: 38vw; height: 38vw; background: var(--orb-warm); top: 38%; right: -10vw; opacity: 0.45; }
-  .orb-3 { width: 40vw; height: 40vw; background: var(--orb-aqua); bottom: -12vw; left: 22vw; opacity: 0.42; }
-  .grain {
-    position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0.035;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  }
-
-
-
-  /* ── Shared glass surface helper ── */
-  .glass {
-    background: var(--glass);
-    backdrop-filter: blur(20px) saturate(160%); -webkit-backdrop-filter: blur(20px) saturate(160%);
-    border: 1px solid var(--glass-edge);
-    box-shadow: var(--glass-shadow), var(--glass-inset);
-  }
-
-  /* ── Bands become translucent so the atmosphere refracts through ── */
-  .band--paper2 { background: rgba(255,255,255,0.16); }
-  .band--mist   { background: rgba(255,255,255,0.30); }
-  .band--deep   { background: var(--accent-deep); }
-
-  /* ── Frost the editorial cards into glass surfaces ── */
-  .snapcard, .thesis, .overview .arch, .arch, .pullquote, .psych-pull, .psych-card,
-  .failure-card, .tracker, .dd-phase, .method-chip, .rmethod, .viz-card, .refl-card,
-  .declog-row, .comp, .jmap-frame, .canvas-chrome, .bso-cell, .bp-card, .bp-tabs,
-  .packet-item, .credentials-card, .annot-card, .sb-illo {
-    backdrop-filter: blur(16px) saturate(150%);
-    -webkit-backdrop-filter: blur(16px) saturate(150%);
-  }
-
-  /* ── Nav styles mapped to system block above ── */
-
-  /* ── Sticky section TOC → glass ── */
-  .toc {
-    background: rgba(255,255,255,0.45);
-    backdrop-filter: blur(14px) saturate(150%); -webkit-backdrop-filter: blur(14px) saturate(150%);
-    border-bottom: 1px solid var(--glass-edge);
-  }
-
-  /* ── Reading progress → solid accent (index system) ── */
-  .read-progress { background: var(--accent); }
-
-  /* ── Hero overview meta bar (glass .cs-overview, added up front) ── */
-  .cs-overview-bar {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; margin-top: 2.4rem;
-    border-radius: 18px; overflow: hidden;
-    background: var(--glass);
-    backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%);
-    border: 1px solid var(--glass-edge); box-shadow: var(--glass-shadow), var(--glass-inset);
-  }
-  .cs-overview-item { padding: 1.15rem 1.3rem; background: rgba(255,255,255,0.18); }
-  .cs-overview-item.is-outcome { background: var(--accent-soft); }
-  .cs-overview-label { font-family: var(--sans); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.4rem; }
-  .cs-overview-value { font-family: var(--serif); font-size: 1.02rem; color: var(--ink); line-height: 1.25; }
-  @media (max-width: 860px) { .cs-overview-bar { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 480px) { .cs-overview-bar { grid-template-columns: 1fr; } }
-
-  /* ── Keep Reading / Next project (index pattern) ── */
-  .cs-keep { max-width: 760px; margin: 0 auto; padding: 1rem 2.4rem 0; position: relative; z-index: 2; }
-  .cs-keep-title { font-family: var(--sans); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted-soft); margin-bottom: 1.2rem; }
-  .cs-keep-row { display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.4rem; }
-  .cs-keep-link { display: inline-flex; align-items: center; gap: 8px; font-family: var(--serif); font-size: 1.4rem; color: var(--ink); transition: color 0.2s, gap 0.2s; }
-  .cs-keep-link:hover { color: var(--accent); gap: 12px; }
-  .cs-back-link { font-family: var(--sans); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; color: var(--accent); }
-
-  /* ── Footer: index's light skin (shared bottom chrome) ── */
-  .band--deep.next { background: transparent; color: var(--ink); }
-  .site-footer__inner { border-top: 1px solid var(--line); }
-  .sf-brand .sf-logo { color: var(--ink); }
-  .sf-brand .sf-logo em { color: var(--shell-accent); }
-  .sf-brand p { color: var(--muted); }
-  .sf-col h4 { color: var(--shell-accent); }
-  .sf-col a { color: var(--muted); }
-  .sf-col a:hover { color: var(--shell-accent); }
-  .site-footer__bottom { border-top: 1px solid var(--line); color: var(--muted-soft); }
-  .site-footer__bottom .sf-sign { color: var(--ink); }
-  .site-footer__bottom .sf-meta { color: var(--muted-soft); }
-
-  /* ── Reduced motion: calm orbs ── */
-  @media (prefers-reduced-motion: reduce) {
-    .orb { animation: none; }
-  }
-</style>
+<link rel="stylesheet" href="css/global.css">
+<link rel="stylesheet" href="css/nav.css">
+<link rel="stylesheet" href="css/care-gap.css">
 </head>
 <body>
 
@@ -1328,11 +54,10 @@ grid-template-columns:1fr;
 <!-- ───────── SECTION TOC (sticky) ───────── -->
 <nav class="toc" id="toc" aria-label="Case study sections">
   <div class="toc-inner">
-    <a href="#Project Snapshot" class="toc-link">Project Snapshot</a>
-    <a href="#problem solved" class="toc-link">The Problem</a>
+    <a href="#snapshot" class="toc-link">Snapshot</a>
     <a href="#problem" class="toc-link">Problem</a>
     <a href="#discovery" class="toc-link">Research</a>
-    <a href="#journey" class="toc-link">Journey</a>
+    <a href="#findings" class="toc-link">Findings</a>
     <a href="#solution" class="toc-link">Solution</a>
     <a href="#decisions" class="toc-link">Decisions</a>
     <a href="#outcomes" class="toc-link">Outcomes</a>
@@ -1350,7 +75,7 @@ grid-template-columns:1fr;
           <div class="hero-tag reveal"><span class="dot"></span> Service Design · Health Equity</div>
           <h1 class="hero-title reveal">Closing the<br /><em>Care Gap</em></h1>
           <p class="hero-sub reveal">Redesigning the specialist referral workflow at a free community clinic so that underserved patients are actually seen.</p>
-          <div class="psych-lens reveal" style="margin-top:1.4rem">
+          <div class="psych-lens reveal">
             <span>Behavior + Systems + Outcomes</span>
           </div>
         </div>
@@ -1390,51 +115,51 @@ grid-template-columns:1fr;
   </section>
 
   <!-- ═════════ Project Snapshot ═════════ -->
-  <section class="band" id="Project Snapshot">
+<section class="band" id="snapshot">
+  <div class="wrap">
+    <div class="eyebrow reveal"><span class="dot"></span> Project Snapshot</div>
+    <h2 class="sec-title reveal">The context, <em>at a glance</em></h2>
 
-<div class="wrap">
+    <div class="overview-card reveal">
 
-<div class="overview-card">
-
-    <div class="overview-item">
-        <span class="Project Snapshot-label">Organization</span>
+      <div class="overview-item">
+        <span class="overview-label">Organization</span>
         <p>Mercy Health Center</p>
-    </div>
+      </div>
 
-    <div class="overview-item">
-        <span class="Project Snapshot-label">Role</span>
+      <div class="overview-item">
+        <span class="overview-label">Role</span>
         <p>UX Researcher + Product Designer</p>
-    </div>
+      </div>
 
-    <div class="overview-item">
-        <span class="Project Snapshot-label">Target Users</span>
-        <p>Care coordinators responsible for managing preventive care outreach across large patient populations.</p>
-    </div>
+      <div class="overview-item">
+        <span class="overview-label">Target Users</span>
+        <p>Care coordinators responsible for managing specialist referrals across a free community clinic.</p>
+      </div>
 
-    <div class="overview-item">
-        <span class="Project Snapshot-label">Duration</span>
+      <div class="overview-item">
+        <span class="overview-label">Duration</span>
         <p>3 months of iteration</p>
-    </div>
+      </div>
 
-    <div class="overview-item">
-        <span class="Project Snapshot-label">Team</span>
+      <div class="overview-item">
+        <span class="overview-label">Team</span>
         <p>Care coordinators and healthcare stakeholders</p>
+      </div>
+
+      <div class="overview-item">
+        <span class="overview-label">Tools</span>
+        <p>eClinicalWorks · Epic EHR · Microsoft Excel</p>
+      </div>
+
     </div>
-
-    <div class="overview-item">
-        <span class="Project Snapshot-label">Tools</span>
-        <p>eClinicalWorks • Epic EHR • Microsoft Excel</p>
-    </div>
-
-</div> 
-
-</div>
-  </section>
+  </div>
+</section>
 
   <!-- ═════════ The Problem ═════════ -->
 <section class="band band--mist" id="problem">
 
-<div class="wrap-narrow">
+<div class="wrap">
 
 <div class="eyebrow reveal">
 <span class="dot"></span>
@@ -1470,8 +195,8 @@ The problem wasn't simply delayed referrals. It was the absence of an operationa
 
 </section>
   <!-- ═════════ Discovery ═════════ -->
-  <section class="band band--paper2" id="problem">
-    <div class="wrap-narrow">
+  <section class="band band--paper2" id="discovery">
+    <div class="wrap">
       <div class="eyebrow reveal"><span class="dot"></span> Discovery</div>
       <h2 class="sec-title reveal">
 Understanding a system<br><em>that no one could explain.</em>
@@ -1510,32 +235,19 @@ There wasn't a documented workflow I could study. I reconstructed it by followin
           </div>
         </div>
 
-<div class="prose reveal">
-    <p>
-        I found that referral failures were driven by process inconsistency, not patient behavior. Each specialist office had different intake requirements, making it difficult for coordinators to submit referrals correctly the first time.
-    </p>
-</div>
 
 <div class="sub-head reveal">
 Understanding internal workflows
 </div>
 
 <div class="prose reveal">
-    <p>
-      <p>
-The investigation revealed that referral failures were driven less by patient behavior than by inconsistent processes. Every specialist office operated differently, ownership shifted between people, and no one had visibility once referrals left the clinic.
-</p>
-    </p>
+  <p>The investigation revealed that referral failures were driven less by patient behavior than by inconsistent processes. Every specialist office operated differently, ownership shifted between people, and no one had visibility once referrals left the clinic.</p>
 </div>
     </div>
   </section>
 
-
-    </div>
-  </section>
-
   <!-- ═════════ Research Findings═════════ -->
-  <section class="band band--paper2">
+ <section class="band band--paper2" id="findings">
     <div class="wrap">
       <div class="eyebrow reveal"><span class="dot"></span> Research Findings</div>
       <h2 class="sec-title reveal">The referral journey, <em>before and after</em></h2>
@@ -1555,7 +267,7 @@ The investigation revealed that referral failures were driven less by patient be
         </div>
 
         <!-- BEFORE -->
-        <div class="bp-panel is-active is-before" data-bp="before">
+        <div class="bp-panel is-active" data-bp="before" aria-label="Before: referral process without a system">
             <div class="bp-content">
               <div class="bp-track">
                 <div class="bp-stage"><div class="bp-step">Stage One</div>
@@ -1570,14 +282,12 @@ The investigation revealed that referral failures were driven less by patient be
                   <div class="bp-card gap"><h5>No follow-up</h5><p>No one chases status. The referral goes silent and falls off everyone's radar.</p><span class="bp-flag">⚠ No closure point</span><span class="bp-owner none">None</span></div></div>
                 <div class="bp-stage"><div class="bp-step">Stage Six</div>
                   <div class="bp-card"><h5>Patient waits</h5><p>12+ months pass. Symptoms worsen while the referral sits unclosed.</p><span class="bp-flag">⚠ Learned helplessness</span><span class="bp-owner patient">Patient</span></div></div>
-              </div>
-              </div>
+             </div>
             </div>
           </div>
-        </div>
 
         <!-- AFTER -->
-        <div class="bp-panel" data-bp="after">
+        <div class="bp-panel" data-bp="after" aria-label="After: referral process with coordinator ownership and tracking">
             <div class="bp-content">
               <div class="bp-track">
                 <div class="bp-stage"><div class="bp-step">Stage One</div>
@@ -1593,14 +303,15 @@ The investigation revealed that referral failures were driven less by patient be
                 <div class="bp-stage"><div class="bp-step">Stage Six</div>
                   <div class="bp-card"><h5>Seen &amp; closed</h5><p>The appointment is kept and the referral is formally closed.</p><span class="bp-flag good">✓ Trust rebuilt</span><span class="bp-owner patient">Patient</span></div></div>
               </div>
-              </div>
             </div>
           </div>
-        </div>
       </div>
-    </div> 
-    <section class="band">
-  <div class="wrap">
+    </div>
+  </section>
+
+  <!-- ═════════ What I Learned ═════════ -->
+  <section class="band">
+    <div class="wrap">
       <div class="sub-head reveal">
 What I learned
 </div>
@@ -1610,33 +321,33 @@ Across interviews, referral reviews, and conversations with providers, the same 
 </p>
         <div class="failure-row">
           <article class="failure-card">
-            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M6 8v2M18 8v2M8 7h8" stroke-dasharray="2 2"/><path d="M9 16l2-4M15 16l-2-4"/></svg></div>
+            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><path d="M6 8v2M18 8v2M8 7h8" stroke-dasharray="2 2"/><path d="M9 16l2-4M15 16l-2-4"/></svg></div>
             <span class="failure-num">Failure 01</span>
             <h4 class="failure-title">No shared mental model</h4>
             <p class="failure-body">Providers, the coordinator role, and specialist offices each assumed someone else was responsible for follow-up.</p>
           </article>
           <article class="failure-card">
-            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7" width="17" height="12" rx="1.5"/><path d="M3.5 10h17"/><path d="M8 7V5h8v2"/><path d="M10 14h4"/></svg></div>
+            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="7" width="17" height="12" rx="1.5"/><path d="M3.5 10h17"/><path d="M8 7V5h8v2"/><path d="M10 14h4"/></svg></div>
             <span class="failure-num">Failure 02</span>
             <h4 class="failure-title">One-size-fits-all packets</h4>
             <p class="failure-body">Mercy was sending the same materials to every specialist, regardless of what each office actually required.</p>
           </article>
           <article class="failure-card">
-            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/><path d="M8 11h6M11 8v6" stroke-dasharray="2 2"/></svg></div>
+            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6"/><path d="M15.5 15.5L20 20"/><path d="M8 11h6M11 8v6" stroke-dasharray="2 2"/></svg></div>
             <span class="failure-num">Failure 03</span>
             <h4 class="failure-title">No tracking layer</h4>
             <p class="failure-body">Once a referral left Mercy, no one could see where it was or whether it had stalled.</p>
             <div class="psych-lens"><span>◎ Invisible systems</span></div>
           </article>
           <article class="failure-card">
-            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v8"/><path d="M8 8l4-4 4 4"/><rect x="4" y="13" width="16" height="6" rx="1.5"/><path d="M8 16h8"/></svg></div>
+            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v8"/><path d="M8 8l4-4 4 4"/><rect x="4" y="13" width="16" height="6" rx="1.5"/><path d="M8 16h8"/></svg></div>
             <span class="failure-num">Failure 04</span>
             <h4 class="failure-title">Patient effort assumed, not supported</h4>
             <p class="failure-body">Applications expected a level of independent document-gathering most patients couldn't meet without help.</p>
             <div class="psych-lens"><span>◎ Cognitive load</span></div>
           </article>
           <article class="failure-card">
-            <div class="failures" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/><circle cx="5" cy="21" r="1.4" fill="currentColor"/></svg></div>
+            <div class="failure-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h11l-2 4 2 4H5"/><circle cx="5" cy="21" r="1.4" fill="currentColor"/></svg></div>
             <span class="failure-num">Failure 05</span>
             <h4 class="failure-title">No closure point</h4>
             <p class="failure-body">There was no defined moment when a referral counted as "done" — so referrals never reached one.</p>
@@ -1645,11 +356,10 @@ Across interviews, referral reviews, and conversations with providers, the same 
         </div>
         <p class="close">These five failures became the design brief for what came next.</p></div>
       </div>
-  </section>
-
+</section>
   <!-- ═════════ The Operating System ═════════ -->
-  <section class="band" id="The Operating System">
-    <div class="wrap-narrow">
+  <section class="band" id="solution">
+    <div class="wrap">
       <div class="eyebrow reveal"><span class="dot"></span> Operating System</div>
       <h2 class="sec-title reveal">Building the system <em>that was supposed to exist</em></h2>
       <p class="sec-lede reveal">Five interlocking pieces that turned referrals from an abandoned task into an actively managed process.</p>
@@ -1669,39 +379,39 @@ Across interviews, referral reviews, and conversations with providers, the same 
           <line x1="360" y1="318" x2="360" y2="230" stroke="#7FB0AE" stroke-width="2" marker-end="url(#ah)"/>
           <line x1="282" y1="195" x2="186" y2="195" stroke="#DD7355" stroke-width="2" marker-end="url(#ah)"/>
           <!-- edge labels -->
-          <text x="372" y="120" font-family="Newsreader, serif" font-style="italic" font-size="12" fill="#6E807E">defines roles</text>
-          <text x="455" y="186" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" font-size="12" fill="#6E807E">completeness</text>
-          <text x="372" y="278" font-family="Newsreader, serif" font-style="italic" font-size="12" fill="#6E807E">reduces load</text>
-          <text x="232" y="186" text-anchor="middle" font-family="Newsreader, serif" font-style="italic" font-size="12" fill="#C25C3F">drives</text>
+          <text x="372" y="120" font-family="General Sans, sans-serif"" font-style="italic" font-size="12" fill="#6E807E">defines roles</text>
+          <text x="455" y="186" text-anchor="middle" font-family="General Sans, sans-serif"" font-style="italic" font-size="12" fill="#6E807E">completeness</text>
+          <text x="372" y="278" font-family="General Sans, sans-serif"" font-style="italic" font-size="12" fill="#6E807E">reduces load</text>
+          <text x="232" y="186" text-anchor="middle" font-family="General Sans, sans-serif"" font-style="italic" font-size="12" fill="#C25C3F">drives</text>
           <!-- center hub: Tracker -->
           <g class="sysmap-node">
             <rect x="290" y="166" width="140" height="58" rx="12" fill="#fff" stroke="#DD7355" stroke-width="2"/>
-            <text x="360" y="190" text-anchor="middle" font-family="Newsreader, serif" font-weight="600" font-size="15" fill="#184A4E">Master Tracker</text>
-            <text x="360" y="208" text-anchor="middle" font-family="Mulish, sans-serif" font-size="10" font-weight="700" letter-spacing="0.1em" fill="#C25C3F">SINGLE SOURCE OF TRUTH</text>
+            <text x="360" y="190" text-anchor="middle" font-family="General Sans, sans-serif"" font-weight="600" font-size="15" fill="#184A4E">Master Tracker</text>
+            <text x="360" y="208" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="10" font-weight="700" letter-spacing="0.1em" fill="#C25C3F">SINGLE SOURCE OF TRUTH</text>
           </g>
           <!-- N: SOP -->
           <g class="sysmap-node">
             <rect x="284" y="22" width="152" height="48" rx="11" fill="rgba(44,110,114,0.07)" stroke="#2C6E72" stroke-width="1.5"/>
-            <text x="360" y="44" text-anchor="middle" font-family="Newsreader, serif" font-weight="600" font-size="14" fill="#18302E">SOP</text>
-            <text x="360" y="60" text-anchor="middle" font-family="Mulish, sans-serif" font-size="10" fill="#6E807E">who does what, when</text>
+            <text x="360" y="44" text-anchor="middle" font-family="General Sans, sans-serif"" font-weight="600" font-size="14" fill="#18302E">SOP</text>
+            <text x="360" y="60" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="10" fill="#6E807E">who does what, when</text>
           </g>
           <!-- E: Checklists -->
           <g class="sysmap-node">
             <rect x="540" y="171" width="168" height="48" rx="11" fill="rgba(44,110,114,0.07)" stroke="#2C6E72" stroke-width="1.5"/>
-            <text x="624" y="193" text-anchor="middle" font-family="Newsreader, serif" font-weight="600" font-size="14" fill="#18302E">Per-specialist checklists</text>
-            <text x="624" y="209" text-anchor="middle" font-family="Mulish, sans-serif" font-size="10" fill="#6E807E">+ contact directory</text>
+            <text x="624" y="193" text-anchor="middle" font-family="General Sans, sans-serif"" font-weight="600" font-size="14" fill="#18302E">Per-specialist checklists</text>
+            <text x="624" y="209" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="10" fill="#6E807E">+ contact directory</text>
           </g>
           <!-- S: Patient materials -->
           <g class="sysmap-node">
             <rect x="276" y="320" width="168" height="48" rx="11" fill="rgba(44,110,114,0.07)" stroke="#2C6E72" stroke-width="1.5"/>
-            <text x="360" y="342" text-anchor="middle" font-family="Newsreader, serif" font-weight="600" font-size="14" fill="#18302E">Patient materials</text>
-            <text x="360" y="358" text-anchor="middle" font-family="Mulish, sans-serif" font-size="10" fill="#6E807E">+ in-person assembly</text>
+            <text x="360" y="342" text-anchor="middle" font-family="General Sans, sans-serif"" font-weight="600" font-size="14" fill="#18302E">Patient materials</text>
+            <text x="360" y="358" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="10" fill="#6E807E">+ in-person assembly</text>
           </g>
           <!-- W: Daily follow-up -->
           <g class="sysmap-node">
             <rect x="22" y="171" width="160" height="48" rx="11" fill="rgba(221,115,85,0.07)" stroke="#DD7355" stroke-width="1.5"/>
-            <text x="102" y="193" text-anchor="middle" font-family="Newsreader, serif" font-weight="600" font-size="14" fill="#18302E">Daily follow-up</text>
-            <text x="102" y="209" text-anchor="middle" font-family="Mulish, sans-serif" font-size="10" fill="#6E807E">+ partner relationships</text>
+            <text x="102" y="193" text-anchor="middle" font-family="General Sans, sans-serif"" font-weight="600" font-size="14" fill="#18302E">Daily follow-up</text>
+            <text x="102" y="209" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="10" fill="#6E807E">+ partner relationships</text>
           </g>
         </svg>
       </div>
@@ -1725,10 +435,10 @@ Across interviews, referral reviews, and conversations with providers, the same 
             <div class="step-psych">◎ Counters learned helplessness — every case is visible, nothing stalls silently</div>
             <div class="step-body"><p>I built a centralized Excel tracker that gave every active referral a visible status. Columns included patient name and DOB, specialty needed (orthopedics, optometry, cardiology, imaging, labs), referral date, financial aid status, date referral was sent to the specialist, appointment scheduled (yes/no), next action, and an overall status (Open / Awaiting Documents / Sent / Scheduled / Closed). The tracker became the single source of truth and the engine that drove the daily workflow — no referral could stall silently because every row carried a date and a next action.</p></div>
 
-            <div class="iter-tag lo reveal" style="margin-bottom:0.55rem">Lo-fi · first paper sketch</div>
+            <div class="iter-tag lo reveal">Lo-fi · first paper sketch</div>
             <div class="lofi reveal" role="img" aria-label="Lo-fi sketch of the tracker columns drawn on paper">
               <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg">
-                <g font-family="Mulish, sans-serif" fill="#5a6b69">
+                <g font-family="Satoshi, sans-serif" fill="#5a6b69">
                   <text x="12" y="20" font-size="11" font-weight="700" letter-spacing="0.08em" fill="#3a4d4b">ONE ROW = ONE REFERRAL. NEVER LET A ROW GO QUIET.</text>
                   <!-- column headers as scribbled boxes -->
                   <g stroke="#7d8e8c" stroke-width="1.4" fill="none">
@@ -1881,7 +591,7 @@ Across interviews, referral reviews, and conversations with providers, the same 
 
   <!-- ═════════ Design Decisions ═════════ -->
   <section class="band" id="decisions">
-    <div class="wrap-narrow">
+    <div class="wrap">
       <div class="eyebrow reveal"><span class="dot"></span> Decision log</div>
       <h2 class="sec-title reveal">The reasoning, <em>not just the result</em></h2>
       <p class="sec-lede reveal">Three decisions carried this project. Each one traces the same loop — what the evidence showed, what it meant, the call I made, and the tradeoff I accepted.</p>
@@ -1925,7 +635,7 @@ Across interviews, referral reviews, and conversations with providers, the same 
 
   <!-- ═════════ OUTCOMES ═════════ -->
   <section class="band band--paper2" id="outcomes">
-    <div class="wrap-narrow">
+    <div class="wrap">
       <div class="eyebrow reveal"><span class="dot"></span> Outcomes</div>
       <h2 class="sec-title reveal">Three months of work, <em>measured</em></h2>
       <p class="sec-lede reveal">The change showed up in the only place that mattered: how quickly patients were seen.</p>
@@ -1953,8 +663,8 @@ Across interviews, referral reviews, and conversations with providers, the same 
             <polygon points="20,20 43,24 67,33 90,42 113,53 137,64 160,75 183,84 207,93 230,99 253,106 277,112 300,118 300,130 20,130" fill="rgba(44,110,114,0.1)"/>
             <polyline points="20,20 43,24 67,33 90,42 113,53 137,64 160,75 183,84 207,93 230,99 253,106 277,112 300,118" fill="none" stroke="#2C6E72" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             <circle cx="20" cy="20" r="3.5" fill="#2C6E72"/><circle cx="300" cy="118" r="4" fill="#2C6E72"/>
-            <text x="20" y="146" font-family="Mulish, sans-serif" font-size="10" font-weight="700" fill="#6E807E">Week 0</text>
-            <text x="300" y="146" text-anchor="end" font-family="Mulish, sans-serif" font-size="10" font-weight="700" fill="#6E807E">~Week 12</text>
+            <text x="20" y="146" font-family="Satoshi, sans-serif" font-size="10" font-weight="700" fill="#6E807E">Week 0</text>
+            <text x="300" y="146" text-anchor="end" font-family="Satoshi, sans-serif" font-size="10" font-weight="700" fill="#6E807E">~Week 12</text>
           </svg>
           <p class="viz-note">Open referrals fell week over week as the daily cadence cleared the year-plus backlog.</p>
         </div>
@@ -1965,10 +675,10 @@ Across interviews, referral reviews, and conversations with providers, the same 
             <line x1="20" y1="130" x2="200" y2="130" stroke="rgba(24,74,78,0.14)" stroke-width="1"/>
             <rect x="46" y="22" width="52" height="108" rx="6" fill="#DD7355"/>
             <rect x="124" y="116" width="52" height="14" rx="6" fill="#2C6E72"/>
-            <text x="72" y="16" text-anchor="middle" font-family="Newsreader, serif" font-size="13" font-weight="600" fill="#C25C3F">12+ mo</text>
-            <text x="150" y="108" text-anchor="middle" font-family="Newsreader, serif" font-size="13" font-weight="600" fill="#184A4E">2 wk</text>
-            <text x="72" y="146" text-anchor="middle" font-family="Mulish, sans-serif" font-size="10" font-weight="700" fill="#6E807E">Before</text>
-            <text x="150" y="146" text-anchor="middle" font-family="Mulish, sans-serif" font-size="10" font-weight="700" fill="#6E807E">After</text>
+            <text x="72" y="16" text-anchor="middle" font-family="General Sans, sans-serif"" font-size="13" font-weight="600" fill="#C25C3F">12+ mo</text>
+            <text x="150" y="108" text-anchor="middle" font-family="General Sans, sans-serif"" font-size="13" font-weight="600" fill="#184A4E">2 wk</text>
+            <text x="72" y="146" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="10" font-weight="700" fill="#6E807E">Before</text>
+            <text x="150" y="146" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="10" font-weight="700" fill="#6E807E">After</text>
           </svg>
           <p class="viz-note">Roughly a 26× reduction in average referral processing time.</p>
         </div>
@@ -1978,8 +688,8 @@ Across interviews, referral reviews, and conversations with providers, the same 
           <svg viewBox="0 0 150 150" role="img" aria-label="About ninety percent of managed referrals reached scheduled care">
             <circle cx="75" cy="75" r="58" fill="none" stroke="rgba(24,74,78,0.14)" stroke-width="13"/>
             <circle cx="75" cy="75" r="58" fill="none" stroke="#2C6E72" stroke-width="13" stroke-linecap="round" stroke-dasharray="328 364" transform="rotate(-90 75 75)"/>
-            <text x="75" y="72" text-anchor="middle" font-family="Newsreader, serif" font-size="30" fill="#2C6E72">~90%</text>
-            <text x="75" y="92" text-anchor="middle" font-family="Mulish, sans-serif" font-size="9" font-weight="700" letter-spacing="0.08em" fill="#6E807E">REACHED CARE</text>
+            <text x="75" y="72" text-anchor="middle" font-family="General Sans, sans-serif"" font-size="30" fill="#2C6E72">~90%</text>
+            <text x="75" y="92" text-anchor="middle" font-family="Satoshi, sans-serif" font-size="9" font-weight="700" letter-spacing="0.08em" fill="#6E807E">REACHED CARE</text>
           </svg>
           <p class="viz-note">Of the referrals I personally managed, about nine in ten reached scheduled specialist care.</p>
         </div>
@@ -2001,7 +711,8 @@ Across interviews, referral reviews, and conversations with providers, the same 
   <!-- ═════════ MERCY TESTIMONY (deep band) ═════════ -->
   <section class="band band--deep">
     <div class="wrap">
-      <div class="eyebrow reveal" style="justify-content:center; display:flex;"><span class="dot"></span> In Mercy's words</div>
+     <div class="eyebrow reveal eyebrow--center">
+        <span class="dot"></span> In Mercy's words</div>
       <div class="quote-deep reveal">
         <p>"Jenny Negrete came to Mercy in October of 2024 and serves as our Patient Representative and Referral Specialist. Since her arrival, she has tremendously improved our patients' access to specialty care around Athens and has given our partners, like St. Mary's, a point person for care coordination. Jenny has been a wonderful addition to Mercy and we love all that she does to advocate for them to get the care they need."</p>
         <span class="attr">Mercy Health Center · Public staff feature, 2025</span>
@@ -2011,7 +722,7 @@ Across interviews, referral reviews, and conversations with providers, the same 
 
   <!-- ═════════ WHAT IT MEANT (mic drop) ═════════ -->
   <section class="band">
-    <div class="wrap-narrow">
+    <div class="wrap">
       <div class="sub-head reveal">What it meant for patients</div>
       <div class="prose reveal">
         <p>The patients who had waited longest were the first to benefit — including the cirrhosis patient, scheduled and seen in the first cycle of the new process. Many told me they had stopped expecting the system to work at all. The redesign was, in part, built to earn that expectation back.</p>
@@ -2058,7 +769,7 @@ Across interviews, referral reviews, and conversations with providers, the same 
         </article>
       </div>
 
-      <div class="sub-head reveal" style="margin-top:3.4rem">What surprised me</div>
+      <div class="sub-head reveal sub-head--push">What surprised me</div>
       <div class="prose reveal">
         <p>I expected the fix to be about chasing specialist offices harder. It wasn't. The breakdown was structural — no one <em>owned</em> the handoff — so the highest-leverage move was making every open case <span class="hl">visible</span> in one place, not working faster. Visibility changed behavior more than effort did, and that reframing is the part I carry into every product problem since.</p>
       </div>
@@ -2087,8 +798,7 @@ Across interviews, referral reviews, and conversations with providers, the same 
 
   <!-- ═════════ NEXT / FOOTER ═════════ -->
   <section class="band band--deep next">
-    <div class="wrap">
-      <footer class="site-footer">
+    <footer class="site-footer">
         <div class="site-footer__inner">
           <div class="sf-brand">
             <a class="sf-logo" href="#top" data-scroll="#top">In This <em>Vessel</em></a>
@@ -2098,7 +808,7 @@ Across interviews, referral reviews, and conversations with providers, the same 
             <h4>Explore</h4>
             <ul>
               <li><a href="#top" data-scroll="#top">Home</a></li>
-              <li><a data-open-about href="#about-overlay">About</a></li>
+              <li><a href="about.html">About</a>
               <li><a href="#contact" data-scroll="#contact">Contact</a></li>
             </ul>
           </nav>
@@ -2122,7 +832,6 @@ Across interviews, referral reviews, and conversations with providers, the same 
           <div class="sf-meta">Understanding behavior. Designing better outcomes.</div>
         </div>
       </footer>
-    </div>
   </section>
 
 </main>
@@ -2182,114 +891,7 @@ Across interviews, referral reviews, and conversations with providers, the same 
   });
 </script>
 
-<!-- ───────── Standardized site navigation ───────── -->
-<script>
-  (function () {
-    const caseStudies = [
-      { title: 'Closing the Care Gap', sub: 'Health equity · service design', href: 'closing-the-care-gap.html' },
-      { title: 'First Service', sub: 'ProPresenter onboarding · Renewed Vision', href: 'first-service.html' }
-    ];
-    const here = location.pathname.split('/').pop() || 'index.html';
-    
-    // Render dropdown
-    const menu = document.getElementById('workMenu');
-    if (menu) {
-      menu.innerHTML = caseStudies.map(cs => {
-        const cur = cs.href === here ? ' is-current' : '';
-        const aria = cs.href === here ? ' aria-current="page"' : '';
-        return `<a class="work-item${cur}" role="menuitem"${aria} href="${cs.href}" data-hover>${cs.title}<span class="sub">${cs.sub}</span></a>`;
-      }).join('');
-    }
-
-    // Scroll listener for scrolled state
-    const nav = document.getElementById('nav');
-    const onScroll = () => {
-      if (nav) {
-        if (window.scrollY > 40) nav.classList.add('scrolled');
-        else nav.classList.remove('scrolled');
-      }
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-
-    // Dropdown toggling
-    const toggle = document.getElementById('workToggle');
-    const dd = document.getElementById('workDD');
-    const chev = document.getElementById('workChev');
-    const setMenu = (open) => {
-      if (menu) menu.classList.toggle('open', open);
-      if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
-      if (toggle) toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    };
-
-    if (toggle && menu && dd) {
-      toggle.addEventListener('click', e => {
-        e.stopPropagation();
-        setMenu(!menu.classList.contains('open'));
-      });
-      toggle.addEventListener('keydown', e => {
-        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          setMenu(true);
-          const first = menu.querySelector('.work-item');
-          if (first) first.focus();
-        }
-      });
-      menu.addEventListener('keydown', e => {
-        const items = [...menu.querySelectorAll('.work-item')];
-        const idx = items.indexOf(document.activeElement);
-        if (e.key === 'ArrowDown') { e.preventDefault(); (items[idx + 1] || items[0]).focus(); }
-        else if (e.key === 'ArrowUp') { e.preventDefault(); (items[idx - 1] || items[items.length - 1]).focus(); }
-        else if (e.key === 'Escape') { setMenu(false); toggle.focus(); }
-      });
-      document.addEventListener('click', e => {
-        if (!dd.contains(e.target)) setMenu(false);
-      });
-    }
-
-    // Mobile hamburger menu
-    const burger = document.getElementById('navBurger');
-    const links = document.getElementById('navLinks');
-    if (burger && links) {
-      burger.addEventListener('click', () => {
-        const open = links.classList.toggle('open');
-        burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-      });
-      links.addEventListener('click', e => {
-        if (e.target.closest('.nav-link, .nav-cta, .work-item')) {
-          links.classList.remove('open');
-          burger.setAttribute('aria-expanded', 'false');
-        }
-      });
-    }
-
-    // Intercept data-scroll & data-open-about for navigation from case study pages back to home sections
-    document.querySelectorAll('[data-scroll]').forEach(el => {
-      el.addEventListener('click', e => {
-        const target = el.getAttribute('data-scroll');
-        if (target) {
-          e.preventDefault();
-          window.location.href = 'index.html' + target;
-        }
-      });
-    });
-    document.querySelectorAll('[data-open-about]').forEach(el => {
-      el.addEventListener('click', e => {
-        e.preventDefault();
-        window.location.href = 'index.html#about-overlay';
-      });
-    });
-
-    // ESC key to close all nav overlays
-    document.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        setMenu(false);
-        if (links) links.classList.remove('open');
-        if (burger) burger.setAttribute('aria-expanded', 'false');
-      }
-    });
-  })();
-</script>
+<script src="js/nav.js"></script>
 
 </body>
 </html>
