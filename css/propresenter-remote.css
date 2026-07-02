@@ -1,55 +1,35 @@
 /* ══════════════════════════════════════════
-   CLOSING THE CARE GAP — css/care-gap.css
-   Page-specific styles for the Care Gap case study.
+   PROPRESENTER REMOTE REDESIGN — css/propresenter-remote.css
+   Page-specific styles for the ProPresenter Remote case study.
    Requires: css/global.css, css/nav.css
    ══════════════════════════════════════════ */
    
 :root {
-    /* ── index.html design system (source of truth) ── */
-    --bg: #E8EBF1;
-    --ink: #1B232E;
-    --muted: #525C6B;
-    --muted-soft: #616B7A;
-    /* per-study accent — teal-leaning slate (Care Gap) */
-    --accent: #2C6E72;
-    --accent-deep: #1D4B4E;
-    --accent-soft: rgba(44,110,114,0.12);
-    /* atmosphere orbs (one accent-tinted) */
-    --orb-cool: #C7D3EC;
-    --orb-warm: #EADFDD;
-    --orb-aqua: #CDE2E6;
-    /* universal shell accent */
-    --shell-accent: #3D5A80;
-    --shell-accent-deep: #2C435F;
-    --shell-accent-soft: rgba(61,90,128,0.12);
-    /* glass */
-    --glass: rgba(255,255,255,0.45);
-    --glass-2: rgba(255,255,255,0.62);
-    --glass-3: rgba(255,255,255,0.80);
-    --glass-edge: rgba(255,255,255,0.72);
-    --glass-shadow: 0 14px 44px rgba(27,35,46,0.10);
-    --glass-inset: inset 0 1px 0 rgba(255,255,255,0.85), inset 0 0 0 1px rgba(255,255,255,0.18);
+  /* global.css owns the base palette (bg, ink, glass, orbs, shell-accent).
+     This block only holds what's specific to THIS case study. */
 
-    /* ── compatibility remap: existing page tokens → the glass/slate system ──
-       (the whole page re-skins through these aliases; only --accent changes per study) */
-    --paper:      var(--bg);
-    --paper-2:    var(--glass-2);
-    --mist:       rgba(255,255,255,0.22);
-    --ink-soft:   var(--muted);
-    --ink-faint:  var(--muted-soft);
-    --teal:       var(--accent);
-    --teal-deep:  var(--accent-deep);
-    --teal-soft:  #7FA6AA;
-    --coral:      var(--muted);
-    --coral-deep: #3C4654;
-    --line:       rgba(27,35,46,0.10);
-    --line-soft:  rgba(27,35,46,0.06);
-    --serif: 'General Sans', 'Inter', system-ui, sans-serif;
-    --sans:  'Satoshi', 'Inter', system-ui, sans-serif;
-    --shadow-sm: 0 2px 14px rgba(27,35,46,0.06);
-    --shadow-md: var(--glass-shadow);
-    --shadow-lg: 0 22px 60px rgba(27,35,46,0.13);
-  }
+  /* per-study accent — warm orange (ProPresenter Remote) */
+  --accent:      #EA6A2E;
+  --accent-deep: #8E3A15;
+  --accent-soft: rgba(234,106,46,0.12);
+
+  /* compatibility aliases: this page's original tokens mapped onto the
+     global glass/slate system. Only --accent changes per study. */
+  --paper:      var(--bg);
+  --paper-2:    var(--glass-2);
+  --mist:       rgba(255,255,255,0.22);
+  --ink-soft:   var(--muted);
+  --ink-faint:  var(--muted-soft);
+  --teal:       var(--accent);
+  --teal-deep:  var(--accent-deep);
+  --teal-soft:  #F49264;
+  --coral:      var(--muted);
+  --coral-deep: #3C4654;
+  --line-soft:  rgba(27,35,46,0.06);
+  --shadow-sm:  0 2px 14px rgba(27,35,46,0.06);
+  --shadow-md:  var(--glass-shadow);
+  --shadow-lg:  0 22px 60px rgba(27,35,46,0.13);
+}
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
@@ -65,7 +45,7 @@
   a { text-decoration: none; color: inherit; }
   button { font-family: inherit; cursor: pointer; }
   img { max-width: 100%; display: block; }
-  ::selection { background: rgba(44,110,114,0.18); }
+  ::selection { background: rgba(234,106,46,0.18); }
   :focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 3px; }
 
   /* ───────── Reveal ───────── */
@@ -240,9 +220,9 @@
   .arch--wide { aspect-ratio: 4 / 3; border-radius: 24px 24px 18px 18px; }
   .arch__icon {
     width: 64px; height: 64px; border-radius: 50%;
-    background: rgba(44,110,114,0.12); color: var(--teal-deep);
+    background: rgba(234,106,46,0.12); color: var(--teal-deep);
     display: flex; align-items: center; justify-content: center;
-    border: 1px solid rgba(44,110,114,0.2);
+    border: 1px solid rgba(234,106,46,0.2);
   }
   .arch__cap {
     font-family: var(--sans); font-size: 0.68rem; font-weight: 700;
@@ -358,7 +338,7 @@
   .packet-item .pi {
     width: 38px; height: 38px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    background: rgba(44,110,114,0.1); color: var(--teal-deep);
+    background: rgba(234,106,46,0.1); color: var(--teal-deep);
     transition: background 0.25s, color 0.25s;
   }
   .packet-item:hover .pi { background: rgba(221,115,85,0.16); color: var(--coral-deep); }
@@ -417,7 +397,7 @@
   }
   .bubble:hover, .bubble:focus-visible {
     transform: translateY(-3px); color: var(--ink);
-    border-color: rgba(44,110,114,0.4); box-shadow: var(--shadow-md);
+    border-color: rgba(234,106,46,0.4); box-shadow: var(--shadow-md);
   }
   .bubble .qn {
     font-family: var(--serif); font-style: italic; font-weight: 600;
@@ -432,7 +412,7 @@
   }
   .psych-pull .pic {
     flex-shrink: 0; width: 44px; height: 44px; border-radius: 12px;
-    background: rgba(44,110,114,0.12); color: var(--teal-deep);
+    background: rgba(234,106,46,0.12); color: var(--teal-deep);
     display: flex; align-items: center; justify-content: center;
   }
   .psych-pull p {
@@ -452,8 +432,8 @@
   }
   .psych-card .pic {
     flex-shrink: 0; width: 50px; height: 50px; border-radius: 14px;
-    background: linear-gradient(150deg, rgba(44,110,114,0.18), rgba(127,176,174,0.12));
-    border: 1px solid rgba(44,110,114,0.16); color: var(--teal-deep);
+    background: linear-gradient(150deg, rgba(234,106,46,0.18), rgba(127,176,174,0.12));
+    border: 1px solid rgba(234,106,46,0.16); color: var(--teal-deep);
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.5s cubic-bezier(0.22,0.61,0.36,1);
   }
@@ -494,7 +474,7 @@
   .failure-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
   .failure-icon {
     width: 36px; height: 36px; border-radius: 11px;
-    background: rgba(44,110,114,0.1); color: var(--teal-deep);
+    background: rgba(234,106,46,0.1); color: var(--teal-deep);
     display: flex; align-items: center; justify-content: center;
     transition: transform 0.35s, background 0.3s;
   }
@@ -507,12 +487,12 @@
   .placeholder {
     width: 100%; max-width: 680px; margin: 2.4rem 0;
     min-height: 280px; background: var(--mist);
-    border: 1px dashed rgba(44,110,114,0.4); border-radius: 18px;
+    border: 1px dashed rgba(234,106,46,0.4); border-radius: 18px;
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 0.9rem; padding: 2rem; text-align: center;
   }
   .placeholder .ph-ic {
-    width: 52px; height: 52px; border: 1px dashed rgba(44,110,114,0.45);
+    width: 52px; height: 52px; border: 1px dashed rgba(234,106,46,0.45);
     border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--teal);
   }
   .placeholder .ph-tag { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--coral); }
@@ -566,7 +546,7 @@
     font-variant-numeric: tabular-nums;
   }
   .tracker tbody tr:last-child td { border-bottom: 0; }
-  .tracker tbody tr:hover { background: rgba(44,110,114,0.05); }
+  .tracker tbody tr:hover { background: rgba(234,106,46,0.05); }
   .pill {
     display: inline-block; padding: 3px 9px; border-radius: 30px;
     font-family: var(--sans); font-size: 0.55rem; font-weight: 700;
@@ -575,7 +555,7 @@
   .pill-open      { background: rgba(221,115,85,0.18); color: var(--coral-deep); }
   .pill-awaiting  { background: rgba(226,163,60,0.2);  color: #9A6A12; }
   .pill-sent      { background: rgba(110,128,126,0.18); color: var(--ink-faint); }
-  .pill-scheduled { background: rgba(44,110,114,0.16);  color: var(--teal-deep); }
+  .pill-scheduled { background: rgba(234,106,46,0.16);  color: var(--teal-deep); }
   .pill-closed    { background: rgba(24,74,78,0.16);    color: var(--teal-deep); }
   .tracker__cap { font-family: var(--serif); font-style: italic; font-weight: 300; color: var(--ink-faint); font-size: 0.92rem; margin: 1.1rem 0 0; max-width: 620px; }
 
@@ -608,7 +588,7 @@
   }
   .refl-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
   .refl-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.1rem; }
-  .refl-icon { width: 46px; height: 46px; border-radius: 13px; background: rgba(44,110,114,0.1); color: var(--teal-deep); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(44,110,114,0.14); }
+  .refl-icon { width: 46px; height: 46px; border-radius: 13px; background: rgba(234,106,46,0.1); color: var(--teal-deep); display: flex; align-items: center; justify-content: center; border: 1px solid rgba(234,106,46,0.14); }
   .refl-n { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 1.5rem; color: var(--teal-soft); }
   .refl-title { font-family: var(--serif); font-weight: 600; font-size: clamp(1.25rem, 1.8vw, 1.45rem); color: var(--ink); line-height: 1.25; margin: 0 0 0.8rem; }
   .refl-body p { font-family: var(--sans); font-weight: 400; font-size: 0.92rem; line-height: 1.75; color: var(--ink-soft); margin: 0; }
@@ -633,7 +613,7 @@
   .declog-cell { background: var(--paper-2); padding: 1.1rem 1.4rem; }
   .declog-cell .dc-k { font-family: var(--sans); font-size: 0.62rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--teal); margin-bottom: 0.45rem; display: flex; align-items: center; gap: 0.4rem; }
   .declog-cell .dc-k::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--teal-soft); flex-shrink: 0; }
-  .declog-cell.is-decision { background: rgba(44,110,114,0.05); }
+  .declog-cell.is-decision { background: rgba(234,106,46,0.05); }
   .declog-cell.is-decision .dc-k { color: var(--teal-deep); }
   .declog-cell .dc-v { font-family: var(--sans); font-size: 0.86rem; font-weight: 400; line-height: 1.6; color: var(--ink-soft); margin: 0; }
   .declog-cell .dc-v b { color: var(--ink); font-weight: 600; }
@@ -831,9 +811,9 @@
     padding: 3px 9px; border-radius: 20px;
   }
   .bp-owner.patient   { background: rgba(226,163,60,0.18); color: #946410; }
-  .bp-owner.mercy     { background: rgba(44,110,114,0.16); color: var(--teal-deep); }
+  .bp-owner.mercy     { background: rgba(234,106,46,0.16); color: var(--teal-deep); }
   .bp-owner.specialist{ background: rgba(127,176,174,0.22); color: var(--teal-deep); }
-  .bp-owner.system    { background: rgba(44,110,114,0.16); color: var(--teal-deep); }
+  .bp-owner.system    { background: rgba(234,106,46,0.16); color: var(--teal-deep); }
   .bp-owner.none      { background: rgba(221,115,85,0.18); color: var(--coral-deep); }
   .bp-card.gap { border-style: dashed; border-color: rgba(221,115,85,0.5); background: rgba(221,115,85,0.04); }
   .bp-flag {
@@ -911,7 +891,7 @@
   .prepsteps li:last-child { margin-bottom: 0; }
   .prepsteps li::before {
     counter-increment: ps; content: counter(ps); position: absolute; left: 0; top: -1px;
-    width: 22px; height: 22px; border-radius: 50%; background: rgba(44,110,114,0.12); color: var(--teal-deep);
+    width: 22px; height: 22px; border-radius: 50%; background: rgba(234,106,46,0.12); color: var(--teal-deep);
     font-family: var(--serif); font-style: italic; font-size: 0.8rem; display: flex; align-items: center; justify-content: center;
   }
 
@@ -964,7 +944,7 @@
   }
   .sb-frame:hover .sb-illo { transform: translateY(-4px); box-shadow: var(--shadow-md); }
   .sb-illo svg { width: 80%; height: 80%; }
-  .sb-frame.solved .sb-illo { background: linear-gradient(160deg, #D7ECE6, #E8F3EF); border-color: rgba(44,110,114,0.4); }
+  .sb-frame.solved .sb-illo { background: linear-gradient(160deg, #D7ECE6, #E8F3EF); border-color: rgba(234,106,46,0.4); }
 
   /* Journey map (FigJam matrix) */
   .jmap-frame { background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--shadow-md); padding: 1.1rem 1.1rem 1.3rem; }
@@ -981,7 +961,7 @@
   .sticky--teal  { background: #CCE5DF; }
   .jmap-flag { align-self: flex-start; margin-top: auto; font-family: 'IBM Plex Mono', monospace; font-size: 0.55rem; font-weight: 600; letter-spacing: 0.02em; padding: 2px 7px; border-radius: 20px; display: inline-flex; gap: 4px; align-items: center; }
   .sticky--coral .jmap-flag { background: rgba(194,92,63,0.18); color: var(--coral-deep); }
-  .sticky--teal .jmap-flag  { background: rgba(44,110,114,0.18); color: var(--teal-deep); }
+  .sticky--teal .jmap-flag  { background: rgba(234,106,46,0.18); color: var(--teal-deep); }
   .jmap-feeling { grid-column: 2 / span 4; padding-top: 0.2rem; }
   .jmap-feeling svg { display: block; width: 100%; height: 78px; overflow: visible; }
   .jmap-legend { display: flex; flex-wrap: wrap; gap: 1.1rem; margin-top: 1.1rem; font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: var(--ink-faint); }
@@ -1027,8 +1007,8 @@
     display: inline-flex; align-items: center; gap: 0.4rem;
     font-family: var(--sans); font-size: 0.6rem; font-weight: 700;
     letter-spacing: 0.12em; text-transform: uppercase;
-    color: var(--teal-deep); background: rgba(44,110,114,0.08);
-    border: 1px solid rgba(44,110,114,0.16); padding: 4px 11px; border-radius: 20px;
+    color: var(--teal-deep); background: rgba(234,106,46,0.08);
+    border: 1px solid rgba(234,106,46,0.16); padding: 4px 11px; border-radius: 20px;
     margin-bottom: 0.6rem;
   }
 
@@ -1143,3 +1123,599 @@
     .reveal { opacity: 1; transform: none; transition: none; }
     html { scroll-behavior: auto; }
   }
+
+  /* ── Hero Handheld Mobile Simulator & Gestures ── */
+  .hero-prototype-wrapper {
+    position: relative;
+    width: 320px;
+    height: 650px;
+    margin: 2rem auto;
+    z-index: 10;
+  }
+
+  /* Offset phone shadow/outline in background (recreating the figma guide style in your screenshot) */
+  .bg-phone-outline {
+    position: absolute;
+    top: 20px;
+    left: -24px;
+    width: 320px;
+    height: 650px;
+    border-radius: 46px;
+    border: 2px solid rgba(234, 106, 46, 0.35);
+    background: transparent;
+    pointer-events: none;
+    z-index: 5;
+    transform: rotate(-3deg);
+  }
+
+  /* SVG hand outline overlay placed on top of the phone */
+  .hand-overlay {
+    position: absolute;
+    top: -40px;
+    left: -60px;
+    width: 440px;
+    height: 730px;
+    pointer-events: none; /* Let clicks pass to the simulator buttons underneath */
+    z-index: 25;
+  }
+
+  /* Floating interactive gesture list on the right */
+  .gesture-list {
+    position: absolute;
+    left: 345px;
+    top: 75px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    z-index: 20;
+    width: 220px;
+  }
+  
+  .gesture-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s, transform 0.2s;
+  }
+  
+  .gesture-item:hover, .gesture-item.active {
+    opacity: 1;
+    transform: translateX(4px);
+  }
+
+  .gesture-item .line-indicator {
+    width: 22px;
+    height: 1px;
+    background: rgba(255,255,255,0.18);
+    transition: background 0.2s, width 0.2s;
+  }
+
+  .gesture-item:hover .line-indicator, .gesture-item.active .line-indicator {
+    background: var(--accent);
+    width: 30px;
+  }
+
+  .gesture-code {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: -0.01em;
+    background: rgba(234, 106, 46, 0.12);
+    padding: 3px 6px;
+    border-radius: 6px;
+    border: 1px solid rgba(234, 106, 46, 0.2);
+  }
+
+  .gesture-desc {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* Glassmorphic control dock below/next to the phone */
+  .hero-control-dock {
+    width: 100%;
+    margin-top: 1.8rem;
+    background: var(--glass);
+    backdrop-filter: blur(14px) saturate(150%);
+    -webkit-backdrop-filter: blur(14px) saturate(150%);
+    border: 1px solid var(--glass-edge);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Responsive adjustments for handheld hero simulator */
+  @media (max-width: 1140px) {
+    .gesture-list {
+      display: none; /* Hide gesture guide list on narrower viewports to prevent overflow */
+    }
+    .bg-phone-outline {
+      display: none;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-prototype-wrapper {
+      transform: scale(0.85);
+      margin: 0 auto -40px;
+    }
+  }
+
+  /* ══════════════════════════════════════════
+   PROTOTYPE SIMULATOR — extracted component styles
+   (replaces inline styles inside #simApp)
+   ══════════════════════════════════════════ */
+
+/* — Slide thumbnails — */
+.thumb-btn {
+  flex: 0 0 auto;
+  width: 92px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.t-frame {
+  position: relative;
+  width: 92px;
+  aspect-ratio: 16 / 9;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: #141416;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.t-media {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 40% 40%, #7B5BB0, #2A1B46 72%);
+}
+.t-label {
+  font-size: 7px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  padding: 4px;
+  line-height: 1.2;
+}
+.live-badge {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  background: #EA6A2E;
+  color: #0A0A0B;
+  font-size: 7px;
+  font-weight: 700;
+  padding: 1px 4px;
+  border-radius: 4px;
+  font-family: 'IBM Plex Mono', monospace;
+  display: none;
+}
+.thumb-cap {
+  font-size: 0.66em;
+  font-weight: 500;
+  color: #C7C7CC;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+/* — Phone status bar (time + signal + battery) — */
+.sim-statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px 4px;
+  flex: 0 0 auto;
+  color: #fff;
+}
+.sim-statusbar .time { font-size: 13px; font-weight: 600; }
+.sim-status-right { display: flex; gap: 6px; align-items: center; opacity: 0.92; }
+.sim-signal { display: flex; gap: 2px; align-items: flex-end; height: 10px; }
+.sim-signal i { width: 2.5px; background: #fff; border-radius: 1px; }
+.sim-signal i:nth-child(1) { height: 4px; }
+.sim-signal i:nth-child(2) { height: 6px; }
+.sim-signal i:nth-child(3) { height: 8px; }
+.sim-signal i:nth-child(4) { height: 10px; }
+.sim-battery {
+  position: relative;
+  width: 20px;
+  height: 11px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+  display: inline-block;
+}
+.sim-battery span {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  bottom: 1px;
+  width: 13px;
+  background: #fff;
+  border-radius: 1px;
+}
+
+/* — Phone header (menu + title + connection pill) — */
+.sim-header {
+  display: flex;
+  align-items: center;
+  padding: 4px 10px 8px;
+  flex: 0 0 auto;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+.sim-iconbtn {
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #EA6A2E;
+  background: none;
+  border: none;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.sim-header-title { flex: 1; display: flex; justify-content: center; }
+.sim-titlebtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+.sim-titlebtn .name { font-size: 15px; font-weight: 600; }
+.sim-conn-wrap { position: relative; flex: 0 0 auto; }
+.sim-conn-pill {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(52, 199, 89, 0.13);
+  padding: 5px 9px;
+  border-radius: 20px;
+  min-height: 28px;
+}
+.sim-conn-dot { width: 6px; height: 6px; border-radius: 50%; background: #34C759; }
+.sim-conn-pill .label { font-size: 11px; font-weight: 600; color: #5BD37A; }
+/* — "Next up" preview button — */
+.sim-nextup {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  background: #1C1C1E;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+}
+.sim-nextup > svg { flex: 0 0 auto; }
+.sim-nextup-text { display: flex; flex-direction: column; gap: 1px; }
+.sim-nextup-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62em;
+  letter-spacing: 0.07em;
+  color: #A8A8AD;
+  text-transform: uppercase;
+}
+.sim-nextup-title { font-size: 0.92em; font-weight: 600; color: #fff; }
+
+/* — Live output monitor (16:9) — */
+.sim-monitor {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #0E0E10;
+  border-radius: 12px;
+  border: 2px solid #EA6A2E;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+.sim-monitor-media {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 38% 36%, #7B5BB0, #2A1B46 72%);
+  display: none;
+}
+.sim-monitor-lyrics {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  z-index: 2;
+}
+.sim-lyric-rule { width: 30px; height: 1px; background: rgba(255, 255, 255, 0.45); }
+.sim-monitor-lyrics-text { display: flex; flex-direction: column; gap: 3px; align-items: center; }
+.sim-pos-label {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 2px 6px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #fff;
+  z-index: 3;
+}
+.sim-slide-label {
+  position: absolute;
+  bottom: 6px;
+  left: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.88);
+  z-index: 3;
+}
+/* — Previous / Next control row — */
+.sim-controls {
+  position: relative;
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+  flex: 0 0 auto;
+}
+.sim-ctrl-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 50px;
+  border-radius: 12px;
+  font-size: 0.9em;
+  cursor: pointer;
+}
+.sim-ctrl-btn svg { flex: 0 0 auto; }
+.sim-ctrl-prev {
+  flex: 1;
+  background: #2C2C2E;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-weight: 600;
+}
+.sim-ctrl-next {
+  flex: 1.3;
+  background: #EA6A2E;
+  border: none;
+  color: #0A0A0B;
+  font-weight: 700;
+}
+
+/* — Send stage message button — */
+.sim-stage-open {
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid rgba(234, 106, 46, 0.5);
+  border-radius: 12px;
+  color: #EA6A2E;
+  font-size: 0.88em;
+  font-weight: 600;
+  cursor: pointer;
+  flex: 0 0 auto;
+}
+.sim-stage-open svg { flex: 0 0 auto; }
+/* — Bottom tab navigation — */
+.sim-tabbar {
+  display: flex;
+  align-items: stretch;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0C0C0D;
+  padding: 8px 4px 18px;
+  flex: 0 0 auto;
+  color: #8A8A8E;
+}
+.sim-tab {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  min-height: 36px;
+  justify-content: center;
+}
+.sim-tab span { font-size: 9px; font-weight: 600; }
+.sim-tab.is-active { color: #EA6A2E; }
+.sim-tab-dot {
+  position: absolute;
+  top: 4px;
+  right: 18px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #EA6A2E;
+  display: none;
+}
+/* — Slide-up stage message sheet (modal) — */
+.sim-sheet {
+  position: absolute;
+  inset: 0;
+  z-index: 60;
+  display: none;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.sim-sheet-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  cursor: pointer;
+}
+.sim-sheet-panel {
+  position: relative;
+  background: #1C1C1E;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  padding: 6px 14px 20px;
+  animation: sheetUp 0.3s cubic-bezier(.32, .72, 0, 1);
+}
+.sim-sheet-grabber {
+  width: 34px;
+  height: 4px;
+  border-radius: 2px;
+  background: #48484A;
+  margin: 4px auto 10px;
+}
+.sim-sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: #fff;
+}
+.sim-sheet-head .title { font-size: 1.05em; font-weight: 700; }
+.sim-sheet-cancel {
+  background: none;
+  border: none;
+  color: #EA6A2E;
+  font-size: 0.9em;
+  font-weight: 600;
+  cursor: pointer;
+  min-height: 36px;
+}
+.sim-sheet-eyebrow {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.6em;
+  letter-spacing: 0.07em;
+  color: #A8A8AD;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.sim-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.preset-btn {
+  background: #2C2C2E;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 9px;
+  padding: 8px 10px;
+  color: #fff;
+  font-size: 0.78em;
+  font-weight: 500;
+  cursor: pointer;
+  min-height: 36px;
+}
+.sim-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 70px;
+  resize: none;
+  background: #0B0B0C;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  padding: 10px 12px;
+  color: #fff;
+  font-size: 0.9em;
+  font-family: inherit;
+  line-height: 1.3;
+  margin-bottom: 10px;
+}
+.sim-sheet-send {
+  width: 100%;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #2C2C2E;
+  border: none;
+  border-radius: 12px;
+  color: #6E6E73;
+  font-size: 0.94em;
+  font-weight: 700;
+  cursor: pointer;
+}
+/* — Toast notification — */
+.sim-toast {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 70;
+  display: none;
+  align-items: center;
+  gap: 8px;
+  background: #2C2C2E;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 9px 15px;
+  border-radius: 20px;
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.55);
+  animation: toastIn 0.3s ease;
+  white-space: nowrap;
+}
+.sim-toast span { font-size: 12px; font-weight: 600; color: #fff; }
+
+/* ══════════════════════════════════════════
+   HERO STATIC PHONE — non-interactive preview
+   Decorative twin of the live prototype. Reuses the .sim-* visual
+   classes but carries NO ids and none of the JS-hooked classes
+   (.thumb-btn / .preset-btn), so the script never touches it.
+   ══════════════════════════════════════════ */
+.hero-proto-static {
+  display: block; position: relative; width: 330px; max-width: 100%;
+  margin: 0 auto; transition: transform 0.3s ease;
+}
+.hero-proto-static:hover,
+.hero-proto-static:focus-visible { transform: translateY(-4px); }
+.sim-static {
+  position: relative; width: 330px; height: 680px; max-width: 100%;
+  background: #000; border-radius: 46px; overflow: hidden;
+  display: flex; flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+}
+.sim-notch {
+  position: absolute; top: 7px; left: 50%; transform: translateX(-50%);
+  width: 100px; height: 26px; background: #000; border-radius: 14px; z-index: 40;
+}
+.sim-static-body {
+  flex: 1; overflow: hidden; padding: 12px 14px 8px; font-size: 14px;
+  display: flex; flex-direction: column; gap: 12px; color: #fff;
+}
+.sim-static-slides-label {
+  font-family: 'IBM Plex Mono', monospace; font-size: 0.6em; letter-spacing: 0.07em;
+  color: #A8A8AD; text-transform: uppercase; margin-bottom: 6px;
+}
+.sim-static-scroll { display: flex; gap: 8px; overflow: hidden; padding-bottom: 4px; }
+.sim-static-thumb { flex: 0 0 auto; width: 92px; display: flex; flex-direction: column; gap: 4px; }
+.sim-lyric-line {
+  font-size: 17px; font-weight: 600; letter-spacing: 0.04em;
+  color: #fff; text-align: center; line-height: 1.25;
+}
+.t-frame--live { border: 2px solid #EA6A2E; }
+.live-badge.is-on { display: block; }
+.hero-proto-static .hint {
+  position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #EA6A2E; color: #0A0A0B; font-family: var(--sans);
+  font-size: 0.8rem; font-weight: 700; padding: 8px 16px; border-radius: 30px;
+  z-index: 45; box-shadow: 0 6px 18px rgba(0,0,0,0.4); white-space: nowrap;
+}

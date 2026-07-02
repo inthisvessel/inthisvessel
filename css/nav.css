@@ -1,7 +1,12 @@
   /* ── Nav ── */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 80;
-    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
+    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease, opacity 0.35s ease, transform 0.35s ease;
+  }
+  .nav.nav-hidden {
+    opacity: 0;
+    transform: translateY(-12px);
+    pointer-events: none;
   }
   .nav.scrolled {
     background: rgba(255,255,255,0.55);

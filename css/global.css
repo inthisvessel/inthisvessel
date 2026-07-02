@@ -80,6 +80,15 @@
     border: 1px solid var(--glass-edge);
     box-shadow: var(--glass-shadow), var(--glass-inset);
   }
+/* ── Hide-on-scroll state (nav + case study TOC) ── */
+  .toc {
+    transition: opacity 0.35s ease, transform 0.35s ease;
+  }
+  .toc.nav-hidden {
+    opacity: 0;
+    transform: translateY(-12px);
+    pointer-events: none;
+  }
 
   /* ── Scroll reveal ── */
   .reveal {
