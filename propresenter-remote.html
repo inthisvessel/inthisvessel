@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>ProPresenter Remote Redesign — In This Vessel</title>
+<title>Rethink the Remote — In This Vessel</title>
 <link rel="preconnect" href="https://api.fontshare.com" crossorigin />
 <link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -95,7 +95,7 @@
       <div class="hero-grid">
         <div>
           <div class="hero-tag reveal"><span class="dot"></span> Accessibility · Redesign · Concept</div>
-          <h1 class="hero-title reveal">ProPresenter<br /><em>Remote Redesign</em></h1>
+          <h1 class="hero-title reveal">Rethink<br /><em>the Remote</em></h1>
           <p class="hero-sub reveal">Keeping the booth's confidence and Renewed Vision's look — while making every control speak, and every label scale.</p>
           <div class="psych-lens reveal">
           </div>
@@ -115,226 +115,108 @@
           </div>
         </div>
         <div class="reveal">
-          <div class="hero-prototype-wrapper" style="position:relative; display:flex; flex-direction:column; align-items:center; gap:20px; width:100%; max-width:420px; margin:0 auto;">
-            
-            <!-- Active phone screen (our prototype simulator, centered and sized to 330x680) -->
-            <div id="simApp" class="sim-app" style="position:relative; width:330px; height:680px; background:#000; border-radius:46px; overflow:hidden; display:flex; flex-direction:column; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif; border:1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.6); flex:0 0 auto;">
-              
-              <!-- DYNAMIC ISLAND / NOTCH -->
-              <div style="position:absolute; top:7px; left:50%; transform:translateX(-50%); width:100px; height:26px; background:#000; border-radius:14px; z-index:40;"></div>
-
-              <!-- TOP BAR -->
-              <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 20px 4px; flex:0 0 auto; color:#fff;">
-                <span style="font-size:13px; font-weight:600;">9:41</span>
-                <span style="display:flex; gap:6px; align-items:center; opacity:0.92;">
-                  <span style="display:flex; gap:2px; align-items:flex-end; height:10px;">
-                    <i style="width:2.5px; height:4px; background:#fff; border-radius:1px;"></i>
-                    <i style="width:2.5px; height:6px; background:#fff; border-radius:1px;"></i>
-                    <i style="width:2.5px; height:8px; background:#fff; border-radius:1px;"></i>
-                    <i style="width:2.5px; height:10px; background:#fff; border-radius:1px;"></i>
-                  </span>
-                  <span style="position:relative; width:20px; height:11px; border:1px solid rgba(255,255,255,0.5); border-radius:3px; display:inline-block;">
-                    <span style="position:absolute; left:1px; top:1px; bottom:1px; width:13px; background:#fff; border-radius:1px;"></span>
-                  </span>
-                </span>
-              </div>
-
-              <!-- HEADER -->
-              <div style="display:flex; align-items:center; padding:4px 10px 8px; flex:0 0 auto; border-bottom:1px solid rgba(255,255,255,0.06);">
-                <button aria-label="Libraries and playlists" style="width:38px; height:38px; display:flex; align-items:center; justify-content:center; color:#EA6A2E; background:none; border:none; cursor:pointer; flex:0 0 auto;">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="9" y1="4" x2="9" y2="20"></line></svg>
-                </button>
-                <div style="flex:1; display:flex; justify-content:center;">
-                  <button style="display:flex; align-items:center; gap:4px; background:none; border:none; color:#fff; cursor:pointer;">
-                    <span style="font-size:15px; font-weight:600;">Good Grace</span>
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                  </button>
-                </div>
-                <div style="position:relative; flex:0 0 auto;">
-                  <div style="display:flex; align-items:center; gap:4px; background:rgba(52,199,89,0.13); padding:5px 9px; border-radius:20px; min-height:28px;">
-                    <span style="width:6px; height:6px; border-radius:50%; background:#34C759;"></span>
-                    <span style="font-size:11px; font-weight:600; color:#5BD37A;">Connected</span>
-                  </div>
-                  <!-- Sibling overlay VoiceOver message -->
-                  <div class="vo-speech-bubble" style="top:100%; right:0; margin-top:6px; width:150px;">
-                    <div class="title">VOICEOVER</div>
-                    <div class="body">“Connected to ProPresenter. Status.”</div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- ON STAGE MESSAGE BAR -->
-              <div id="simStageMsgBar" style="display:none; align-items:center; gap:8px; padding:8px 12px; background:rgba(234,106,46,0.13); border-bottom:1px solid rgba(234,106,46,0.25); flex:0 0 auto;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EA6A2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;"><circle cx="12" cy="12" r="2"></circle><path d="M16.2 7.8a6 6 0 0 1 0 8.4"></path><path d="M7.8 16.2a6 6 0 0 1 0-8.4"></path></svg>
-                <div style="flex:1; min-width:0;">
-                  <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.08em; color:#EA6A2E; font-weight:600;">ON STAGE</div>
-                  <div id="simStageMsgText" style="font-size:12px; color:#fff; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
-                </div>
-                <button id="btnClearStageMsg" aria-label="Clear stage message" style="width:34px; height:34px; display:flex; align-items:center; justify-content:center; background:none; border:none; color:#C7C7CC; cursor:pointer; flex:0 0 auto;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
-                </button>
-              </div>
-
-              <!-- SCALABLE INTERFACE CONTENT -->
-              <div id="simBody" style="flex:1; overflow-y:auto; padding:12px 14px 8px; font-size:14px; display:flex; flex-direction:column; gap:12px; color:#fff;">
-                
-                <!-- NEXT UP SLIDE PREVIEW -->
-                <button style="display:flex; align-items:center; justify-content:space-between; gap:8px; background:#1C1C1E; border:1px solid rgba(255,255,255,0.07); border-radius:12px; padding:10px 12px; cursor:pointer; text-align:left; width:100%;">
-                  <span style="display:flex; flex-direction:column; gap:1px;">
-                    <span style="font-family:'IBM Plex Mono',monospace; font-size:0.62em; letter-spacing:0.07em; color:#A8A8AD; text-transform:uppercase;">Next up</span>
-                    <span id="txtNextUpTitle" style="font-size:0.92em; font-weight:600; color:#fff;">Verse 1</span>
-                  </span>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EA6A2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;"><line x1="5" y1="12" x2="18" y2="12"></line><polyline points="12 6 18 12 12 18"></polyline></svg>
-                </button>
-
-                <!-- LIVE OUTPUT MONITOR -->
-                <div style="position:relative; width:100%; aspect-ratio:16/9; background:#0E0E10; border-radius:12px; border:2px solid #EA6A2E; overflow:hidden; display:flex; align-items:center; justify-content:center; flex:0 0 auto;">
-                  <span id="simLiveMediaBg" style="position:absolute; inset:0; background:radial-gradient(circle at 38% 36%, #7B5BB0, #2A1B46 72%); display:none;"></span>
-                  <div id="simLiveLyrics" style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:12px; z-index:2;">
-                    <span style="width:30px; height:1px; background:rgba(255,255,255,0.45);"></span>
-                    <div id="simLiveLyricsText" style="display:flex; flex-direction:column; gap:3px; align-items:center;"></div>
-                    <span style="width:30px; height:1px; background:rgba(255,255,255,0.45);"></span>
-                  </div>
-                  <span id="simLivePosLabel" style="position:absolute; top:6px; right:6px; background:rgba(0,0,0,0.6); padding:2px 6px; border-radius:6px; font-size:10px; font-weight:600; color:#fff; z-index:3;">Slide 2 of 6</span>
-                  <span id="simLiveSlideLabel" style="position:absolute; bottom:6px; left:9px; font-size:11px; font-weight:600; color:rgba(255,255,255,0.88); z-index:3;">Verse 1</span>
-                </div>
-
-                <!-- SLIDES SCROLL WRAP -->
-                <div style="flex:0 0 auto;">
-                  <div style="font-family:'IBM Plex Mono',monospace; font-size:0.6em; letter-spacing:0.07em; color:#A8A8AD; text-transform:uppercase; margin-bottom:6px;">Slides</div>
-                  <div class="sim-scroll" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px;">
-                    <!-- THUMB 1 -->
-                    <button class="thumb-btn" data-idx="0" aria-label="Slide 1, Blank" style="flex:0 0 auto; width:92px; background:none; border:none; padding:0; cursor:pointer; display:flex; flex-direction:column; gap:4px;">
-                      <div class="t-frame" style="position:relative; width:92px; aspect-ratio:16/9; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.10); background:#141416; display:flex; align-items:center; justify-content:center;">
-                        <span style="position:absolute; inset:0; background:radial-gradient(circle at 40% 40%, #7B5BB0, #2A1B46 72%);"></span>
-                        <span class="live-badge" style="position:absolute; top:3px; left:3px; background:#EA6A2E; color:#0A0A0B; font-size:7px; font-weight:700; padding:1px 4px; border-radius:4px; font-family:'IBM Plex Mono',monospace; display:none;">LIVE</span>
-                      </div>
-                      <span style="font-size:0.66em; font-weight:500; color:#C7C7CC; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">1 · Blank</span>
-                    </button>
-                    <!-- THUMB 2 -->
-                    <button class="thumb-btn" data-idx="1" aria-label="Slide 2, Verse 1" style="flex:0 0 auto; width:92px; background:none; border:none; padding:0; cursor:pointer; display:flex; flex-direction:column; gap:4px;">
-                      <div class="t-frame" style="position:relative; width:92px; aspect-ratio:16/9; border-radius:6px; overflow:hidden; border:2px solid #EA6A2E; background:#141416; display:flex; align-items:center; justify-content:center;">
-                        <span style="font-size:7px; font-weight:600; color:rgba(255,255,255,0.7); text-align:center; padding:4px; line-height:1.2;">PEOPLE COME TOGETHER</span>
-                        <span class="live-badge" style="position:absolute; top:3px; left:3px; background:#EA6A2E; color:#0A0A0B; font-size:7px; font-weight:700; padding:1px 4px; border-radius:4px; font-family:'IBM Plex Mono',monospace; display:block;">LIVE</span>
-                      </div>
-                      <span style="font-size:0.66em; font-weight:500; color:#C7C7CC; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">2 · Verse 1</span>
-                    </button>
-                    <!-- THUMB 3 -->
-                    <button class="thumb-btn" data-idx="2" aria-label="Slide 3, Verse 2" style="flex:0 0 auto; width:92px; background:none; border:none; padding:0; cursor:pointer; display:flex; flex-direction:column; gap:4px;">
-                      <div class="t-frame" style="position:relative; width:92px; aspect-ratio:16/9; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.10); background:#141416; display:flex; align-items:center; justify-content:center;">
-                        <span style="font-size:7px; font-weight:600; color:rgba(255,255,255,0.7); text-align:center; padding:4px; line-height:1.2;">STRANGE AS NEIGHBORS OUR BLOOD IS ONE</span>
-                        <span class="live-badge" style="position:absolute; top:3px; left:3px; background:#EA6A2E; color:#0A0A0B; font-size:7px; font-weight:700; padding:1px 4px; border-radius:4px; font-family:'IBM Plex Mono',monospace; display:none;">LIVE</span>
-                      </div>
-                      <span style="font-size:0.66em; font-weight:500; color:#C7C7CC; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">3 · Verse 2</span>
-                    </button>
-                    <!-- THUMB 4 -->
-                    <button class="thumb-btn" data-idx="3" aria-label="Slide 4, Chorus" style="flex:0 0 auto; width:92px; background:none; border:none; padding:0; cursor:pointer; display:flex; flex-direction:column; gap:4px;">
-                      <div class="t-frame" style="position:relative; width:92px; aspect-ratio:16/9; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.10); background:#141416; display:flex; align-items:center; justify-content:center;">
-                        <span style="font-size:7px; font-weight:600; color:rgba(255,255,255,0.7); text-align:center; padding:4px; line-height:1.2;">WE WILL FIGHT FOR ONE ANOTHER</span>
-                        <span class="live-badge" style="position:absolute; top:3px; left:3px; background:#EA6A2E; color:#0A0A0B; font-size:7px; font-weight:700; padding:1px 4px; border-radius:4px; font-family:'IBM Plex Mono',monospace; display:none;">LIVE</span>
-                      </div>
-                      <span style="font-size:0.66em; font-weight:500; color:#C7C7CC; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">4 · Chorus</span>
-                    </button>
-                    <!-- THUMB 5 -->
-                    <button class="thumb-btn" data-idx="4" aria-label="Slide 5, Chorus" style="flex:0 0 auto; width:92px; background:none; border:none; padding:0; cursor:pointer; display:flex; flex-direction:column; gap:4px;">
-                      <div class="t-frame" style="position:relative; width:92px; aspect-ratio:16/9; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.10); background:#141416; display:flex; align-items:center; justify-content:center;">
-                        <span style="font-size:7px; font-weight:600; color:rgba(255,255,255,0.7); text-align:center; padding:4px; line-height:1.2;">WE LIFT UP OUR PRAISE</span>
-                        <span class="live-badge" style="position:absolute; top:3px; left:3px; background:#EA6A2E; color:#0A0A0B; font-size:7px; font-weight:700; padding:1px 4px; border-radius:4px; font-family:'IBM Plex Mono',monospace; display:none;">LIVE</span>
-                      </div>
-                      <span style="font-size:0.66em; font-weight:500; color:#C7C7CC; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">5 · Chorus</span>
-                    </button>
-                    <!-- THUMB 6 -->
-                    <button class="thumb-btn" data-idx="5" aria-label="Slide 6, Outro" style="flex:0 0 auto; width:92px; background:none; border:none; padding:0; cursor:pointer; display:flex; flex-direction:column; gap:4px;">
-                      <div class="t-frame" style="position:relative; width:92px; aspect-ratio:16/9; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.10); background:#141416; display:flex; align-items:center; justify-content:center;">
-                        <span style="font-size:7px; font-weight:600; color:rgba(255,255,255,0.7); text-align:center; padding:4px; line-height:1.2;">GOOD GRACE</span>
-                        <span class="live-badge" style="position:absolute; top:3px; left:3px; background:#EA6A2E; color:#0A0A0B; font-size:7px; font-weight:700; padding:1px 4px; border-radius:4px; font-family:'IBM Plex Mono',monospace; display:none;">LIVE</span>
-                      </div>
-                      <span style="font-size:0.66em; font-weight:500; color:#C7C7CC; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; width:100%;">6 · Outro</span>
-                    </button>
-                  </div>
-                </div>
-
-                <!-- PREVIOUS / NEXT CONTROLS -->
-                <div style="position:relative; display:flex; gap:8px; margin-top:2px; flex:0 0 auto;">
-                  <div id="simNextVoMsg" class="vo-speech-bubble" style="bottom:100%; right:0; margin-bottom:8px; width:160px;">
-                    <div class="title">VOICEOVER</div>
-                    <div class="body">“Next slide, button. Advances to slide 3 of 6.”</div>
-                  </div>
-                  <button id="btnPrev" aria-label="Previous slide" style="flex:1; min-height:50px; display:flex; align-items:center; justify-content:center; gap:6px; background:#2C2C2E; border:1px solid rgba(255,255,255,0.08); border-radius:12px; color:#fff; font-size:0.9em; font-weight:600; cursor:pointer;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex:0 0 auto;"><path d="M7 6h2v12H7z"></path><path d="M20 6v12L11 12z"></path></svg>
-                    <span>Previous</span>
-                  </button>
-                  <button id="btnNext" aria-label="Next slide" style="flex:1.3; min-height:50px; display:flex; align-items:center; justify-content:center; gap:6px; background:#EA6A2E; border:none; border-radius:12px; color:#0A0A0B; font-size:0.9em; font-weight:700; cursor:pointer;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" style="flex:0 0 auto;"><path d="M7 5v14l12-7z"></path></svg>
-                    <span>Next Slide</span>
-                  </button>
-                </div>
-
-                <!-- STAGE MESSAGE INITIATOR -->
-                <button id="btnOpenStageSheet" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center; gap:6px; background:transparent; border:1px solid rgba(234,106,46,0.5); border-radius:12px; color:#EA6A2E; font-size:0.88em; font-weight:600; cursor:pointer; flex:0 0 auto;">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;"><path d="M21 11.5a8.4 8.4 0 0 1-9 8 9.5 9.5 0 0 1-3-.5L3 21l1.5-4.5A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"></path></svg>
-                  <span>Send stage message</span>
-                </button>
-              </div>
-
-              <!-- BOTTOM TAB NAVIGATION -->
-              <div style="display:flex; align-items:stretch; border-top:1px solid rgba(255,255,255,0.08); background:#0C0C0D; padding:8px 4px 18px; flex:0 0 auto; color:#8A8A8E;">
-                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-height:36px; justify-content:center; color:#EA6A2E;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="2"></rect><line x1="9" y1="20" x2="15" y2="20"></line></svg>
-                  <span style="font-size:9px; font-weight:600;">Presentation</span>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-height:36px; justify-content:center;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><line x1="12" y1="13" x2="12" y2="9"></line><line x1="12" y1="13" x2="15" y2="14.5"></line><line x1="9" y1="3" x2="15" y2="3"></line></svg>
-                  <span style="font-size:9px; font-weight:600;">Timers</span>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-height:36px; justify-content:center;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.5"></rect></svg>
-                  <span style="font-size:9px; font-weight:600;">Macros</span>
-                </div>
-                <div style="position:relative; flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-height:36px; justify-content:center;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8 9.5 9.5 0 0 1-3-.5L3 21l1.5-4.5A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"></path></svg>
-                  <span style="font-size:9px; font-weight:600;">Messages</span>
-                  <span id="simBottomMsgDot" style="position:absolute; top:4px; right:18px; width:6px; height:6px; border-radius:50%; background:#EA6A2E; display:none;"></span>
-                </div>
-                <div style="flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; min-height:36px; justify-content:center;">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle></svg>
-                  <span style="font-size:9px; font-weight:600;">More</span>
-                </div>
-              </div>
-
-              <!-- SLIDE-UP STAGE MESSAGE MODAL SHEET -->
-              <div id="simSheet" style="position:absolute; inset:0; z-index:60; display:none; flex-direction:column; justify-content:flex-end;">
-                <div id="simSheetBackdrop" style="position:absolute; inset:0; background:rgba(0,0,0,0.55); cursor:pointer;"></div>
-                <div style="position:relative; background:#1C1C1E; border-top-left-radius:20px; border-top-right-radius:20px; padding:6px 14px 20px; animation:sheetUp 0.3s cubic-bezier(.32,.72,0,1);">
-                  <div style="width:34px; height:4px; border-radius:2px; background:#48484A; margin:4px auto 10px;"></div>
-                  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; color:#fff;">
-                    <span style="font-size:1.05em; font-weight:700;">Stage message</span>
-                    <button id="btnCancelSheet" style="background:none; border:none; color:#EA6A2E; font-size:0.9em; font-weight:600; cursor:pointer; min-height:36px;">Cancel</button>
-                  </div>
-                  <div style="font-family:'IBM Plex Mono',monospace; font-size:0.6em; letter-spacing:0.07em; color:#A8A8AD; text-transform:uppercase; margin-bottom:6px;">Quick messages</div>
-                  <div style="display:flex; flex-wrap:wrap; gap:6px; margin-bottom:12px;">
-                    <button class="preset-btn" data-text="2 minutes remaining" style="background:#2C2C2E; border:1px solid rgba(255,255,255,0.08); border-radius:9px; padding:8px 10px; color:#fff; font-size:0.78em; font-weight:500; cursor:pointer; min-height:36px;">2 mins left</button>
-                    <button class="preset-btn" data-text="Please wrap up" style="background:#2C2C2E; border:1px solid rgba(255,255,255,0.08); border-radius:9px; padding:8px 10px; color:#fff; font-size:0.78em; font-weight:500; cursor:pointer; min-height:36px;">Wrap up</button>
-                    <button class="preset-btn" data-text="Move to next song" style="background:#2C2C2E; border:1px solid rgba(255,255,255,0.08); border-radius:9px; padding:8px 10px; color:#fff; font-size:0.78em; font-weight:500; cursor:pointer; min-height:36px;">Next song</button>
-                  </div>
-                  <textarea id="simTextArea" placeholder="Type a message for the stage…" style="width:100%; box-sizing:border-box; min-height:70px; resize:none; background:#0B0B0C; border:1px solid rgba(255,255,255,0.12); border-radius:10px; padding:10px 12px; color:#fff; font-size:0.9em; font-family:inherit; line-height:1.3; margin-bottom:10px;"></textarea>
-                  <button id="btnSendToStage" style="width:100%; min-height:46px; display:flex; align-items:center; justify-content:center; gap:8px; background:#2C2C2E; border:none; border-radius:12px; color:#6E6E73; font-size:0.94em; font-weight:700; cursor:pointer;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                    <span>Send to stage</span>
-                  </button>
-                </div>
-              </div>
-
-              <!-- TOAST NOTIFICATION -->
-              <div id="simToast" style="position:absolute; bottom:80px; left:50%; transform:translateX(-50%); z-index:70; display:none; align-items:center; gap:8px; background:#2C2C2E; border:1px solid rgba(255,255,255,0.1); padding:9px 15px; border-radius:20px; box-shadow:0 10px 28px rgba(0,0,0,0.55); animation:toastIn 0.3s ease; white-space:nowrap;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                <span style="font-size:12px; font-weight:600; color:#fff;">Message sent to stage</span>
-              </div>
-
-            </div>
-
+          <a href="#live-prototype" class="hero-proto-static" aria-label="Preview of the redesigned remote. Activate to jump to the live, interactive version below.">
+  <div class="sim-static" aria-hidden="true">
+    <div class="sim-notch"></div>
+    <div class="sim-statusbar">
+      <span class="time">9:41</span>
+      <span class="sim-status-right">
+        <span class="sim-signal"><i></i><i></i><i></i><i></i></span>
+        <span class="sim-battery"><span></span></span>
+      </span>
+    </div>
+    <div class="sim-header">
+      <span class="sim-iconbtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="9" y1="4" x2="9" y2="20"></line></svg>
+      </span>
+      <div class="sim-header-title">
+        <span class="sim-titlebtn">
+          <span class="name">Good Grace</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </span>
+      </div>
+      <div class="sim-conn-wrap">
+        <div class="sim-conn-pill"><span class="sim-conn-dot"></span><span class="label">Connected</span></div>
+      </div>
+    </div>
+    <div class="sim-static-body">
+      <div class="sim-nextup">
+        <span class="sim-nextup-text">
+          <span class="sim-nextup-eyebrow">Next up</span>
+          <span class="sim-nextup-title">Verse 2</span>
+        </span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EA6A2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="18" y2="12"></line><polyline points="12 6 18 12 12 18"></polyline></svg>
+      </div>
+      <div class="sim-monitor">
+        <div class="sim-monitor-lyrics">
+          <span class="sim-lyric-rule"></span>
+          <div class="sim-monitor-lyrics-text"><span class="sim-lyric-line">PEOPLE COME TOGETHER</span></div>
+          <span class="sim-lyric-rule"></span>
+        </div>
+        <span class="sim-pos-label">Slide 2 of 6</span>
+        <span class="sim-slide-label">Verse 1</span>
+      </div>
+      <div>
+        <div class="sim-static-slides-label">Slides</div>
+        <div class="sim-static-scroll">
+          <div class="sim-static-thumb">
+            <div class="t-frame"><span class="t-media"></span><span class="live-badge">LIVE</span></div>
+            <span class="thumb-cap">1 · Blank</span>
+          </div>
+          <div class="sim-static-thumb">
+            <div class="t-frame t-frame--live"><span class="t-label">PEOPLE COME TOGETHER</span><span class="live-badge is-on">LIVE</span></div>
+            <span class="thumb-cap">2 · Verse 1</span>
+          </div>
+          <div class="sim-static-thumb">
+            <div class="t-frame"><span class="t-label">STRANGE AS NEIGHBORS OUR BLOOD IS ONE</span><span class="live-badge">LIVE</span></div>
+            <span class="thumb-cap">3 · Verse 2</span>
+          </div>
+          <div class="sim-static-thumb">
+            <div class="t-frame"><span class="t-label">WE WILL FIGHT FOR ONE ANOTHER</span><span class="live-badge">LIVE</span></div>
+            <span class="thumb-cap">4 · Chorus</span>
           </div>
         </div>
+      </div>
+      <div class="sim-controls">
+        <span class="sim-ctrl-btn sim-ctrl-prev">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7 6h2v12H7z"></path><path d="M20 6v12L11 12z"></path></svg>
+          <span>Previous</span>
+        </span>
+        <span class="sim-ctrl-btn sim-ctrl-next">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"></path></svg>
+          <span>Next Slide</span>
+        </span>
+      </div>
+      <span class="sim-stage-open">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8 9.5 9.5 0 0 1-3-.5L3 21l1.5-4.5A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"></path></svg>
+        <span>Send stage message</span>
+      </span>
+    </div>
+    <div class="sim-tabbar">
+      <div class="sim-tab is-active">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="2"></rect><line x1="9" y1="20" x2="15" y2="20"></line></svg>
+        <span>Presentation</span>
+      </div>
+      <div class="sim-tab">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><line x1="12" y1="13" x2="12" y2="9"></line><line x1="12" y1="13" x2="15" y2="14.5"></line><line x1="9" y1="3" x2="15" y2="3"></line></svg>
+        <span>Timers</span>
+      </div>
+      <div class="sim-tab">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.5"></rect></svg>
+        <span>Macros</span>
+      </div>
+      <div class="sim-tab">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8 9.5 9.5 0 0 1-3-.5L3 21l1.5-4.5A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"></path></svg>
+        <span>Messages</span>
+      </div>
+      <div class="sim-tab">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle></svg>
+        <span>More</span>
+      </div>
+    </div>
+  </div>
+  <span class="hint">Try it live ↓</span>
+</a>
       </div>
     </div>
   </section>
@@ -539,8 +421,221 @@
     <div class="wrap-narrow">
       <div class="eyebrow reveal"><span class="dot"></span> Solution</div>
       <h2 class="sec-title reveal">The interactive remote, <em>in practice.</em></h2>
-      <p class="sec-lede reveal">A real, working build of the redesign is integrated directly in the hero section at the top of this page. Interaction highlights include:</p>
+      <p class="sec-lede reveal">A real, working build of the redesign is embedded right here — try it out below.</p>
+      <div class="hero-prototype-wrapper" id="live-prototype" style="position:relative; display:flex; flex-direction:column; align-items:center; gap:20px; width:100%; max-width:420px; margin:0 auto;">
+            
+            <!-- Active phone screen (our prototype simulator, centered and sized to 330x680) -->
+            <div id="simApp" class="sim-app" style="position:relative; width:330px; height:680px; background:#000; border-radius:46px; overflow:hidden; display:flex; flex-direction:column; font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif; border:1px solid rgba(255,255,255,0.08); box-shadow: 0 20px 50px rgba(0,0,0,0.6); flex:0 0 auto;">
+              
+              <!-- DYNAMIC ISLAND / NOTCH -->
+              <div style="position:absolute; top:7px; left:50%; transform:translateX(-50%); width:100px; height:26px; background:#000; border-radius:14px; z-index:40;"></div>
 
+              <!-- TOP BAR -->
+<div class="sim-statusbar">
+  <span class="time">9:41</span>
+  <span class="sim-status-right">
+    <span class="sim-signal">
+      <i></i><i></i><i></i><i></i>
+    </span>
+    <span class="sim-battery"><span></span></span>
+  </span>
+</div>
+
+<!-- HEADER -->
+<div class="sim-header">
+  <button class="sim-iconbtn" aria-label="Libraries and playlists">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"></rect><line x1="9" y1="4" x2="9" y2="20"></line></svg>
+  </button>
+  <div class="sim-header-title">
+    <button class="sim-titlebtn">
+      <span class="name">Good Grace</span>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+    </button>
+  </div>
+  <div class="sim-conn-wrap">
+    <div class="sim-conn-pill">
+      <span class="sim-conn-dot"></span>
+      <span class="label">Connected</span>
+    </div>
+    <!-- Sibling overlay VoiceOver message -->
+    <div class="vo-speech-bubble" style="top:100%; right:0; margin-top:6px; width:150px;">
+      <div class="title">VOICEOVER</div>
+      <div class="body">“Connected to ProPresenter. Status.”</div>
+    </div>
+  </div>
+</div>
+
+              <!-- ON STAGE MESSAGE BAR -->
+              <div id="simStageMsgBar" style="display:none; align-items:center; gap:8px; padding:8px 12px; background:rgba(234,106,46,0.13); border-bottom:1px solid rgba(234,106,46,0.25); flex:0 0 auto;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EA6A2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;"><circle cx="12" cy="12" r="2"></circle><path d="M16.2 7.8a6 6 0 0 1 0 8.4"></path><path d="M7.8 16.2a6 6 0 0 1 0-8.4"></path></svg>
+                <div style="flex:1; min-width:0;">
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:9px; letter-spacing:0.08em; color:#EA6A2E; font-weight:600;">ON STAGE</div>
+                  <div id="simStageMsgText" style="font-size:12px; color:#fff; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;"></div>
+                </div>
+                <button id="btnClearStageMsg" aria-label="Clear stage message" style="width:34px; height:34px; display:flex; align-items:center; justify-content:center; background:none; border:none; color:#C7C7CC; cursor:pointer; flex:0 0 auto;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="6" y1="6" x2="18" y2="18"></line><line x1="18" y1="6" x2="6" y2="18"></line></svg>
+                </button>
+              </div>
+
+              <!-- SCALABLE INTERFACE CONTENT -->
+              <div id="simBody" style="flex:1; overflow-y:auto; padding:12px 14px 8px; font-size:14px; display:flex; flex-direction:column; gap:12px; color:#fff;">
+                
+                <!-- NEXT UP SLIDE PREVIEW -->
+<button class="sim-nextup">
+  <span class="sim-nextup-text">
+    <span class="sim-nextup-eyebrow">Next up</span>
+    <span class="sim-nextup-title" id="txtNextUpTitle">Verse 1</span>
+  </span>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#EA6A2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="18" y2="12"></line><polyline points="12 6 18 12 12 18"></polyline></svg>
+</button>
+
+<!-- LIVE OUTPUT MONITOR -->
+<div class="sim-monitor">
+  <span class="sim-monitor-media" id="simLiveMediaBg"></span>
+  <div class="sim-monitor-lyrics" id="simLiveLyrics">
+    <span class="sim-lyric-rule"></span>
+    <div class="sim-monitor-lyrics-text" id="simLiveLyricsText"></div>
+    <span class="sim-lyric-rule"></span>
+  </div>
+  <span class="sim-pos-label" id="simLivePosLabel">Slide 2 of 6</span>
+  <span class="sim-slide-label" id="simLiveSlideLabel">Verse 1</span>
+</div>
+
+                <!-- SLIDES SCROLL WRAP -->
+                <div style="flex:0 0 auto;">
+                  <div style="font-family:'IBM Plex Mono',monospace; font-size:0.6em; letter-spacing:0.07em; color:#A8A8AD; text-transform:uppercase; margin-bottom:6px;">Slides</div>
+                  <div class="sim-scroll" style="display:flex; gap:8px; overflow-x:auto; padding-bottom:4px;">
+<!-- THUMB 1 -->
+<button class="thumb-btn" data-idx="0" aria-label="Slide 1, Blank">
+  <div class="t-frame">
+    <span class="t-media"></span>
+    <span class="live-badge">LIVE</span>
+  </div>
+  <span class="thumb-cap">1 · Blank</span>
+</button>
+<!-- THUMB 2 -->
+<button class="thumb-btn" data-idx="1" aria-label="Slide 2, Verse 1">
+  <div class="t-frame">
+    <span class="t-label">PEOPLE COME TOGETHER</span>
+    <span class="live-badge">LIVE</span>
+  </div>
+  <span class="thumb-cap">2 · Verse 1</span>
+</button>
+<!-- THUMB 3 -->
+<button class="thumb-btn" data-idx="2" aria-label="Slide 3, Verse 2">
+  <div class="t-frame">
+    <span class="t-label">STRANGE AS NEIGHBORS OUR BLOOD IS ONE</span>
+    <span class="live-badge">LIVE</span>
+  </div>
+  <span class="thumb-cap">3 · Verse 2</span>
+</button>
+<!-- THUMB 4 -->
+<button class="thumb-btn" data-idx="3" aria-label="Slide 4, Chorus">
+  <div class="t-frame">
+    <span class="t-label">WE WILL FIGHT FOR ONE ANOTHER</span>
+    <span class="live-badge">LIVE</span>
+  </div>
+  <span class="thumb-cap">4 · Chorus</span>
+</button>
+<!-- THUMB 5 -->
+<button class="thumb-btn" data-idx="4" aria-label="Slide 5, Chorus">
+  <div class="t-frame">
+    <span class="t-label">WE LIFT UP OUR PRAISE</span>
+    <span class="live-badge">LIVE</span>
+  </div>
+  <span class="thumb-cap">5 · Chorus</span>
+</button>
+<!-- THUMB 6 -->
+<button class="thumb-btn" data-idx="5" aria-label="Slide 6, Outro">
+  <div class="t-frame">
+    <span class="t-label">GOOD GRACE</span>
+    <span class="live-badge">LIVE</span>
+  </div>
+  <span class="thumb-cap">6 · Outro</span>
+</button>
+                  </div>
+                </div>
+
+                <!-- PREVIOUS / NEXT CONTROLS -->
+<div class="sim-controls">
+  <div id="simNextVoMsg" class="vo-speech-bubble" style="bottom:100%; right:0; margin-bottom:8px; width:160px;">
+    <div class="title">VOICEOVER</div>
+    <div class="body">“Next slide, button. Advances to slide 3 of 6.”</div>
+  </div>
+  <button id="btnPrev" class="sim-ctrl-btn sim-ctrl-prev" aria-label="Previous slide">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7 6h2v12H7z"></path><path d="M20 6v12L11 12z"></path></svg>
+    <span>Previous</span>
+  </button>
+  <button id="btnNext" class="sim-ctrl-btn sim-ctrl-next" aria-label="Next slide">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5v14l12-7z"></path></svg>
+    <span>Next Slide</span>
+  </button>
+</div>
+
+<!-- STAGE MESSAGE INITIATOR -->
+<button id="btnOpenStageSheet" class="sim-stage-open">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8 9.5 9.5 0 0 1-3-.5L3 21l1.5-4.5A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"></path></svg>
+  <span>Send stage message</span>
+</button>
+
+              <!-- BOTTOM TAB NAVIGATION -->
+<div class="sim-tabbar">
+  <div class="sim-tab is-active">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="11" rx="2"></rect><line x1="9" y1="20" x2="15" y2="20"></line></svg>
+    <span>Presentation</span>
+  </div>
+  <div class="sim-tab">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"></circle><line x1="12" y1="13" x2="12" y2="9"></line><line x1="12" y1="13" x2="15" y2="14.5"></line><line x1="9" y1="3" x2="15" y2="3"></line></svg>
+    <span>Timers</span>
+  </div>
+  <div class="sim-tab">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="4" y="4" width="7" height="7" rx="1.5"></rect><rect x="13" y="4" width="7" height="7" rx="1.5"></rect><rect x="4" y="13" width="7" height="7" rx="1.5"></rect><rect x="13" y="13" width="7" height="7" rx="1.5"></rect></svg>
+    <span>Macros</span>
+  </div>
+  <div class="sim-tab">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8 9.5 9.5 0 0 1-3-.5L3 21l1.5-4.5A8.4 8.4 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5z"></path></svg>
+    <span>Messages</span>
+    <span id="simBottomMsgDot" class="sim-tab-dot"></span>
+  </div>
+  <div class="sim-tab">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"></circle><circle cx="12" cy="12" r="1.7"></circle><circle cx="19" cy="12" r="1.7"></circle></svg>
+    <span>More</span>
+  </div>
+</div>
+
+              <!-- SLIDE-UP STAGE MESSAGE MODAL SHEET -->
+<div id="simSheet" class="sim-sheet">
+  <div id="simSheetBackdrop" class="sim-sheet-backdrop"></div>
+  <div class="sim-sheet-panel">
+    <div class="sim-sheet-grabber"></div>
+    <div class="sim-sheet-head">
+      <span class="title">Stage message</span>
+      <button id="btnCancelSheet" class="sim-sheet-cancel">Cancel</button>
+    </div>
+    <div class="sim-sheet-eyebrow">Quick messages</div>
+    <div class="sim-presets">
+      <button class="preset-btn" data-text="2 minutes remaining">2 mins left</button>
+      <button class="preset-btn" data-text="Please wrap up">Wrap up</button>
+      <button class="preset-btn" data-text="Move to next song">Next song</button>
+    </div>
+    <textarea id="simTextArea" class="sim-textarea" placeholder="Type a message for the stage…"></textarea>
+    <button id="btnSendToStage" class="sim-sheet-send">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      <span>Send to stage</span>
+    </button>
+  </div>
+</div>
+
+            <!-- TOAST NOTIFICATION -->
+<div id="simToast" class="sim-toast">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34C759" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+  <span>Message sent to stage</span>
+</div>
+
+            </div>
+
+          </div>
+        </div>
       <dl class="numbers reveal" style="margin-top: 2rem;">
         <div class="num-row">
           <dt>01 · Absolute contrast compliance</dt>
@@ -560,11 +655,6 @@
         </div>
       </dl>
 
-      <div style="text-align: center; margin-top: 3.4rem;" class="reveal">
-        <a href="#top" class="nav-cta" style="display:inline-flex; align-items:center; gap:8px;" data-hover>
-          Interact with Hero Prototype &rarr;
-        </a>
-      </div>
     </div>
   </section>
 
@@ -736,7 +826,7 @@
           <h4>Case Studies</h4>
           <ul>
             <li><a href="closing-the-care-gap.html">Closing the Care Gap</a></li>
-            <li><a href="propresenter-remote.html">ProPresenter Remote</a></li>
+            <li><a href="propresenter-remote.html">Rethink the Remote</a></li>
           </ul>
         </nav>
         <nav class="sf-col" aria-label="Connect">
@@ -756,305 +846,12 @@
 
 </main>
 
-<!-- ───────── GLOBAL PORTFOLIO JS scripts ───────── -->
-<script>
-  // Nav scroll progress bar
-  var readProgress = document.getElementById('readProgress');
-  function onScrollProgress() {
-    var h = document.documentElement;
-    var scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight || 1);
-    readProgress.style.width = (Math.min(1, Math.max(0, scrolled)) * 100) + '%';
-  }
-  window.addEventListener('scroll', onScrollProgress, { passive: true });
-  onScrollProgress();
-
-  // Section scrollspy for sticky TOC
-  var tocLinks = Array.prototype.slice.call(document.querySelectorAll('.toc-link'));
-  var spyTargets = tocLinks.map(function (a) {
-    return document.getElementById(a.getAttribute('href').slice(1));
-  }).filter(Boolean);
-  var spy = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) {
-        var id = e.target.id;
-        tocLinks.forEach(function (a) {
-          a.classList.toggle('is-active', a.getAttribute('href') === '#' + id);
-        });
-      }
-    });
-  }, { rootMargin: '-130px 0px -60% 0px', threshold: 0 });
-  spyTargets.forEach(function (s) { spy.observe(s); });
-
-  // Reveal on scroll
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-  document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
-</script>
-
+<!-- ─<!-- Shared case-study behavior: progress bar, TOC scrollspy, reveal-on-scroll -->
+<script src="js/case-study.js"></script>
 <script src="js/nav.js"></script>
 
-<!-- ───────── INTERACTIVE SIMULATOR CONTROLLER ───────── -->
-<script>
-  (function () {
-    // STATE
-    var state = {
-      idx: 1,
-      sheetOpen: false,
-      draft: '',
-      stageMsg: null,
-      scale: 'default',
-      vo: false,
-      toast: null,
-      toastTimer: null
-    };
+<!-- Interactive prototype simulator -->
+  <script src="js/propresenter-remote.js"></script>
 
-    // DATA
-    var slides = [
-      { label: 'Blank', kind: 'media', text: '' },
-      { label: 'Verse 1', kind: 'lyric', text: 'PEOPLE COME TOGETHER' },
-      { label: 'Verse 2', kind: 'lyric', text: 'STRANGE AS NEIGHBORS\nOUR BLOOD IS ONE' },
-      { label: 'Chorus', kind: 'lyric', text: 'WE WILL FIGHT FOR ONE ANOTHER' },
-      { label: 'Chorus', kind: 'lyric', text: 'WE LIFT UP OUR PRAISE' },
-      { label: 'Outro', kind: 'lyric', text: 'GOOD GRACE' }
-    ];
-
-    // ELEMENTS
-    var simApp = document.getElementById('simApp');
-    var simBody = document.getElementById('simBody');
-    var txtNextUpTitle = document.getElementById('txtNextUpTitle');
-    var simLiveMediaBg = document.getElementById('simLiveMediaBg');
-    var simLiveLyrics = document.getElementById('simLiveLyrics');
-    var simLiveLyricsText = document.getElementById('simLiveLyricsText');
-    var simLivePosLabel = document.getElementById('simLivePosLabel');
-    var simLiveSlideLabel = document.getElementById('simLiveSlideLabel');
-    
-    var btnPrev = document.getElementById('btnPrev');
-    var btnNext = document.getElementById('btnNext');
-    var simNextVoMsg = document.getElementById('simNextVoMsg');
-    
-    var btnOpenStageSheet = document.getElementById('btnOpenStageSheet');
-    var simSheet = document.getElementById('simSheet');
-    var simSheetBackdrop = document.getElementById('simSheetBackdrop');
-    var btnCancelSheet = document.getElementById('btnCancelSheet');
-    var btnSendToStage = document.getElementById('btnSendToStage');
-    var simTextArea = document.getElementById('simTextArea');
-    var simBottomMsgDot = document.getElementById('simBottomMsgDot');
-    var simStageMsgBar = document.getElementById('simStageMsgBar');
-    var simStageMsgText = document.getElementById('simStageMsgText');
-    var btnClearStageMsg = document.getElementById('btnClearStageMsg');
-    
-    var simToast = document.getElementById('simToast');
-
-    var thumbs = document.querySelectorAll('.thumb-btn');
-
-    // RENDER FUNCTIONS
-    function render() {
-      var cur = slides[state.idx];
-      var total = slides.length;
-
-      // 1. Render Preview Area
-      if (cur.kind === 'media') {
-        simLiveMediaBg.style.display = 'block';
-        simLiveLyrics.style.display = 'none';
-      } else {
-        simLiveMediaBg.style.display = 'none';
-        simLiveLyrics.style.display = 'flex';
-        
-        // Render lyric lines
-        simLiveLyricsText.innerHTML = '';
-        var lines = cur.text.split('\n');
-        lines.forEach(function (line) {
-          var span = document.createElement('span');
-          span.style.cssText = 'font-size:17px; font-weight:600; letter-spacing:0.04em; color:#fff; text-align:center; line-height:1.25;';
-          span.textContent = line;
-          simLiveLyricsText.appendChild(span);
-        });
-      }
-
-      simLivePosLabel.textContent = 'Slide ' + (state.idx + 1) + ' of ' + total;
-      simLiveSlideLabel.textContent = cur.label;
-
-      // 2. Next Up Label
-      if (state.idx < total - 1) {
-        txtNextUpTitle.textContent = slides[state.idx + 1].label;
-        simNextVoMsg.querySelector('.body').textContent = '“Next slide, button. Advances to slide ' + (state.idx + 2) + ' of ' + total + '.”';
-      } else {
-        txtNextUpTitle.textContent = 'End of Playlist';
-        simNextVoMsg.querySelector('.body').textContent = '“Next slide, button. This is the last slide.”';
-      }
-
-      // 3. Update Thumbnails Active Rings
-      thumbs.forEach(function (thumb, idx) {
-        var tFrame = thumb.querySelector('.t-frame');
-        var liveBadge = thumb.querySelector('.live-badge');
-        
-        if (idx === state.idx) {
-          tFrame.style.border = '2px solid #EA6A2E';
-          liveBadge.style.display = 'block';
-          thumb.setAttribute('aria-label', 'Slide ' + (idx + 1) + ', ' + slides[idx].label + ', currently live');
-        } else {
-          tFrame.style.border = '1px solid rgba(255,255,255,0.10)';
-          liveBadge.style.display = 'none';
-          thumb.setAttribute('aria-label', 'Slide ' + (idx + 1) + ', ' + slides[idx].label);
-        }
-      });
-
-      // 4. On stage message state
-      if (state.stageMsg) {
-        simStageMsgBar.style.display = 'flex';
-        simStageMsgText.textContent = state.stageMsg;
-        simBottomMsgDot.style.display = 'block';
-      } else {
-        simStageMsgBar.style.display = 'none';
-        simBottomMsgDot.style.display = 'none';
-      }
-
-      // 5. Toast
-      if (state.toast) {
-        simToast.querySelector('span').textContent = state.toast;
-        simToast.style.display = 'flex';
-      } else {
-        simToast.style.display = 'none';
-      }
-    }
-
-    // ACTIONS
-    function selectSlide(idx) {
-      if (idx >= 0 && idx < slides.length) {
-        state.idx = idx;
-        render();
-      }
-    }
-
-    function triggerToast(msg) {
-      if (state.toastTimer) {
-        clearTimeout(state.toastTimer);
-      }
-      state.toast = msg;
-      render();
-      state.toastTimer = setTimeout(function () {
-        state.toast = null;
-        render();
-      }, 2600);
-    }
-
-    // EVENT BINDINGS
-    btnPrev.addEventListener('click', function () {
-      if (state.idx > 0) {
-        selectSlide(state.idx - 1);
-      }
-    });
-
-    btnNext.addEventListener('click', function () {
-      if (state.idx < slides.length - 1) {
-        selectSlide(state.idx + 1);
-      }
-    });
-
-    thumbs.forEach(function (thumb) {
-      thumb.addEventListener('click', function () {
-        var idx = parseInt(thumb.getAttribute('data-idx'));
-        selectSlide(idx);
-      });
-    });
-
-    // Stage Message Sheet
-    btnOpenStageSheet.addEventListener('click', function () {
-      simSheet.style.display = 'flex';
-      simTextArea.value = state.draft;
-      simTextArea.focus();
-    });
-
-    function closeSheet() {
-      simSheet.style.display = 'none';
-      state.draft = '';
-    }
-
-    btnCancelSheet.addEventListener('click', closeSheet);
-    simSheetBackdrop.addEventListener('click', closeSheet);
-
-    simTextArea.addEventListener('input', function (e) {
-      state.draft = e.target.value;
-      if (state.draft.trim().length > 0) {
-        btnSendToStage.style.background = '#EA6A2E';
-        btnSendToStage.style.color = '#0A0A0B';
-      } else {
-        btnSendToStage.style.background = '#2C2C2E';
-        btnSendToStage.style.color = '#6E6E73';
-      }
-    });
-
-    // Presets
-    var presets = document.querySelectorAll('.preset-btn');
-    presets.forEach(function (preset) {
-      preset.addEventListener('click', function () {
-        var text = preset.getAttribute('data-text');
-        simTextArea.value = text;
-        state.draft = text;
-        btnSendToStage.style.background = '#EA6A2E';
-        btnSendToStage.style.color = '#0A0A0B';
-        simTextArea.focus();
-      });
-    });
-
-    btnSendToStage.addEventListener('click', function () {
-      var msg = simTextArea.value.trim();
-      if (msg) {
-        state.stageMsg = msg;
-        closeSheet();
-        triggerToast('Message sent to stage');
-      }
-    });
-
-    btnClearStageMsg.addEventListener('click', function () {
-      state.stageMsg = null;
-      render();
-    });
-
-    // Gesture list interactive hooks
-    var gestItems = document.querySelectorAll('.gesture-item');
-    gestItems.forEach(function (item) {
-      item.addEventListener('click', function () {
-        gestItems.forEach(function (i) { i.classList.remove('active'); });
-        item.classList.add('active');
-
-        var id = item.id;
-        var idx = item.getAttribute('data-idx');
-        if (idx !== null) {
-          selectSlide(parseInt(idx));
-        } else if (id === 'gestNext') {
-          if (state.idx < slides.length - 1) selectSlide(state.idx + 1);
-        } else if (id === 'gestPrev') {
-          if (state.idx > 0) selectSlide(state.idx - 1);
-        } else if (id === 'gestMsg') {
-          // Toggle stage message
-          if (state.stageMsg) {
-            state.stageMsg = null;
-            render();
-          } else {
-            // Trigger quick message presets automatically
-            state.stageMsg = 'Please wrap up';
-            triggerToast('Message sent to stage');
-          }
-        } else if (id === 'gestScale') {
-          // Cycle scales
-          if (state.scale === 'default') {
-            setScale('large', btnScaleLarge);
-          } else if (state.scale === 'large') {
-            setScale('xl', btnScaleXl);
-          } else {
-            setScale('default', btnScaleDefault);
-          }
-        }
-      });
-    });
-
-    // Initial render
-    render();
-  })();
-</script>
 </body>
 </html>

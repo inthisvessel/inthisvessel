@@ -644,7 +644,7 @@
         </button>
         <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies">
   <a href="closing-the-care-gap.html" class="work-menu-item" role="menuitem">Closing the Care Gap</a>
-  <a href="first-service.html" class="work-menu-item" role="menuitem">First Service</a>
+  <a href="propresenter-remote.html" class="work-menu-item" role="menuitem">Rethink the Remote</a>
 </div>
       </div>
       <a class="nav-link" href="about.html" data-hover>
@@ -861,7 +861,7 @@
       <h4>Case Studies</h4>
       <ul>
         <li><a href="closing-the-care-gap.html">Closing the Care Gap</a></li>
-        <li><a href="first-service.html">First Service</a></li>
+        <li><a href="propresenter-remote.html">Rethink the Remote</a></li>
       </ul>
     </nav>
     <nav class="sf-col" aria-label="Connect">
@@ -887,7 +887,7 @@
       <div class="about-nav-links">
         <button class="about-nav-link hide-mobile" data-close-about data-href="#work" data-hover>Work</button>
         <a class="about-nav-link hide-mobile" href="closing-the-care-gap.html" data-hover>Care Gap</a>
-        <a class="about-nav-link hide-mobile" href="first-service.html" data-hover>First Service</a>
+        <a class="about-nav-link hide-mobile" href="propresenter-remote.html" data-hover>Rethink the Remote</a>
         <button class="about-nav-cta hide-mobile" data-close-about data-href="#contact" data-hover>Contact</button>
       </div>
     </div>
@@ -995,7 +995,7 @@ const caseStudies = [
     label: "Health Equity",
     title: "Closing the Care Gap",
     desc: "Redesigning preventive care workflows to reduce disparities in underserved communities.",
-    summary: "Rebuilt the referral workflow at a community clinic so uninsured patients stop falling through the cracks.",
+    summary: "Created the referral workflow at a community clinic so uninsured patients stop falling through the cracks.",
     outcomeHighlight: "73% lift in patient follow-through",
     tags: ["Service Design", "Health Equity", "Research"],
     accent: "#4F7A86",
@@ -1028,33 +1028,44 @@ const caseStudies = [
     stat: { number: "73%", description: "increase in preventive care follow-through among non-English speaking patients within six months of launch" },
     outcome: "The redesigned care journey resulted in a 73% improvement in appointment follow-through among non-English speaking patients — a population that had historically been 3× more likely to miss preventive screenings. Wait times at check-in dropped by 40%. Care coordinators reported spending less time on administrative re-scheduling and more time on direct patient support. This project shaped my conviction that behavioral psychology is not separate from UX — it is UX.",
     prev: null,
-    next: { label: "First Service", id: "first-service" }
+    next: { label: "ProPresenter Remote", id: "propresenter-remote" }
   },
   {
-    id: "first-service",
-    label: "Product · Onboarding",
-    title: "First Service",
-    desc: "Redesigning the first hour at the controls of ProPresenter so a last-minute volunteer can run a live church service without fear of breaking it.",
-    summary: "Reworking ProPresenter's first hour so a last-minute volunteer can run a live service without fear of breaking it.",
-    outcomeHighlight: "Projected task success ~55% → 90%+",
-    tags: ["Product Design", "Onboarding", "Information Architecture"],
-    accent: "#C2783C",
+    id: "propresenter-remote",
+    label: "Accessibility · Redesign",
+    title: "Rethink the Remote",
+    desc: "An accessibility-first redesign of the ProPresenter Remote, raising contrast, resolving fixed type truncation, and bringing complete VoiceOver screen-reader support.",
+    summary: "Rebuilding ProPresenter Remote with 7.8:1 primary contrast, VoiceOver descriptions, and Dynamic Type scaling.",
+    outcomeHighlight: "2.7:1 → 7.8:1 contrast lift",
+    tags: ["UX Design", "Accessibility", "Research"],
+    accent: "#EA6A2E",
     num: "02",
-    role: "UX Designer (solo)",
-    duration: "4 weeks",
-    skill: "Behavior Design",
+    role: "Product / UX Designer (Solo)",
+    duration: "2 weeks",
+    skill: "Accessibility Design",
     snapshot: {
-      problem: "ProPresenter's power-user depth strands the anxious volunteer running a live service alone.",
-      approach: "Reframed onboarding as ability under pressure (Fogg): a focused view, a safe practice mode, one-tap recovery.",
-      outcome: "Projected task success ~55% → 90%+, with a recoverable path for every destructive action. (Concept · pending pilot.)"
+      problem: "Icon-only controls and low-contrast elements leave dim-room screen-readers and volunteers guessing.",
+      approach: "Focused on VoiceOver and Dynamic Type: contrast-compliant branding, always-on text labels, and layouts that absorb larger type.",
+      outcome: "Contrast raised past WCAG AA to 7.8:1, always-on labels, and 100% VoiceOver coverage."
     },
-    subtitle: "Redesigning ProPresenter's first-run experience so a volunteer can run a live service without fear.",
-    fullLabel: "Product Design · Onboarding · Renewed Vision",
-    overview: [],
-    challenge: "",
-    steps: [],
-    stat: { number: "", description: "" },
-    outcome: "",
+    subtitle: "An accessibility-first redesign of the ProPresenter Remote.",
+    fullLabel: "Accessibility · Redesign · Concept",
+    overview: [
+      { label: "Role", value: "Product / UX Designer (Solo)" },
+      { label: "Timeline", value: "2 Weeks" },
+      { label: "Platform", value: "iOS & iPadOS" },
+      { label: "Focus", value: "VoiceOver & Dynamic Type" },
+      { label: "Outcome", value: "7.8:1 contrast lift" }
+    ],
+    challenge: "The ProPresenter Remote is used in dark production booths where visual clarity and screen-reader accessibility are essential. However, the existing app suffered from white-on-orange text (2.7:1 contrast), icon-only controls without labels or screen-reader hints, and a fixed font size that truncated text when scaled. The challenge was to resolve these issues while maintaining the brand's identity.",
+    steps: [
+      { num: "01", title: "Accessibility Audit", body: "Conducted a thorough WCAG 2.2 audit on the remote interface to identify contrast, resizing, and VoiceOver gaps. Evaluated user complaints from app stores regarding interface legibility." },
+      { num: "02", title: "Contrast Refactoring", body: "Re-skinned branding assets by changing white text to dark-slate on orange fills, improving the contrast ratio from 2.7:1 to 7.8:1 without losing the orange brand color." },
+      { num: "03", title: "Layout Optimization", body: "Redesigned presentation screens to dynamically shift and grow. Converted icon-only controls to include always-on labels, preventing text truncation at default and large font scales." },
+      { num: "04", title: "Prototype & Test", body: "Built an interactive simulator using HTML/CSS/JS to test layouts under various Dynamic Type sizes (Default, Large, XL) and screen-reader (VoiceOver) outputs." }
+    ],
+    stat: { number: "7.8:1", description: "primary control contrast ratio reached, moving from 2.7:1 to well beyond WCAG AA standards" },
+    outcome: "The redesigned Remote screen makes every control accessible. Flip on VoiceOver to hear exact cues or scale text to XL without breaking the visual grid.",
     prev: { label: "Closing the Care Gap", id: "care-gap" },
     next: null
   }
@@ -1104,7 +1115,7 @@ function renderCS() {
 
 // case-study id → standalone page (future projects auto-appear in the nav dropdown
 // and the work grid simply by adding to the caseStudies array above)
-const CS_HREF = { 'care-gap': 'closing-the-care-gap.html', 'first-service': 'first-service.html' };
+const CS_HREF = { 'care-gap': 'closing-the-care-gap.html', 'propresenter-remote': 'propresenter-remote.html' };
 function csHref(cs) { return CS_HREF[cs.id] || (cs.id + '.html'); }
 
 function renderNavMenu() {
@@ -1215,7 +1226,7 @@ function renderCaseStudy(id) {
 
 function openCaseStudy(id) {
   if (id === 'care-gap') { window.location.href = 'closing-the-care-gap.html'; return; }
-  if (id === 'first-service') { window.location.href = 'first-service.html'; return; }
+  if (id === 'propresenter-remote') { window.location.href = 'propresenter-remote.html'; return; }
   renderCaseStudy(id);
   const ov = document.getElementById('csOverlay');
   ov.scrollTop = 0; ov.classList.add('open');
@@ -1243,7 +1254,19 @@ function initReveal(scope) {
 // ───────── NAV BEHAVIOR ─────────
 function initNav() {
   const nav = document.getElementById('nav');
-  const onScroll = () => { if (window.scrollY > 40) nav.classList.add('scrolled'); else nav.classList.remove('scrolled'); };
+  let lastScrollY = window.scrollY;
+  const onScroll = () => {
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 40);
+    if (y < 80) {
+      nav.classList.remove('nav-hidden');      // always visible near the top
+    } else if (y > lastScrollY) {
+      nav.classList.add('nav-hidden');         // scrolling down
+    } else if (y < lastScrollY) {
+      nav.classList.remove('nav-hidden');      // scrolling up
+    }
+    lastScrollY = y;
+  };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
@@ -1402,6 +1425,7 @@ function resetUIState() {
   if (ring) ring.classList.remove('hide', 'lg');
   const nav = document.getElementById('nav');
   if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
+  if (nav) nav.classList.remove('nav-hidden');
 }
 // Clean the snapshot before it is frozen for bfcache…
 window.addEventListener('pagehide', resetUIState);
