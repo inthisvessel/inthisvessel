@@ -1,7 +1,7 @@
 (function () {
   const caseStudies = [
     { title: 'Closing the Care Gap', sub: 'Health equity · service design', href: 'closing-the-care-gap.html' },
-    { title: 'First Service', sub: 'ProPresenter onboarding · Renewed Vision', href: 'first-service.html' }
+    { title: 'Rethink the Remote', sub: 'Accessibility redesign · concept', href: 'propresenter-remote.html' }
   ];
   const here = location.pathname.split('/').pop() || 'index.html';
 
@@ -15,13 +15,31 @@
     }).join('');
   }
 
-  // Scroll listener for scrolled state
+// Scroll listener: scrolled state + hide on scroll down, show on scroll up
   const nav = document.getElementById('nav');
+  const toc = document.getElementById('toc');
+  let lastScrollY = window.scrollY;
   const onScroll = () => {
-    if (nav) {
-      if (window.scrollY > 40) nav.classList.add('scrolled');
-      else nav.classList.remove('scrolled');
+    if (!nav) return;
+    const y = window.scrollY;
+
+    // frosted background once we're past the top
+    nav.classList.toggle('scrolled', y > 40);
+    const setHidden = (hidden) => {
+      nav.classList.toggle('nav-hidden', hidden);
+      if (toc) toc.classList.toggle('nav-hidden', hidden);
+    };
+
+    // fade out scrolling down, fade in scrolling up
+    if (y < 80) {
+      setHidden(false);                        // always visible near the top
+    } else if (y > lastScrollY) {
+      setHidden(true);                         // scrolling down
+    } else if (y < lastScrollY) {
+      setHidden(false);                        // scrolling up
     }
+
+    lastScrollY = y;
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();

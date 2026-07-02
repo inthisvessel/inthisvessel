@@ -60,9 +60,20 @@ function initNav() {
   const workMenu = document.getElementById('workMenu');
   const workChev = document.getElementById('workChev');
 
-  // Scrolled state
+// Scrolled state + hide on scroll down, show on scroll up
+  let lastScrollY = window.scrollY;
   function updateNav() {
-    if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
+    if (!nav) return;
+    const y = window.scrollY;
+    nav.classList.toggle('scrolled', y > 40);
+    if (y < 80) {
+      nav.classList.remove('nav-hidden');      // always visible near the top
+    } else if (y > lastScrollY) {
+      nav.classList.add('nav-hidden');         // scrolling down
+    } else if (y < lastScrollY) {
+      nav.classList.remove('nav-hidden');      // scrolling up
+    }
+    lastScrollY = y;
   }
   window.addEventListener('scroll', updateNav, { passive: true });
   updateNav();
@@ -115,7 +126,7 @@ function initNav() {
 // ── Case Studies Nav Dropdown ──
 const caseStudies = [
   { title: 'Closing the Care Gap', fullLabel: 'Health Equity · Service Design', href: 'closing-the-care-gap.html' },
-  { title: 'First Service', fullLabel: 'Product Design · Onboarding', href: 'first-service.html' },
+  { title: 'Rethink the Remote', fullLabel: 'Accessibility · Redesign · Concept', href: 'propresenter-remote.html' },
 ];
 
 function renderNavMenu() {
