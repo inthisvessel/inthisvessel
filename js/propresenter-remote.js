@@ -23,9 +23,6 @@
     ];
 
     // ELEMENTS
-    var simApp = document.getElementById('simApp');
-    var simBody = document.getElementById('simBody');
-    var txtNextUpTitle = document.getElementById('txtNextUpTitle');
     var simLiveMediaBg = document.getElementById('simLiveMediaBg');
     var simLiveLyrics = document.getElementById('simLiveLyrics');
     var simLiveLyricsText = document.getElementById('simLiveLyricsText');
@@ -116,10 +113,8 @@
       // 5. Toast
       if (state.toast) {
         simToast.querySelector('span').textContent = state.toast;
-        simToast.style.display = 'flex';
-      } else {
-        simToast.style.display = 'none';
       }
+      simToast.classList.toggle('show', !!state.toast);
     }
 
     // ACTIONS
@@ -239,15 +234,6 @@
             // Trigger quick message presets automatically
             state.stageMsg = 'Please wrap up';
             triggerToast('Message sent to stage');
-          }
-        } else if (id === 'gestScale') {
-          // Cycle scales
-          if (state.scale === 'default') {
-            setScale('large', btnScaleLarge);
-          } else if (state.scale === 'large') {
-            setScale('xl', btnScaleXl);
-          } else {
-            setScale('default', btnScaleDefault);
           }
         }
       });
