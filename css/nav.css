@@ -1,7 +1,7 @@
   /* ── Nav ── */
   .nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 80;
-    transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease, opacity 0.35s ease, transform 0.35s ease;
+    transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, opacity 0.3s ease-out, transform 0.3s ease-out;
   }
   .nav.nav-hidden {
     opacity: 0;
@@ -35,6 +35,7 @@
     font-weight: 600; transition: background 0.2s, transform 0.2s; border: none;
   }
   .nav-cta:hover { background: var(--shell-accent-deep); transform: translateY(-1px); }
+  .nav-cta:active { transform: translateY(-1px) scale(0.97); }
 
   /* hamburger (mobile) */
   .nav-burger { display: none; flex-direction: column; justify-content: center; gap: 5px; width: 40px; height: 40px; padding: 8px; background: none; border: none; cursor: pointer; }
@@ -71,7 +72,8 @@
     border: 1px solid var(--glass-edge); border-radius: 16px;
     box-shadow: var(--glass-shadow), var(--glass-inset); padding: 8px; overflow: hidden;
     opacity: 0; transform: translateY(-8px) scale(0.97); pointer-events: none;
-    transition: opacity 0.18s, transform 0.18s;
+    transition: opacity 0.18s cubic-bezier(0.23,1,0.32,1), transform 0.18s cubic-bezier(0.23,1,0.32,1);
+    transform-origin: top right;
   }
   .work-menu.open { opacity: 1; transform: none; pointer-events: auto; }
   .work-item {
