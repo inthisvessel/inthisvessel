@@ -399,11 +399,26 @@ function renderCS() {
         </div>
         <h3 class="cs-title">${cs.title}</h3>
         <p class="cs-summary">${cs.summary || cs.desc}</p>
-        <div class="cs-foot">
-          ${cs.outcomeHighlight ? `<div class="cs-outcome" style="--cs-accent:${cs.accent}">
+       <div class="cs-foot">
+          ${cs.id === 'propresenter-remote' ? `
+          <div class="cs-mockup" aria-hidden="true">
+            <div class="cs-phone cs-phone-back">
+              <div class="cs-phone-screen">
+                <div class="cs-phone-island"></div>
+                <img src="images/remote-back.webp" alt="" loading="lazy">
+              </div>
+            </div>
+            <div class="cs-phone cs-phone-front">
+              <div class="cs-phone-screen">
+                <div class="cs-phone-island"></div>
+                <img src="images/remote-front.webp" alt="" loading="lazy">
+              </div>
+            </div>
+          </div>
+          ` : (cs.outcomeHighlight ? `<div class="cs-outcome" style="--cs-accent:${cs.accent}">
             <span class="cs-outcome-dot" aria-hidden="true"></span>
             <span class="cs-outcome-text">${cs.outcomeHighlight}</span>
-          </div>` : ''}
+          </div>` : '')}
           <div class="cs-cta" style="color:${cs.accent}">View Case Study ${ICON.arrow}</div>
         </div>
       </a>
