@@ -578,7 +578,16 @@
   .pill-scheduled { background: rgba(44,110,114,0.16);  color: var(--teal-deep); }
   .pill-closed    { background: rgba(24,74,78,0.16);    color: var(--teal-deep); }
   .tracker__cap { font-family: var(--serif); font-style: italic; font-weight: 300; color: var(--ink-faint); font-size: 0.92rem; margin: 1.1rem 0 0; max-width: 620px; }
-
+  /* hero tracker preview — mirrors the ProPresenter hero preview pattern */
+  .hero .hero-tracker { display: block; color: inherit; }
+  .hero .hero-tracker .tracker { margin-top: 0; transition: box-shadow 0.25s ease, transform 0.25s ease; }
+  .hero .hero-tracker:hover .tracker { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+  .hero-tracker__cta {
+    display: inline-block; margin-top: 0.9rem;
+    font-family: var(--sans); font-size: 0.66rem; font-weight: 700;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--coral);
+  }
+  .hero .hero-tracker:hover .hero-tracker__cta { color: var(--coral-deep); }
   /* ───────── Outcomes ───────── */
   .headline-stat { margin: 1.8rem 0 2.6rem; display: flex; flex-direction: column; gap: 0.5rem; }
   .headline-stat .big { font-family: var(--serif); font-weight: 400; font-size: clamp(1.9rem, 4.4vw, 3rem); line-height: 1.05; color: var(--ink); margin: 0; }
