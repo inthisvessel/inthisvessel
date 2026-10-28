@@ -1,140 +1,245 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>In This Vessel | UX + Product Design</title>
-<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/nav.css">
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/about.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>About Jenny · In This Vessel</title>
+<meta name="description" content="Jenny Negrete: psychology-trained product designer in Atlanta. Background, path, credentials and what she's into right now.">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+<style>
+/* page-specific: ripple art, shuffle deck, path, shelf */
+.ripple{position:relative;overflow:hidden;min-width:0}
+.ripple canvas{display:block;width:100%;height:440px;cursor:pointer;touch-action:pan-y}
+.ripple .lab{position:absolute;left:20px;right:20px;top:18px;display:flex;justify-content:space-between;color:var(--muted);pointer-events:none}
+.ripple .word{position:absolute;left:0;right:0;bottom:22px;text-align:center;font-family:var(--display);font-size:22px;pointer-events:none;transition:opacity .5s}
+@media (max-width:900px){.ripple canvas{height:340px}}
 
+/* deck */
+.deck-wrap{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+@media (max-width:820px){.deck-wrap{grid-template-columns:1fr}}
+.deck{position:relative;height:300px;max-width:420px;width:100%;justify-self:center;cursor:pointer}
+.dcard{position:absolute;inset:0;border-radius:26px;padding:30px;display:flex;flex-direction:column;gap:14px;border:1px solid var(--line);box-shadow:var(--shadow);transition:transform .55s cubic-bezier(.2,.8,.2,1),opacity .4s;background:var(--surface-solid)}
+.dcard .k{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.dcard h3{font-size:clamp(26px,3vw,34px);line-height:1.15}
+.dcard p{color:var(--muted);margin-top:auto}
+.dcard.c0{background:var(--peri)}.dcard.c1{background:var(--blush)}.dcard.c2{background:var(--mist)}.dcard.c3{background:var(--surface-solid)}
+.deck-ctrl{display:flex;gap:10px;align-items:center;margin-top:24px;flex-wrap:wrap}
+.dots{display:flex;gap:6px}
+.dots i{width:8px;height:8px;border-radius:50%;background:var(--line);transition:background .3s,transform .3s}
+.dots i.on{background:var(--accent);transform:scale(1.3)}
+
+/* path */
+.path{position:relative;display:flex;flex-direction:column;gap:0;border-left:1px solid var(--line);margin-left:8px}
+.step{position:relative;padding:0 0 34px 34px}
+.step::before{content:"";position:absolute;left:-7px;top:6px;width:13px;height:13px;border-radius:50%;background:var(--bg);border:2px solid var(--accent);transition:background .4s}
+.step.lit::before{background:var(--accent)}
+.step small{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.step h3{font-size:24px;margin-top:4px}
+.step p{color:var(--muted);margin-top:6px;max-width:52ch}
+.path-fill{position:absolute;left:-1px;top:0;width:2px;background:var(--accent);height:0}
+
+/* shelf */
+.shelf{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media (max-width:860px){.shelf{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.shelf{grid-template-columns:1fr}}
+.item{padding:24px;display:flex;flex-direction:column;gap:8px;transform-style:preserve-3d;transition:transform .25s ease-out;will-change:transform;min-height:170px}
+.item .k{font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.item h3{font-size:24px}
+.item p{color:var(--muted);font-size:14.5px;margin-top:auto}
+.item .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--bg-2)}
+.item .ic svg{width:20px;height:20px;stroke:var(--ink);fill:none;stroke-width:1.6}
+.creds{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+@media (max-width:760px){.creds{grid-template-columns:1fr 1fr}}
+@media (max-width:440px){.creds{grid-template-columns:1fr}}
+.cred{padding:16px 18px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);font-size:15px;font-weight:500}
+.cred small{display:block;color:var(--muted);font-weight:400;font-size:12.5px;margin-top:2px}
+.cta-band{padding:44px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:center;background:var(--ink);color:var(--bg);border-radius:var(--r-lg)}
+.cta-band h2{font-size:clamp(34px,4.6vw,60px);font-weight:400}
+.cta-band .btn.primary{background:var(--bg);color:var(--ink)}
+@media (max-width:700px){.cta-band{grid-template-columns:1fr;padding:30px}}
+</style>
 </head>
-
 <body>
-  <a class="skip-link" href="#mainContent">Skip to content</a>
-    <!-- ambient backdrop -->
-<div class="atmos" aria-hidden="true">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+<div class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="index.html" aria-label="In This Vessel, home">
+      <svg class="vessel" viewBox="0 0 26 30" aria-hidden="true"><defs><clipPath id="vclip"><path d="M5 2h16v4c0 2 3 4 3 9v8a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5v-8c0-5 3-7 3-9z"/></clipPath></defs><g clip-path="url(#vclip)"><rect id="vfill" x="0" y="30" width="26" height="30" fill="var(--accent)" opacity=".55"/></g><path d="M5 2h16v4c0 2 3 4 3 9v8a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5v-8c0-5 3-7 3-9z" fill="none" stroke="var(--ink)" stroke-width="1.6"/></svg>
+      In This Vessel
+    </a>
+    <nav class="links glass" aria-label="Site"><a href="index.html#work">Work</a><a href="care-gap.html">Care Gap</a><a href="remote.html">Remote</a><a href="about.html" aria-current="page">About</a><a href="index.html#contact">Contact</a></nav>
+    <div class="status"><i class="dot"></i><span>Open to roles · Fall 2026</span></div>
+  </div>
+  <div class="readbar"></div>
 </div>
-<div class="grain" aria-hidden="true"></div>
-    <nav class="nav" id="nav" aria-label="Primary">
-  <div class="nav-inner">
-    <a class="nav-logo" href="#top" data-scroll="#top" data-hover>In This Vessel</a>
-    <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="nav-links" id="navLinks">
-      <button class="nav-link" data-scroll="#top" data-hover>Home</button>
-      <div class="work-dropdown" id="workDD">
-       <button class="nav-link" id="workToggle" aria-haspopup="true" aria-expanded="false" data-hover>
-          Case Studies
-          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--shell-accent);transition:transform 0.2s" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies"></div>
+
+<main>
+  <section class="phero">
+    <div class="wrap hero-split">
+      <div>
+        <div class="eyebrow">About me</div>
+        <h1>The mind behind <span class="mark m">the vessel</span></h1>
+        <p class="lede">What shapes the way I think, what I'm into right now, and the path that led me to design.</p>
       </div>
-      <a class="nav-link active" href="about.html" aria-current="page">
-    About
-</a>
-<a class="nav-link" href="index.html#resume">Resume</a>
-      <a class="nav-cta" href="index.html#contact">Contact</a>
+      <figure class="ripple glass" style="margin:0">
+        <div class="lab"><span class="mono">STILL WATER</span><span class="mono">tap to drop a thought</span></div>
+        <canvas id="rip" aria-hidden="true"></canvas>
+        <div class="word" id="word">Observe</div>
+      </figure>
     </div>
-  </div>
-</nav>
+  </section>
 
-  <main class="about-page" id="mainContent">
-    <div class="about-page-inner">
-      <div class="about-eyebrow reveal">About me</div>
-      <h1 class="about-hero reveal">The <em>mind</em> behind the <em>vessel</em></h1>
-      <p class="about-lede reveal">What shapes the way I think, what I'm into right now, and the path that led me to design.</p>
-
-      <div class="about-roots-grid">
-        <div>
-          <div class="about-eyebrow reveal">Background</div>
-          <p class="about-pull reveal">Every role I've held has been about the same thing: seeing who the system leaves behind and figuring out why.</p>
-          <p class="about-body reveal">From coordinating patient referrals at a community health clinic to working the fraud lines at a bank, I've spent years in the spaces where systems meet real people.</p>
-        </div>
-        <div class="reveal credentials-card">
-          <div class="about-eyebrow" style="margin-bottom:1rem">Credentials</div>
-          <ul class="cred-list">
-            <li>B.S. Psychology</li>
-            <li>Women in Tech Campus Mentee</li>
-            <li>Google User Experience Foundations</li>
-            <li>Agile Project Management</li>
-            <li>IBM Business Analyst</li>
-            <li>Vibe Coding + Prompt Engineering</li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="about-bottom-grid">
-        <div class="reveal">
-          <div class="about-eyebrow" style="margin-bottom:1.4rem">A few human details</div>
-          <dl class="fun-facts">
-            <div><dt>Based in</dt><dd>Atlanta, Georgia · Open to Remote or Relocation</dd></div>
-            <div><dt>Roots</dt><dd>First-generation student</dd></div>
-            <div><dt>Languages</dt><dd>English · Spanish</dd></div>
-            <div><dt>Superpower</dt><dd>Adaptability. I've had to read a new system almost every year of my life</dd></div>
-            <div><dt>Can't resist</dt><dd>A good salmon pasta</dd></div>
-            <div><dt>Off the clock</dt><dd>Building oddly specific playlists for every mood</dd></div>
-          </dl>
-        </div>
-        <div class="reveal">
-          <div class="about-eyebrow" style="margin-bottom:1.4rem">The path</div>
-          <ol class="path-timeline">
-            <li><span class="dot"></span><div class="yr">University</div><div class="ev">Kennesaw State University</div><div class="sub">Senior · B.S. Psychology, Data Science minor</div></li>
-            <li><span class="dot dot-now"></span><div class="yr now">Community</div><div class="ev">WIT Campus Mentee</div><div class="sub">Women in Technology · campus mentee program</div></li>
-          </ol>
-        </div>
-      </div>
-
-      <div class="widgets-section reveal">
-        <div class="widgets-grid">
-          <div class="widget widget-spotify">
-            <div class="widget-head"><span>Now spinning</span><span class="muted">spotify</span></div>
-            <iframe title="Spotify player — now spinning" style="border-radius:12px;width:100%;border:0" src="https://open.spotify.com/embed/track/74y1VgzL668hynrvA59WQB?utm_source=generator" width="100%" height="352" frameBorder="0" scrolling="no" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-          </div>
-          <div class="widget widget-currently">
-            <div class="widget-head"><span>Currently</span></div>
-            <dl class="currently">
-              <div><dt>Watching</dt><dd>Dawson's Creek</dd></div>
-              <div><dt>Drinking</dt><dd>Apple kombucha</dd></div>
-              <div><dt>Cooking</dt><dd>Recipes I'll actually repeat</dd></div>
-              <div><dt>Collecting</dt><dd>Trinkets</dd></div>
-            </dl>
-          </div>
-          <div class="widget widget-shelf" id="shelfWidget">
-            <div class="widget-head"><span>On the shelf</span></div>
-            <div class="shelf-stage" id="shelfStage">
-              <div class="shelf-book" data-idx="0"><img src="https://covers.openlibrary.org/b/isbn/9780525559733-L.jpg" alt="Bunny by Mona Awad" loading="lazy" /></div>
-              <div class="shelf-book" data-idx="1"><img src="https://covers.openlibrary.org/b/isbn/0593300262-L.jpg" alt="Lapvona by Ottessa Moshfegh" loading="lazy" /></div>
-              <div class="shelf-book" data-idx="2"><img src="https://covers.openlibrary.org/b/isbn/0441013597-L.jpg" alt="Dune by Frank Herbert" loading="lazy" /></div>
-              <div class="shelf-book" data-idx="3"><img src="https://covers.openlibrary.org/b/isbn/0593135202-L.jpg" alt="Project Hail Mary by Andy Weir" loading="lazy" /></div>
-            </div>
-            <div class="shelf-meta">
-              <span class="now-label">Now reading</span>
-              <span class="shelf-title" id="shelfTitle">Bunny</span>
-              <span class="shelf-author" id="shelfAuthor">Mona Awad</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="about-cta reveal">
-        <p class="connect-q">Want to work together?</p>
-        <a class="connect-btn" href="index.html#contact">Let's connect →</a>
+  <section class="sec" style="padding-top:40px">
+    <div class="wrap">
+      <div class="eyebrow">Background</div>
+      <p class="big-quote" style="margin-top:16px;max-width:28ch">Every role I've held has been about the same thing: seeing <span class="mark b">who the system leaves behind</span> and figuring out why.</p>
+      <div class="prose" style="margin-top:28px">
+        <p>From coordinating patient referrals at a community health clinic to working the fraud lines at a bank, I've spent years in the spaces where <b>systems meet real people.</b></p>
+        <p>I'm a psychology-trained product designer finishing a B.S. at Kennesaw State. My psychology background isn't adjacent to design. It's the foundation of how I design. I don't start with screens. I start with behavior, then build the system that moves the outcome.</p>
       </div>
     </div>
-  </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap deck-wrap">
+      <div>
+        <div class="eyebrow">A few human details</div>
+        <h2 style="font-size:clamp(32px,4.4vw,56px);margin-top:12px">Pull a card.</h2>
+        <p class="muted" style="margin-top:14px;max-width:44ch">The things a résumé leaves out. Tap the deck or use the button to shuffle through.</p>
+        <div class="deck-ctrl"><button class="btn primary" type="button" id="draw">Next card <span class="arr">→</span></button><div class="dots" id="dots"></div></div>
+      </div>
+      <div class="deck" id="deck" role="button" tabindex="0" aria-label="Show the next detail card"></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap grid-2" style="align-items:start;gap:48px">
+      <div>
+        <div class="eyebrow">The path</div>
+        <h2 style="font-size:clamp(32px,4.4vw,56px);margin-top:12px">Where I learned to read systems.</h2>
+        <p class="muted" style="margin-top:14px;max-width:44ch">Four years across healthcare, banking and operations, then into design.</p>
+      </div>
+      <div class="path" id="path"><span class="path-fill" id="pathFill"></span>
+        <div class="step"><small>Banking</small><h3>Fraud lines at a bank</h3><p>Working the fraud lines, another place where systems meet real people.</p></div>
+        <div class="step"><small>Healthcare · 2024 – 2025</small><h3>Patient Representative &amp; Referral Specialist</h3><p>Mercy Health Center. Built the referral workflow that took processing time from 12+ months to 2 weeks. <a href="care-gap.html" style="color:var(--accent)">Read the case study →</a></p></div>
+        <div class="step"><small>University · 2024 – now</small><h3>B.S. Psychology, Data Science minor</h3><p>Kennesaw State University, senior.</p></div>
+        <div class="step"><small>Community · 2026</small><h3>WIT Campus Mentee</h3><p>Women in Technology campus mentee program.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="eyebrow" style="margin-bottom:18px">Credentials</div>
+      <div class="creds">
+        <div class="cred">B.S. Psychology<small>Kennesaw State University</small></div>
+        <div class="cred">Women in Tech Campus Mentee<small>Kennesaw State · 2026</small></div>
+        <div class="cred">Google UX Foundations<small>Google · 2026</small></div>
+        <div class="cred">Agile Project Management<small>Google · 2026</small></div>
+        <div class="cred">IBM Business Analyst<small>IBM · 2026</small></div>
+        <div class="cred">Vibe Coding + Prompt Engineering<small>Kennesaw State · 2025</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h">
+        <div><div class="eyebrow">Currently</div><h2>On the shelf right now.</h2></div>
+        <p>A snapshot that changes often.</p>
+      </div>
+      <div class="shelf">
+        <div class="item glass"><div class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg></div><span class="k">Now reading</span><h3>Bunny</h3><p>Mona Awad</p></div>
+        <div class="item glass"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><path d="M8 21h8"/></svg></div><span class="k">Watching</span><h3>Dawson's Creek</h3></div>
+        <div class="item glass"><div class="ic"><svg viewBox="0 0 24 24"><path d="M8 3h8l-1 4H9z"/><path d="M9 7c-2 2-3 4-3 7a6 6 0 0 0 12 0c0-3-1-5-3-7"/></svg></div><span class="k">Drinking</span><h3>Apple kombucha</h3></div>
+        <div class="item glass"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 11h16a8 8 0 0 1-16 0z"/><path d="M9 7c0-2 2-2 2-4M13 7c0-2 2-2 2-4"/></svg></div><span class="k">Cooking</span><h3>Recipes I'll actually repeat</h3><p>Can't resist: a good salmon pasta.</p></div>
+        <div class="item glass"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/></svg></div><span class="k">Off the clock</span><h3>Oddly specific playlists</h3><p>Building one for every mood.</p></div>
+        <div class="item glass"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 15.6 7.1 18.2l.9-5.5-4-3.9L9.5 8z"/></svg></div><span class="k">Collecting</span><h3>Trinkets</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="cta-band">
+        <h2>Want to work together?</h2>
+        <div style="display:flex;gap:10px;flex-wrap:wrap"><a class="btn primary" href="index.html#contact">Let's connect <span class="arr">→</span></a><a class="btn ghost" href="https://www.linkedin.com/in/jennynegrete" style="background:transparent;color:var(--bg);border-color:color-mix(in srgb,var(--bg) 30%,transparent)">LinkedIn ↗</a></div>
+      </div>
+    </div>
+  </section>
 </main>
-<script src="js/about.js"></script>
 
+<footer>
+  <div class="wrap foot">
+    <div><b style="color:var(--ink);font-family:var(--display);font-weight:500">In This Vessel</b><br>Behavioral product designer · Portfolio 2026</div>
+    <nav aria-label="Footer"><a href="index.html">Home</a><a href="care-gap.html">Closing the Care Gap</a><a href="remote.html">Rethink the Remote</a><a href="about.html">About</a><a href="https://www.linkedin.com/in/jennynegrete">LinkedIn</a></nav>
+  </div>
+</footer>
+
+<script src="site.js"></script>
+<script>
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+
+/* ripple art: drops on still water */
+const cv=$('#rip'),g=cv.getContext('2d'),wordEl=$('#word');
+const WORDS=['Observe','Understand','Design','Measure'];
+let W,H,drops=[],col={},frame=0,live=false,wi=0;
+function readCols(){const s=getComputedStyle(document.documentElement),v=k=>s.getPropertyValue(k).trim();col={bg:v('--surface-solid'),a:[v('--accent'),v('--teal'),v('--faint')]}}
+function size(){const d=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;g.setTransform(d,0,0,d,0,0)}
+function drop(x,y,big){drops.push({x,y,r:0,v:big?1.6:1.1,max:Math.max(W,H)*(big?.9:.6),c:col.a[(Math.random()*col.a.length)|0],rings:big?4:3})}
+function step(){
+  frame++;g.globalAlpha=1;g.fillStyle=col.bg;g.fillRect(0,0,W,H);
+  if(frame%110===0)drop(W*(.25+Math.random()*.5),H*(.25+Math.random()*.45),false);
+  for(const d of drops){
+    d.r+=d.v;
+    for(let k=0;k<d.rings;k++){const r=d.r-k*16;if(r<=0)continue;const a=(1-r/d.max)*.75;if(a<=0)continue;
+      g.globalAlpha=a;g.strokeStyle=d.c;g.lineWidth=1.4;g.beginPath();g.ellipse(d.x,d.y,r,r*.42,0,0,Math.PI*2);g.stroke()}
+  }
+  drops=drops.filter(d=>d.r-d.rings*16<d.max);
+}
+function loop(){if(!live)return;step();requestAnimationFrame(loop)}
+cv.addEventListener('pointerdown',e=>{const r=cv.getBoundingClientRect();drop(e.clientX-r.left,e.clientY-r.top,true);
+  wi=(wi+1)%WORDS.length;wordEl.style.opacity=0;setTimeout(()=>{wordEl.textContent=WORDS[wi];wordEl.style.opacity=1},250);
+  if(reduce){step()}});
+readCols();size();
+drop(W*.5,H*.45,true);drop(W*.3,H*.6,false);for(let i=0;i<70;i++)step();
+if(!reduce)new IntersectionObserver(es=>{const v=es[0].isIntersecting;if(v&&!live){live=true;loop()}else if(!v)live=false}).observe(cv);
+else step();
+addEventListener('resize',()=>{size();step()});
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{readCols();step()});
+new MutationObserver(()=>{readCols();step()}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+
+/* shuffle deck */
+const CARDS=[['Based in','Atlanta, Georgia','Open to remote or relocation.'],['Roots','First-generation student',''],['Languages','English · Spanish',''],['Superpower','Adaptability','I\'ve had to read a new system almost every year of my life.'],['Can\'t resist','A good salmon pasta',''],['Off the clock','Oddly specific playlists','Building them for every mood.']];
+const deck=$('#deck'),dots=$('#dots');let top=0;
+deck.innerHTML=CARDS.map((c,i)=>`<div class="dcard c${i%4}" aria-hidden="true"><div class="k"><span>${c[0]}</span><span>0${i+1} / 0${CARDS.length}</span></div><h3>${c[1]}</h3><p>${c[2]}</p></div>`).join('');
+dots.innerHTML=CARDS.map(()=>'<i></i>').join('');
+const els=[...deck.children];
+function lay(){els.forEach((el,i)=>{const pos=(i-top+CARDS.length)%CARDS.length;
+  el.style.zIndex=CARDS.length-pos;el.style.opacity=pos>3?0:1;el.setAttribute('aria-hidden',pos!==0);
+  el.style.transform=`translate(${pos*10}px,${pos*12}px) rotate(${pos===0?0:(pos%2?3:-3)*pos*.6}deg) scale(${1-pos*.04})`});
+  [...dots.children].forEach((d,i)=>d.classList.toggle('on',i===top))}
+function next(){const el=els[top];el.style.transform='translate(-120%,-10px) rotate(-14deg)';el.style.opacity=0;
+  setTimeout(()=>{top=(top+1)%CARDS.length;lay()},reduce?0:280)}
+deck.addEventListener('click',next);deck.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();next()}});
+$('#draw').addEventListener('click',next);lay();
+
+/* path line fills as you scroll */
+const path=$('#path'),fill=$('#pathFill'),steps=$$('.step');
+function pathScroll(){const r=path.getBoundingClientRect(),p=clamp((innerHeight*.6-r.top)/r.height,0,1);
+  fill.style.height=(reduce?100:p*100)+'%';steps.forEach(s=>s.classList.toggle('lit',reduce||s.getBoundingClientRect().top<innerHeight*.6))}
+addEventListener('scroll',pathScroll,{passive:true});pathScroll();
+
+/* shelf tilt */
+if(!reduce&&matchMedia('(hover: hover)').matches)$$('.item').forEach(el=>{
+  el.addEventListener('pointermove',e=>{const r=el.getBoundingClientRect(),x=(e.clientX-r.left)/r.width-.5,y=(e.clientY-r.top)/r.height-.5;el.style.transform=`perspective(700px) rotateY(${x*10}deg) rotateX(${-y*10}deg) translateY(-3px)`});
+  el.addEventListener('pointerleave',()=>el.style.transform='')});
+})();
+</script>
 </body>
-
-
-
 </html>

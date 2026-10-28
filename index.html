@@ -1,701 +1,828 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>In This Vessel | UX + Product Design</title>
-<link rel="preconnect" href="https://api.fontshare.com" crossorigin />
-<link href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="css/global.css">
-<link rel="stylesheet" href="css/nav.css">
-<link rel="stylesheet" href="css/home.css">
-</head>
-<body>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}</style><title>In This Vessel</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Jenny Negrete, behavioral product designer in Atlanta. Understanding behavior. Designing better outcomes.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one calm column of glass panels on a misted blue-grey ground; the behavioral framework (Observe, Understand, Design, Measure) is the spine that every section hangs from. */
+:root{
+  --bg:#e8ebf1;
+  --bg-2:#dfe4ed;
+  --surface:rgba(255,255,255,.62);
+  --surface-solid:#f6f8fb;
+  --line:rgba(27,35,46,.1);
+  --ink:#1b232e;
+  --muted:#525c6b;
+  --faint:#8e98a8;
+  --accent:#3d5a80;
+  --accent-ink:#ffffff;
+  --peri:#c7d3ec;
+  --blush:#eadfdd;
+  --mist:#cde2e6;
+  --teal:#4f7a86;
+  --warn:#a5533a;
+  --ok:#3f7a5a;
+  --shadow:0 20px 50px -24px rgba(27,35,46,.28);
+  --display:"General Sans","Satoshi","Figtree",system-ui,sans-serif;
+  --body:"Satoshi","Figtree",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+  --r-lg:22px;--r-md:14px;--r-sm:999px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10151c;--bg-2:#151c25;--surface:rgba(32,40,53,.62);--surface-solid:#1b232e;--line:rgba(230,234,241,.1);
+  --ink:#e6eaf1;--muted:#a3adbd;--faint:#5f6a7b;--accent:#93acd6;--accent-ink:#0f141b;
+  --peri:#2c3a57;--blush:#3d3133;--mist:#1f373c;--teal:#82b4c1;--warn:#e19478;--ok:#7fc29c;
+  --shadow:0 20px 50px -24px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151c;--bg-2:#151c25;--surface:rgba(32,40,53,.62);--surface-solid:#1b232e;--line:rgba(230,234,241,.1);
+  --ink:#e6eaf1;--muted:#a3adbd;--faint:#5f6a7b;--accent:#93acd6;--accent-ink:#0f141b;
+  --peri:#2c3a57;--blush:#3d3133;--mist:#1f373c;--teal:#82b4c1;--warn:#e19478;--ok:#7fc29c;
+  --shadow:0 20px 50px -24px rgba(0,0,0,.6);color-scheme:dark}
 
-<a class="skip-link" href="#hero">Skip to content</a>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;font-weight:400;overflow-x:hidden;
+  background-image:radial-gradient(60vw 50vw at 0% 0%,var(--peri),transparent 60%),radial-gradient(50vw 40vw at 100% 30%,var(--blush),transparent 60%),radial-gradient(50vw 50vw at 30% 100%,var(--mist),transparent 60%);
+  background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+a{color:inherit}
+h1,h2,h3{font-family:var(--display);font-weight:500;line-height:1.05;letter-spacing:-.02em;text-wrap:balance;margin:0}
+p{margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:600;color:var(--accent)}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.04em}
+.glass{background:var(--surface);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+.mark{background-image:linear-gradient(var(--peri),var(--peri));background-repeat:no-repeat;background-size:100% .38em;background-position:0 88%;padding:0 .06em}
+.mark.b{background-image:linear-gradient(var(--blush),var(--blush))}
+.mark.m{background-image:linear-gradient(var(--mist),var(--mist))}
+.btn{display:inline-flex;align-items:center;gap:.5em;font:600 15px/1 var(--body);padding:15px 22px;border-radius:var(--r-sm);text-decoration:none;border:1px solid transparent;cursor:pointer;transition:transform .2s,background .2s,box-shadow .2s}
+.btn.primary{background:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{transform:translateY(-2px);box-shadow:0 12px 24px -12px var(--accent)}
+.btn.ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn.ghost:hover{transform:translateY(-2px)}
+.btn .arr{transition:transform .2s}.btn:hover .arr{transform:translateX(3px)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+section{position:relative}
 
-<!-- ambient backdrop -->
-<div class="atmos" aria-hidden="true">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
-</div>
-<div class="grain" aria-hidden="true"></div>
+/* NAV */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;padding-block:10px;background:color-mix(in srgb,var(--bg) 72%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:16px;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-family:var(--display);font-weight:500;font-size:18px}
+.vessel{width:26px;height:30px;flex:none}
+.links{display:flex;gap:2px;padding:5px;border-radius:var(--r-sm)}
+.links a{font-size:13px;font-weight:500;text-decoration:none;padding:8px 14px;border-radius:var(--r-sm);color:var(--muted);transition:background .2s,color .2s}
+.links a.on,.links a:hover{background:var(--surface-solid);color:var(--ink)}
+.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 var(--ok);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 60%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
+@media (max-width:860px){.links{display:none}}
+@media (max-width:520px){.status span{display:none}}
 
-<div class="cursor" id="cursor"></div>
-<div class="cursor-ring" id="cursor-ring"></div>
+/* HERO */
+.hero{padding-block:72px 40px}
+.hero-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:56px;align-items:center}
+.hero h1{font-size:clamp(46px,7.4vw,96px);font-weight:400;margin-top:18px}
+.hero h1 .ul{position:relative;white-space:nowrap}
+.hero h1 .ul svg{position:absolute;left:0;bottom:-.08em;width:100%;height:.22em;overflow:visible}
+.hero h1 .ul path{fill:none;stroke:var(--accent);stroke-width:5;stroke-linecap:round;stroke-dasharray:420;stroke-dashoffset:420;animation:draw 1.2s .6s cubic-bezier(.6,0,.2,1) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.hero .lede{max-width:46ch;color:var(--muted);font-size:18px;margin-top:28px;font-weight:300}
+.hero .lede b{color:var(--ink);font-weight:600}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:32px}
+.notes{padding:22px 22px 18px;min-width:0}
+.notes-h{display:flex;justify-content:space-between;align-items:center;color:var(--muted);padding-bottom:14px;border-bottom:1px dashed var(--line)}
+.replay{background:none;border:0;color:var(--accent);cursor:pointer;font:500 12px var(--mono);padding:4px}
+.note{padding:14px 0;border-bottom:1px dashed var(--line);transition:opacity .4s,transform .4s}
+.note:last-child{border-bottom:0}
+.note .who{display:flex;align-items:center;gap:8px;font:500 11px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.note .who i{width:7px;height:7px;border-radius:50%;display:inline-block}
+.note p{margin-top:6px;font-size:16px}
+.note.hid{opacity:.15;transform:translateY(4px)}
+.note.me p{font-weight:600}
+.caret::after{content:"";display:inline-block;width:2px;height:1em;background:var(--accent);margin-left:2px;vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr;gap:36px}.hero{padding-block:48px 24px}}
 
-<!-- NAV -->
-<nav class="nav" id="nav" aria-label="Primary">
-  <div class="nav-inner">
-    <a class="nav-logo" href="#top" data-scroll="#top" data-hover>In This Vessel</a>
-    <button class="nav-burger" id="navBurger" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">
-      <span></span><span></span><span></span>
-    </button>
-    <div class="nav-links" id="navLinks">
-      <button class="nav-link" data-scroll="#top" data-hover>Home</button>
-      <div class="work-dropdown" id="workDD">
-        <button class="nav-link" id="workToggle" aria-haspopup="true" aria-expanded="false" data-hover>
-          Case Studies
-          <svg width="11" height="11" viewBox="0 0 12 12" style="margin-left:4px;vertical-align:middle;color:var(--shell-accent);transition:transform 0.2s" id="workChev" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="work-menu" id="workMenu" role="menu" aria-label="Case studies">
-  <a href="closing-the-care-gap.html" class="work-menu-item" role="menuitem">Closing the Care Gap</a>
-  <a href="propresenter-remote.html" class="work-menu-item" role="menuitem">Rethink the Remote</a>
-</div>
-      </div>
-      <a class="nav-link" href="about.html" data-hover>
-    About
-</a>
-      <button class="nav-link" data-scroll="#resume" data-hover>Resume</button>
-      <button class="nav-cta" data-scroll="#contact" data-hover>Contact</button>
-    </div>
+/* MANIFESTO */
+.manifesto{padding-block:110px 40px}
+.manifesto h2{font-size:clamp(30px,4.4vw,56px);font-weight:500;max-width:22ch;line-height:1.14}
+.manifesto .w{color:var(--faint);transition:color .25s}
+.manifesto .w.lit{color:var(--ink)}
+.stats{margin-top:72px;border-top:1px solid var(--ink)}
+.stat{display:grid;grid-template-columns:minmax(150px,240px) 1fr;gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line)}
+.stat .n{font-family:var(--display);font-size:clamp(30px,3.6vw,44px);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.stat .n small{font-size:.5em;color:var(--muted);margin:0 .2em}
+.stat p{color:var(--muted);max-width:58ch}
+.stat p b{color:var(--ink);font-weight:600}
+@media (max-width:600px){.stat{grid-template-columns:1fr;gap:4px}}
+
+/* KINETIC */
+.kinetic{padding-block:60px;overflow:hidden;border-block:1px solid var(--line);margin-top:60px}
+.row{display:flex;gap:.5em;white-space:nowrap;font-family:var(--display);font-size:clamp(48px,8.5vw,120px);font-weight:500;letter-spacing:-.03em;line-height:1.08;will-change:transform}
+.row span.dim{color:var(--faint);opacity:.55}
+.row span.arrow{color:var(--faint);font-weight:300}
+.row span.hl{background:var(--peri);border-radius:14px;padding:0 .14em}
+.row span.hl.b{background:var(--blush)}.row span.hl.m{background:var(--mist)}
+
+/* FRAMEWORK (pinned horizontal) */
+.fw-intro{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;padding-block:100px 40px}
+.fw-intro h2{font-size:clamp(34px,4.6vw,60px)}
+.fw-intro p{color:var(--muted);max-width:52ch}
+@media (max-width:800px){.fw-intro{grid-template-columns:1fr;gap:16px}}
+.pin{position:relative}
+.pin-sticky{overflow:hidden}
+.track{display:flex;gap:24px;padding-block:20px 30px}
+.card-fw{flex:0 0 min(520px,82vw);border-radius:28px;padding:34px;display:flex;flex-direction:column;gap:18px;min-height:420px;border:1px solid var(--line);position:relative;overflow:hidden}
+.card-fw:nth-child(1){background:var(--peri)}
+.card-fw:nth-child(2){background:var(--blush)}
+.card-fw:nth-child(3){background:var(--mist)}
+.card-fw:nth-child(4){background:var(--surface-solid)}
+.card-fw .num{font-family:var(--display);font-size:84px;line-height:.8;font-weight:500;color:transparent;-webkit-text-stroke:1.2px var(--ink);opacity:.4}
+.card-fw .tag{position:absolute;top:28px;right:28px;font:600 11px var(--body);letter-spacing:.14em;text-transform:uppercase;background:var(--surface-solid);padding:7px 12px;border-radius:var(--r-sm)}
+.card-fw h3{font-size:36px}
+.card-fw .q{font-size:15px;color:var(--muted);font-style:italic}
+.card-fw p{max-width:44ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
+.chip{font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:var(--r-sm);background:var(--surface);border:1px solid var(--line)}
+.progress{display:flex;align-items:center;gap:14px;color:var(--muted)}
+.progress .bar{flex:1;height:2px;background:var(--line);position:relative;border-radius:2px}
+.progress .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);width:25%;border-radius:2px}
+.pin.free .pin-sticky{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
+.pin.free .card-fw{scroll-snap-align:start}
+
+/* WORK */
+.work-h{padding-block:110px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end}
+.work-h h2{font-size:clamp(40px,6vw,84px)}
+.work-h p{color:var(--muted);max-width:50ch}
+@media (max-width:800px){.work-h{grid-template-columns:1fr;gap:16px}}
+.case{display:grid;grid-template-columns:1fr 1.15fr;gap:0;overflow:hidden;margin-bottom:28px}
+.case-copy{padding:40px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.case-meta{display:flex;flex-wrap:wrap;gap:8px}
+.case-meta span{font:600 11px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);padding:6px 10px;border-radius:var(--r-sm)}
+.case h3{font-size:clamp(34px,4vw,52px)}
+.case-copy > p{color:var(--muted)}
+.case .tagline{font-family:var(--display);font-size:20px;color:var(--ink)}
+.metric{display:flex;align-items:center;gap:18px;padding:18px 0;border-block:1px solid var(--line)}
+.metric div{display:flex;flex-direction:column}
+.metric small{font:500 11px var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.metric strong{font-family:var(--display);font-size:30px;font-weight:500;font-variant-numeric:tabular-nums}
+.metric .before strong{color:var(--faint);text-decoration:line-through;text-decoration-thickness:2px}
+.metric .to{color:var(--faint);font-size:22px}
+.read{margin-top:auto;font:600 13px var(--body);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;display:inline-flex;align-items:center;gap:10px;color:var(--accent)}
+.read:hover .arr{transform:translateX(4px)}.read .arr{transition:transform .2s}
+.case-demo{background:var(--bg-2);padding:28px;display:flex;flex-direction:column;gap:16px;min-width:0;border-left:1px solid var(--line)}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-sm);padding:4px;align-self:flex-start}
+.seg button{border:0;background:none;font:600 13px var(--body);padding:8px 16px;border-radius:var(--r-sm);cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.demo-cap{font-size:12.5px;color:var(--muted)}
+@media (max-width:900px){.case{grid-template-columns:1fr}.case-demo{border-left:0;border-top:1px solid var(--line)}.case-copy{padding:28px}}
+
+/* journey */
+.journey{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stage{background:var(--surface-solid);border:1px solid var(--line);border-radius:var(--r-md);padding:14px;display:flex;flex-direction:column;gap:6px;transition:border-color .35s,background .35s;min-width:0}
+.stage .k{font:500 10.5px var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase;display:flex;justify-content:space-between;gap:6px}
+.stage b{font-family:var(--display);font-weight:500;font-size:15.5px;line-height:1.2}
+.stage p{font-size:12.5px;color:var(--muted);line-height:1.4}
+.owner{align-self:flex-start;font:600 10.5px var(--body);letter-spacing:.08em;text-transform:uppercase;padding:4px 8px;border-radius:var(--r-sm);background:var(--mist);margin-top:auto}
+.owner.none{background:transparent;color:var(--warn);border:1px dashed var(--warn)}
+.stage.bad{border-color:color-mix(in srgb,var(--warn) 45%,transparent)}
+@media (max-width:560px){.journey{grid-template-columns:1fr 1fr}}
+
+/* phone */
+.phone-stage{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start}
+.phone{width:230px;border-radius:34px;background:#121417;padding:12px;box-shadow:var(--shadow);border:1px solid #2a2e35}
+.screen{border-radius:24px;background:#1a1d22;color:#eef0f3;padding:14px 12px;display:flex;flex-direction:column;gap:10px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;overflow:hidden}
+.scr-top{display:flex;justify-content:space-between;font-size:11px;color:#9aa0a8}
+.slide{border-radius:12px;background:#000;aspect-ratio:16/9;display:grid;place-items:center;text-align:center;font-size:9px;letter-spacing:.06em;padding:8px;position:relative;border:2px solid transparent}
+.live{position:absolute;top:6px;left:6px;font-size:8px;font-weight:800;letter-spacing:.1em;background:#fff;color:#111;padding:2px 5px;border-radius:4px}
+.ctrls{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}
+.ctrls button{border:0;border-radius:12px;padding:12px 8px;font-weight:700;font-size:calc(12px * var(--ts,1));cursor:default;font-family:inherit;min-width:0}
+.rail{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;border-top:1px solid #2a2e35;padding-top:8px}
+.rail div{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:calc(9px * var(--ts,1));color:#c9ced6;min-width:0;text-align:center;line-height:1.15}
+.rail svg{width:16px;height:16px;stroke:#c9ced6;fill:none;stroke-width:1.8}
+.phone.before .ctrls button{background:#f57c2a;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.phone.before .rail span{display:none}
+.phone.before .live{display:none}
+.phone.before .slide.on{border-color:#f57c2a}
+.phone.after .ctrls button{background:#ff9f5e;color:#1b232e;white-space:normal}
+.phone.after .slide.on{border-color:#ff9f5e}
+.ratio{font-family:var(--display);font-size:40px;font-weight:500;font-variant-numeric:tabular-nums;line-height:1}
+.ratio-k{font:500 11px var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.verdict{display:inline-block;font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;padding:5px 10px;border-radius:var(--r-sm);margin-top:8px}
+.verdict.fail{color:var(--warn);border:1px dashed var(--warn)}
+.verdict.pass{background:var(--mist);color:var(--ink)}
+.side-info{display:flex;flex-direction:column;gap:20px;min-width:0}
+.side-info label{font:500 11px var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase;display:flex;justify-content:space-between}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.fixes{display:flex;flex-direction:column;gap:8px;font-size:13.5px;color:var(--muted);padding:0;margin:0;list-style:none}
+.fixes li{display:flex;gap:8px}
+.fixes li::before{content:"";flex:none;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-top:.55em}
+@media (max-width:560px){.phone-stage{grid-template-columns:1fr;justify-items:center}.side-info{width:100%}}
+
+/* TRACKER DEMO */
+.try{padding-block:110px 40px}
+.try-grid{display:grid;grid-template-columns:.9fr 1.4fr;gap:40px;align-items:start;margin-top:40px}
+.try h2{font-size:clamp(34px,4.6vw,60px);max-width:16ch}
+.try .lede{color:var(--muted);max-width:56ch;margin-top:18px}
+.decisions{display:flex;flex-direction:column;gap:10px;counter-reset:d}
+.dec{display:grid;grid-template-columns:30px 1fr;gap:12px;padding:14px;border-radius:var(--r-md);border:1px solid transparent;transition:background .3s,border-color .3s,opacity .3s;opacity:.6}
+.dec .i{font:500 12px var(--mono);color:var(--muted);padding-top:2px}
+.dec b{font-weight:600}
+.dec p{font-size:14.5px;color:var(--muted)}
+.annot .dec{opacity:1;background:var(--surface);border-color:var(--line)}
+.annot .dec.flash{border-color:var(--accent)}
+.toggle{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;cursor:pointer;margin-top:16px;user-select:none}
+.toggle input{appearance:none;width:42px;height:24px;border-radius:24px;background:var(--line);position:relative;cursor:pointer;transition:background .2s;margin:0}
+.toggle input::after{content:"";position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:var(--surface-solid);box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.toggle input:checked{background:var(--accent)}
+.toggle input:checked::after{transform:translateX(18px)}
+.tracker{overflow:hidden;min-width:0}
+.tr-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:18px 20px;border-bottom:1px solid var(--line)}
+.tr-head h3{font-size:17px;font-weight:600;font-family:var(--body);letter-spacing:0}
+.tr-head .mono{color:var(--muted)}
+.tr-actions{display:flex;gap:8px;flex-wrap:wrap}
+.sbtn{font:600 12.5px var(--body);padding:9px 14px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface-solid);color:var(--ink);cursor:pointer;transition:transform .15s}
+.sbtn:hover{transform:translateY(-1px)}
+.sbtn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px;min-width:620px}
+th{text-align:left;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 14px;border-bottom:1px solid var(--line)}
+td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:middle}
+tr{transition:background .4s}
+tr.stale td{background:color-mix(in srgb,var(--warn) 9%,transparent)}
+tr.moved td{animation:flashrow 1s}
+@keyframes flashrow{0%{background:var(--peri)}100%{background:transparent}}
+.quiet{font-variant-numeric:tabular-nums;font-family:var(--mono);font-size:12px}
+tr.stale .quiet{color:var(--warn);font-weight:500}
+.st{font:600 10.5px var(--body);letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:var(--r-sm);white-space:nowrap}
+.st.OPEN{background:var(--blush)}
+.st.AWAITING{background:transparent;border:1px dashed var(--muted)}
+.st.SENT{background:var(--peri)}
+.st.SCHEDULED{background:var(--mist)}
+.st.CLOSED{background:var(--ink);color:var(--bg)}
+.adv{font:600 12px var(--body);border:1px solid var(--line);background:none;color:var(--accent);border-radius:var(--r-sm);padding:6px 10px;cursor:pointer;white-space:nowrap}
+.adv:disabled{color:var(--faint);cursor:default}
+.tr-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 20px;font-size:12.5px;color:var(--muted)}
+.tr-foot b{color:var(--ink)}
+@media (max-width:1100px){.try-grid{grid-template-columns:1fr}.decisions{display:grid;grid-template-columns:1fr 1fr}}
+@media (max-width:600px){.decisions{grid-template-columns:1fr}}
+
+/* PRINCIPLES */
+.rules{padding-block:110px 40px}
+.rules h2{font-size:clamp(34px,4.6vw,60px);max-width:18ch}
+.rules > .wrap > p{color:var(--muted);max-width:56ch;margin-top:18px}
+.rule-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:44px}
+.rule{padding:30px;display:flex;flex-direction:column;gap:12px;transition:transform .3s,box-shadow .3s}
+.rule:hover{transform:translateY(-4px)}
+.rule h3{font-size:26px}
+.rule p{color:var(--muted)}
+.rule a{margin-top:auto;padding-top:8px;font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);text-decoration:none}
+.rule a:hover{text-decoration:underline}
+.rule .glyph{width:44px;height:44px;border-radius:12px;display:grid;place-items:center}
+.rule:nth-child(1) .glyph{background:var(--peri)}.rule:nth-child(2) .glyph{background:var(--blush)}.rule:nth-child(3) .glyph{background:var(--mist)}.rule:nth-child(4) .glyph{background:var(--bg-2)}
+.glyph svg{width:22px;height:22px;stroke:var(--ink);fill:none;stroke-width:1.6}
+@media (max-width:760px){.rule-grid{grid-template-columns:1fr}}
+
+/* ABOUT */
+.about{padding-block:110px 40px}
+.about-grid{display:grid;grid-template-columns:1fr 1.1fr;gap:48px;align-items:start}
+.art{position:relative;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.art-h{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding:18px 20px 0}
+.art-h .mono{color:var(--muted)}
+.art canvas{display:block;width:100%;height:420px;cursor:crosshair;touch-action:pan-y}
+.art-f{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;padding:14px 20px 18px;border-top:1px solid var(--line)}
+.art-f .rate{font-family:var(--display);font-size:40px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums}
+.art-f .rate-k{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.art-f p{font-size:12.5px;color:var(--muted);max-width:30ch;text-align:right}
+.skills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.more{display:inline-flex;margin-top:24px}
+.about h2{font-size:clamp(34px,4.4vw,56px)}
+.about .bio{display:flex;flex-direction:column;gap:16px;color:var(--muted);margin-top:22px;max-width:58ch}
+.about .bio strong{color:var(--ink);font-weight:600}
+.pull{font-family:var(--display);font-size:22px;color:var(--ink);border-left:2px solid var(--accent);padding-left:16px;margin-top:8px}
+.timeline{margin-top:30px;border-top:1px solid var(--ink)}
+.tl{display:flex;justify-content:space-between;gap:16px;padding:14px 0;border-bottom:1px solid var(--line);font-size:15px}
+.tl span{color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.tl b{font-weight:600}
+.tl em{font-style:normal;color:var(--muted);display:block;font-size:13.5px}
+.certs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:24px}
+.cert{padding:14px 16px;border-radius:var(--r-md);background:var(--surface);border:1px solid var(--line);font-size:14px}
+.cert small{display:block;color:var(--muted);font-size:12px}
+@media (max-width:900px){.about-grid{grid-template-columns:1fr}.art canvas{height:360px}}
+@media (max-width:480px){.certs{grid-template-columns:1fr}}
+
+/* CONTACT */
+.contact{padding-block:110px 60px}
+.contact-card{display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden}
+.contact-l{padding:44px;display:flex;flex-direction:column;gap:22px;background:var(--ink);color:var(--bg)}
+.contact-l .eyebrow{color:var(--peri)}
+.contact-l h2{font-size:clamp(44px,6vw,80px);font-weight:400}
+.contact-l h2 .ln{display:block;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.contact-l p{opacity:.75;max-width:40ch}
+.contact-l .links2{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto}
+.contact-l .links2 a{font:600 13px var(--body);padding:11px 16px;border-radius:var(--r-sm);border:1px solid color-mix(in srgb,var(--bg) 30%,transparent);text-decoration:none}
+.contact-l .links2 a:hover{background:color-mix(in srgb,var(--bg) 12%,transparent)}
+.contact-r{padding:44px;display:flex;flex-direction:column;gap:18px;min-width:0}
+.pick{display:flex;flex-wrap:wrap;gap:8px}
+.pick button{font:500 14px var(--body);padding:9px 14px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface-solid);color:var(--ink);cursor:pointer;transition:background .2s,color .2s}
+.pick button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font:500 11px var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.field input,.field textarea{font:400 16px var(--body);padding:13px 14px;border-radius:var(--r-md);border:1px solid var(--line);background:var(--surface-solid);color:var(--ink);resize:vertical}
+.field textarea{min-height:96px}
+.preview{font-size:13.5px;color:var(--muted);background:var(--bg-2);border-radius:var(--r-md);padding:14px;white-space:pre-wrap;border:1px dashed var(--line)}
+.send-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.fine{font-size:12.5px;color:var(--muted)}
+@media (max-width:860px){.contact-card{grid-template-columns:1fr}.contact-l,.contact-r{padding:30px}}
+
+footer{padding-block:40px 60px;color:var(--muted);font-size:13.5px}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:28px}
+.foot a{text-decoration:none}.foot a:hover{color:var(--ink)}
+.foot nav{display:flex;gap:18px;flex-wrap:wrap}
+
+.reveal{transition:transform .8s cubic-bezier(.2,.8,.2,1),opacity .8s}
+.reveal.pre{transform:translateY(24px);opacity:.001}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  .reveal.pre{transform:none;opacity:1}
+}
+</style>
+
+<div class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="#top" aria-label="In This Vessel, back to top">
+      <svg class="vessel" viewBox="0 0 26 30" aria-hidden="true">
+        <defs><clipPath id="vclip"><path d="M5 2h16v4c0 2 3 4 3 9v8a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5v-8c0-5 3-7 3-9z"/></clipPath></defs>
+        <g clip-path="url(#vclip)"><rect id="vfill" x="0" y="30" width="26" height="30" fill="var(--accent)" opacity=".55"/></g>
+        <path d="M5 2h16v4c0 2 3 4 3 9v8a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5v-8c0-5 3-7 3-9z" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+      </svg>
+      In This Vessel
+    </a>
+    <nav class="links glass" aria-label="Sections">
+      <a href="#how">Framework</a><a href="#work">Work</a><a href="#try">Try it</a><a href="#about">About</a><a href="#contact">Contact</a>
+    </nav>
+    <div class="status"><i class="dot"></i><span>Open to roles · Fall 2026 · Atlanta</span></div>
   </div>
-</nav>
+</div>
 
-<a id="top"></a>
-
-<!-- HERO -->
-<section class="hero" id="hero" tabindex="-1">
-  <div class="hero-inner hero-fade">
-    <div class="hero-text">
-      <div class="hero-eyebrow-anim" style="margin-bottom:1.8rem">
-        <span class="eyebrow">Behavioral Product Designer · In This Vessel</span>
-      </div>
-      <h1 class="hero-h1">
-        <span class="hero-anim-line"><span class="hero-line-1">Understanding behavior. Designing better outcomes.</span></span>
-      </h1>
-      <p class="hero-tagline">
-        Product design lets me <span class="accent">build for it.</span> Through behavioral research and systems thinking, I design products that align human behavior with measurable outcomes.
-      </p>
-      <div class="hero-ctas">
-        <button class="btn-primary" data-scroll="#work" data-hover>
-          View My Work
-          <svg width="15" height="15" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-4-4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <a class="btn-glass" href="about.html" data-hover>About In This Vessel</a>
-      </div>
-    </div>
-
-    <div class="stats-card">
-      <div><div class="num">4+</div><div class="label">Years cross-industry in healthcare, banking &amp; ops</div></div>
-      <div><div class="num">90%</div><div class="label">Success in access to care · Care Gap</div></div>
-      <div><div class="num">B.S.</div><div class="label">Psychology · KSU 2026</div></div>
-    </div>
-  </div>
-
-  <div class="scroll-hint"><span class="label">Scroll</span><div class="line"></div></div>
-</section>
-
-<!-- CASE STUDIES -->
-<section class="work-wrap" id="work">
-  <div class="container">
-    <div class="reveal work-head">
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
       <div>
-        <div class="section-eyebrow"><span class="line"></span><span class="text">Selected Work</span></div>
-        <h2 class="section-h2">Case Studies</h2>
+        <div class="eyebrow">Behavioral product designer · Jenny Negrete</div>
+        <h1>Understanding behavior. Designing better <span class="ul">outcomes.<svg viewBox="0 0 400 20" preserveAspectRatio="none" aria-hidden="true"><path d="M4 14 C 90 4, 220 4, 396 12"/></svg></span></h1>
+        <p class="lede">Psychology taught me to read behavior. Product design lets me <b>build for it.</b> Through behavioral research and systems thinking, I design products that line up human behavior with outcomes you can measure.</p>
+        <div class="cta">
+          <a class="btn primary" href="#work">See the work <span class="arr">→</span></a>
+          <a class="btn ghost" href="#try">Try the tracker</a>
+        </div>
       </div>
-      <p class="work-note">Tap any project to read the full case study.</p>
+      <aside class="notes glass" aria-label="Field notes from a real project">
+        <div class="notes-h"><span class="mono">FIELD NOTES · A FREE CLINIC, 2024</span><button class="replay" id="replay" type="button">↻ replay</button></div>
+        <div class="note" data-i="0"><div class="who"><i style="background:var(--warn)"></i>The symptom</div><p>Patients aren't following through on specialist referrals.</p></div>
+        <div class="note" data-i="1"><div class="who"><i style="background:var(--faint)"></i>The assumption</div><p>They must not be motivated to get care.</p></div>
+        <div class="note" data-i="2"><div class="who"><i style="background:var(--teal)"></i>The observation</div><p>Once a referral leaves the clinic, no one owns it. It goes quiet for 12+ months.</p></div>
+        <div class="note me" data-i="3"><div class="who"><i style="background:var(--accent)"></i>Jenny</div><p>Fix the system, and the behavior follows.</p></div>
+      </aside>
     </div>
-    <div class="cs-grid" id="csGrid"></div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto" aria-label="What I believe">
+    <div class="wrap">
+      <h2 id="manifesto">People rarely fail a system on purpose. Most of the time the system asks them to behave in ways they can't. So I don't start with screens. I start with behavior, find the real cause, and build the system that makes the right action the easy one.</h2>
+      <div class="stats">
+        <div class="stat"><div class="n" data-count="4" data-suffix="+">4+</div><p><b>Years across healthcare, banking and operations</b>, close to the people a system serves.</p></div>
+        <div class="stat"><div class="n"><span data-count="12" data-suffix="+">12+</span><small>mo →</small><span data-count="2">2</span><small>wk</small></div><p><b>Average referral processing time</b> after I built the referral workflow at a free community clinic.</p></div>
+        <div class="stat"><div class="n" data-count="90" data-suffix="%">90%</div><p><b>Success in access to care</b> for patients moving through the new referral process.</p></div>
+        <div class="stat"><div class="n">2.7<small>→</small>7.8<small>: 1</small></div><p><b>Primary control contrast</b> in my accessibility redesign of a live-presentation remote.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- KINETIC -->
+  <div class="kinetic" aria-hidden="true">
+    <div class="row" data-dir="-1"><span>Observe</span><span class="arrow">→</span><span class="hl">Understand</span><span class="arrow">→</span><span>Design</span><span class="arrow">→</span><span class="hl b">Measure</span><span class="arrow">→</span><span>Observe</span><span class="arrow">→</span><span>Understand</span></div>
+    <div class="row" data-dir="1"><span class="dim">Journey mapping</span><span class="hl m">Behavioral research</span><span class="dim">Systems thinking</span><span class="dim">Data analytics</span><span class="hl">Product thinking</span><span class="dim">Behavioral psychology</span></div>
   </div>
-</section>
 
-<!-- BEHAVIORAL DESIGN FRAMEWORK -->
-<section class="framework-wrap" id="framework">
-  <div class="container">
-    <div class="framework-head reveal">
-      <div class="section-eyebrow"><span class="line"></span><span class="text">How I work</span></div>
-      <h2 class="section-h2">Behavioral Design Framework</h2>
+  <!-- FRAMEWORK -->
+  <section id="how">
+    <div class="wrap fw-intro">
+      <div><div class="eyebrow">How I work</div><h2 style="margin-top:14px">A behavioral design framework, <span class="mark">tested in a real clinic.</span></h2></div>
+      <p>Four stages, in order. Each card shows the stage and what it looked like when I rebuilt the specialist referral process at Mercy Health Center.</p>
     </div>
-    <div class="fw-rail">
-      <div class="reveal fw-step">
-        <span class="fw-num">Observe</span>
-        <h3>Identify the friction</h3>
-        <p>Go to the system where it meets real people. Find the behavioral patterns others miss.</p>
-      </div>
-      <div class="fw-arrow" aria-hidden="true">→</div>
-      <div class="reveal fw-step" style="transition-delay:0.08s">
-        <span class="fw-num">Understand</span>
-        <h3>Name the real problem</h3>
-        <p>Uncover the cause, not the symptom.</p>
-      </div>
-      <div class="fw-arrow" aria-hidden="true">→</div>
-      <div class="reveal fw-step" style="transition-delay:0.16s">
-        <span class="fw-num">Design</span>
-        <h3>Build with behavior</h3>
-        <p>Create interventions that align with how people actually think.</p>
-      </div>
-      <div class="fw-arrow" aria-hidden="true">→</div>
-      <div class="reveal fw-step" style="transition-delay:0.24s">
-        <span class="fw-num">Measure</span>
-        <h3>Evaluate and refine</h3>
-        <p>Track outcomes, iterate, and design the system to survive without you.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- ABOUT -->
-<section class="about-wrap" id="about">
-  <div class="container">
-    <div class="about-grid">
-      <div class="reveal">
-        <div class="lens">
-          <svg class="girl-avatar" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg" aria-label="Illustrated portrait">
-            <g class="sparkle" stroke="var(--accent)" stroke-width="1.4" stroke-linecap="round" fill="none"><path d="M40 62 L40 78"/><path d="M32 70 L48 70"/></g>
-            <g class="sparkle sparkle-2" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M164 54 L164 66"/><path d="M158 60 L170 60"/></g>
-            <g class="sparkle sparkle-3" stroke="var(--accent)" stroke-width="1.3" stroke-linecap="round" fill="none"><path d="M170 150 L170 162"/><path d="M164 156 L176 156"/></g>
-            <path d="M93 152 L93 166" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-            <path d="M107 152 L107 166" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-            <path d="M93 166 C97 172 103 172 107 166" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-            <path d="M62 206 C66 184 80 172 93 166" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-            <path d="M107 166 C120 172 134 184 138 206" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-            <g class="head-group">
-              <path d="M70 188 C60 162 55 132 56 106 C58 78 76 56 100 56 C124 56 142 78 144 106 C145 132 140 162 130 188" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-              <path d="M58 104 C53 134 55 166 64 190" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-              <path d="M142 104 C147 134 145 166 136 190" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-              <path d="M100 56 L100 64" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-              <path d="M100 57 C86 59 74 67 66 80" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.7"/>
-              <path d="M100 57 C114 59 126 67 134 80" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.7"/>
-              <path d="M63 96 C59 124 61 154 69 182" stroke="var(--ink)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.5"/>
-              <path d="M137 96 C141 124 139 154 131 182" stroke="var(--ink)" stroke-width="1.3" stroke-linecap="round" fill="none" opacity="0.5"/>
-              <path d="M70 102 C70 88 74 78 82 72 C88 67 94 65 100 65 C106 65 112 67 118 72 C126 78 130 88 130 102 C130 122 122 142 108 152 C105 155 102 157 100 157 C98 157 95 155 92 152 C78 142 70 122 70 102 Z" stroke="var(--ink)" stroke-width="2" fill="none"/>
-              <path d="M70 110 C66 112 66 120 70 122" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-              <path d="M130 110 C134 112 134 120 130 122" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" fill="none"/>
-              <path d="M100 64 C92 70 83 80 78 96" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-              <path d="M100 64 C108 70 117 80 122 96" stroke="var(--ink)" stroke-width="2" stroke-linecap="round" fill="none"/>
-              <path d="M99 66 C95 76 91 86 90 96" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.8"/>
-              <path d="M101 66 C105 76 109 86 110 96" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.8"/>
-              <path d="M77 99 Q85 96 93 99" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-              <path d="M107 99 Q115 96 123 99" stroke="var(--ink)" stroke-width="1.8" stroke-linecap="round" fill="none"/>
-              <g stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round">
-                <circle cx="84" cy="111" r="12"/><circle cx="116" cy="111" r="12"/>
-                <path d="M96 111 L104 111"/><path d="M72 109 L66 107"/><path d="M128 109 L134 107"/>
-              </g>
-              <path d="M78 109 Q84 105 90 109" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-              <path d="M110 109 Q116 105 122 109" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-              <ellipse class="eye" cx="84" cy="112" rx="3" ry="3.6" fill="var(--ink)"/>
-              <circle cx="85.2" cy="110.6" r="0.9" fill="#FFFFFF"/>
-              <ellipse class="eye" cx="116" cy="112" rx="3" ry="3.6" fill="var(--ink)"/>
-              <circle cx="117.2" cy="110.6" r="0.9" fill="#FFFFFF"/>
-              <path d="M100 120 L101 126" stroke="var(--ink)" stroke-width="1.4" stroke-linecap="round" fill="none" opacity="0.7"/>
-              <path d="M94 134 Q100 138 106 134" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round" fill="none"/>
-            </g>
-          </svg>
-          <div class="photo-tag">
-            <div class="based">Based in</div>
-            <div class="place">Atlanta, GA</div>
+    <div class="pin" id="pin">
+      <div class="pin-sticky" id="pinSticky">
+        <div class="wrap">
+          <div class="track" id="track">
+            <article class="card-fw"><span class="tag">Observe</span><div class="num">01</div><h3>Identify the friction</h3><p class="q">Go where the system meets real people.</p><p>There was no documented workflow to study, so I followed referrals end to end and called every specialist office we referred to, asking each the same four questions.</p><div class="chips"><span class="chip">Contextual inquiry</span><span class="chip">Process tracing</span><span class="chip">Stakeholder calls</span></div></article>
+            <article class="card-fw"><span class="tag">Understand</span><div class="num">02</div><h3>Name the real problem</h3><p class="q">The cause, not the symptom.</p><p>Patients weren't the problem. Five failures were: no shared mental model, one-size-fits-all packets, no tracking layer, unsupported patient effort, and no closure point.</p><div class="chips"><span class="chip">Affinity mapping</span><span class="chip">Journey mapping</span><span class="chip">Root cause</span></div></article>
+            <article class="card-fw"><span class="tag">Design</span><div class="num">03</div><h3>Build with behavior</h3><p class="q">Fit how people actually think and act.</p><p>An SOP with a single accountable owner, a master tracker where every row carries a next action, tailored packets per specialist, and in-person help with applications.</p><div class="chips"><span class="chip">Service design</span><span class="chip">SOPs</span><span class="chip">Forcing functions</span></div></article>
+            <article class="card-fw"><span class="tag">Measure</span><div class="num">04</div><h3>Evaluate and refine</h3><p class="q">Make it survive without you.</p><p>Referral time fell from 12+ months to about 2 weeks. Daily triage and standing partner meetings kept the loop closing after the first push.</p><div class="chips"><span class="chip">Outcome tracking</span><span class="chip">Iteration</span><span class="chip">Handoff</span></div></article>
           </div>
+          <div class="progress"><span class="mono" id="pcur">01</span><div class="bar"><i id="pbar"></i></div><span class="mono">04</span></div>
         </div>
       </div>
+    </div>
+  </section>
 
+  <!-- WORK -->
+  <section id="work">
+    <div class="wrap work-h">
+      <div><div class="eyebrow">Selected work</div><h2 style="margin-top:14px">Case studies</h2></div>
+      <p>Two projects, two kinds of system: a clinic's referral process and a live-presentation app. Each card has a small demo you can play with before you read the full study.</p>
+    </div>
+    <div class="wrap">
+      <!-- Care gap -->
+      <article class="case glass reveal">
+        <div class="case-copy">
+          <div class="case-meta"><span>Health equity</span><span>Service design</span><span>3 months</span></div>
+          <h3>Closing the Care Gap</h3>
+          <p class="tagline">Turning lost referrals into closed loops.</p>
+          <p>I created the referral workflow at a free community clinic so uninsured patients stop falling through the cracks. I worked as UX researcher and designer alongside care coordinators and providers.</p>
+          <div class="metric"><div class="before"><small>Before</small><strong>12+ months</strong></div><span class="to">→</span><div><small>After</small><strong>2 weeks</strong></div></div>
+          <a class="read" href="care-gap.html">Read the case study <span class="arr">→</span></a>
+        </div>
+        <div class="case-demo">
+          <div class="seg" role="group" aria-label="Referral journey view"><button type="button" aria-pressed="true" data-j="before">Before</button><button type="button" aria-pressed="false" data-j="after">After</button></div>
+          <div class="journey" id="journey"></div>
+          <p class="demo-cap" id="jcap">Same patient, same clinic, same specialists. What changed was where ownership lived.</p>
+        </div>
+      </article>
+
+      <!-- Remote -->
+      <article class="case glass reveal">
+        <div class="case-copy">
+          <div class="case-meta"><span>Accessibility</span><span>Redesign</span><span>Concept · 2 weeks</span></div>
+          <h3>Rethink the Remote</h3>
+          <p class="tagline">The orange is the brand. The contrast is the bug.</p>
+          <p>A WCAG 2.2 audit and redesign of ProPresenter Remote for volunteers running services from dim booths: stronger contrast, VoiceOver descriptions, labels that scale with Dynamic Type.</p>
+          <div class="metric"><div class="before"><small>Before</small><strong>2.7 : 1</strong></div><span class="to">→</span><div><small>After</small><strong>7.8 : 1</strong></div></div>
+          <a class="read" href="remote.html">Read the case study <span class="arr">→</span></a>
+        </div>
+        <div class="case-demo">
+          <div class="seg" role="group" aria-label="Remote version"><button type="button" aria-pressed="true" data-p="before">Before</button><button type="button" aria-pressed="false" data-p="after">After</button></div>
+          <div class="phone-stage">
+            <div class="phone before" id="phone" role="img" aria-label="Simplified recreation of the remote's presentation screen">
+              <div class="screen">
+                <div class="scr-top"><span>9:41</span><span>Good Grace · Connected</span></div>
+                <div class="slide on"><span class="live">LIVE</span>PEOPLE COME TOGETHER</div>
+                <div class="slide" style="opacity:.55">STRANGE AS NEIGHBORS OUR BLOOD IS ONE</div>
+                <div class="ctrls"><button tabindex="-1">Previous</button><button tabindex="-1">Next Slide</button></div>
+                <div class="rail">
+                  <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/></svg><span>Present</span></div>
+                  <div><svg viewBox="0 0 24 24"><circle cx="12" cy="13" r="7"/><path d="M12 9v4l2 2"/></svg><span>Timers</span></div>
+                  <div><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h7"/></svg><span>Macros</span></div>
+                  <div><svg viewBox="0 0 24 24"><path d="M4 5h16v11H8l-4 4z"/></svg><span>Messages</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="side-info">
+              <div><div class="ratio-k">Primary control contrast</div><div class="ratio" id="ratio">2.7 : 1</div><span class="verdict fail" id="verdict">Fails WCAG 1.4.3</span></div>
+              <div><label for="ts"><span>Text size</span><span id="tsv">100%</span></label><input type="range" id="ts" min="100" max="180" step="10" value="100"></div>
+              <ul class="fixes" id="fixes"><li>White labels on orange wash out in a dark booth.</li><li>Icon-only rail with no visible or spoken names.</li><li>Live slide marked by color alone.</li></ul>
+            </div>
+          </div>
+          <p class="demo-cap">Simplified recreation for illustration. Drag the text size up and compare how each version handles it.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- TRY IT -->
+  <section class="try" id="try">
+    <div class="wrap">
+      <div class="eyebrow">Don't just read about it</div>
+      <h2 style="margin-top:14px">Run the morning triage <span class="mark m">yourself.</span></h2>
+      <p class="lede">A playable version of the referral tracker I built at Mercy. One row is one referral, and no row is allowed to go quiet. Move referrals forward, let a day pass, then triage. Turn on the notes to see why each piece exists.</p>
+      <div class="try-grid">
+        <div>
+          <div class="decisions" id="decisions">
+            <div class="dec" data-d="row"><span class="i">01</span><div><b>One row, one referral.</b><p>Every active referral is visible in one place, so nothing lives only in someone's memory.</p></div></div>
+            <div class="dec" data-d="next"><span class="i">02</span><div><b>Every row has a next action.</b><p>A status alone doesn't move anything. A named next step does.</p></div></div>
+            <div class="dec" data-d="quiet"><span class="i">03</span><div><b>Quiet rows surface first.</b><p>Triage sorts by days without movement, so stalled referrals can't hide.</p></div></div>
+            <div class="dec" data-d="close"><span class="i">04</span><div><b>"Patient seen" is the finish line.</b><p>The old process had no closure point. Now a referral is done only when care happens.</p></div></div>
+          </div>
+          <label class="toggle"><input type="checkbox" id="annot"> Show design notes</label>
+        </div>
+        <div class="tracker glass">
+          <div class="tr-head">
+            <div><h3>Referrals tracker</h3><span class="mono" id="day">DAY 1 · FICTIONALIZED DATA</span></div>
+            <div class="tr-actions"><button class="sbtn" type="button" id="pass">+1 day passes</button><button class="sbtn dark" type="button" id="triage">Run triage</button><button class="sbtn" type="button" id="reset">Reset</button></div>
+          </div>
+          <div class="tbl-wrap"><table><thead><tr><th>Patient</th><th>Specialty</th><th>Next action</th><th>Quiet</th><th>Status</th><th></th></tr></thead><tbody id="rows"></tbody></table></div>
+          <div class="tr-foot"><span><b id="closed">2</b> of 7 closed · <b id="stale">0</b> gone quiet</span><span id="msg">Tip: let a few days pass, then run triage.</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLES -->
+  <section class="rules">
+    <div class="wrap">
+      <div class="eyebrow">Principles</div>
+      <h2 style="margin-top:14px">What the work keeps teaching me.</h2>
+      <p>Each one came from a real project, not a poster.</p>
+      <div class="rule-grid">
+        <article class="rule glass reveal"><div class="glyph"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="M20 20l-4.5-4.5"/></svg></div><h3>Find the cause, not the symptom.</h3><p>"Patients don't follow through" was the symptom. "No one owns the referral" was the cause. Design for the second one.</p><a href="#work">Seen in Closing the Care Gap →</a></article>
+        <article class="rule glass reveal"><div class="glyph"><svg viewBox="0 0 24 24"><path d="M4 14c2-4 6-4 8 0s6 4 8 0"/><path d="M4 9c2-4 6-4 8 0s6 4 8 0"/></svg></div><h3>Carry the load people can't.</h3><p>Asking patients to gather documents alone assumed effort they couldn't spare. So I sat with them and filled out applications in person.</p><a href="#work">Seen in Closing the Care Gap →</a></article>
+        <article class="rule glass reveal"><div class="glyph"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16" /><path d="M12 4a8 8 0 0 1 0 16z" fill="var(--ink)"/></svg></div><h3>Keep the brand. Remove the barrier.</h3><p>Accessibility work doesn't mean erasing identity. The remote kept its orange; only the contrast changed.</p><a href="#work">Seen in Rethink the Remote →</a></article>
+        <article class="rule glass reveal"><div class="glyph"><svg viewBox="0 0 24 24"><path d="M4 18l5-6 4 3 7-9"/><path d="M15 6h5v5"/></svg></div><h3>Design it to outlast you.</h3><p>A fix that depends on one person isn't a system. SOPs, a tracker and partner relationships kept referrals closing.</p><a href="#how">Seen in the framework →</a></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section class="about" id="about">
+    <div class="wrap about-grid">
+      <figure class="art glass" style="margin:0" aria-labelledby="artcap">
+        <div class="art-h">
+          <span class="mono">BEHAVIOR FOLLOWS THE SYSTEM</span>
+          <div class="seg" role="group" aria-label="Flow mode"><button type="button" aria-pressed="false" data-flow="chaos">No system</button><button type="button" aria-pressed="true" data-flow="system">With a system</button></div>
+        </div>
+        <canvas id="flow" aria-hidden="true"></canvas>
+        <div class="art-f">
+          <div><div class="rate" id="rate">–</div><div class="rate-k">reaching the vessel</div></div>
+          <p id="artcap">Each line is a person moving through a process. Drag across the flow to add friction, or tap to drop in new people.</p>
+        </div>
+      </figure>
       <div>
-        <div class="reveal section-eyebrow"><span class="line"></span><span class="text">The designer</span></div>
-        <h2 class="reveal about-h2">Jenny Negrete</h2>
-        <p class="reveal about-p">Psychology-trained product designer finishing a B.S. at Kennesaw State. Four years across healthcare, banking, and operations. My psychology background isn't adjacent to design. It's the foundation of how I design.</p>
-        <p class="reveal about-p">I don't start with screens. I start with behavior then build the system that moves the outcome.</p>
-        <div class="reveal skills">
-          <span class="skill">Behavioral Research</span>
-          <span class="skill">Journey Mapping</span>
-          <span class="skill">Systems Thinking</span>
-          <span class="skill">Data Analytics</span>
-          <span class="skill">Behavioral Psychology</span>
-          <span class="skill">Product Thinking</span>
+        <div class="eyebrow">The designer · Atlanta, GA</div>
+        <h2 style="margin-top:14px">Jenny Negrete</h2>
+        <div class="bio">
+          <p>I'm a psychology-trained product designer finishing a <strong>B.S. at Kennesaw State</strong>, with four years across healthcare, banking and operations.</p>
+          <p>My psychology background isn't adjacent to design. It's the foundation of how I design. I don't start with screens. I start with behavior, then build the system that moves the outcome.</p>
+          <p class="pull">Understanding behavior. Designing better outcomes.</p>
+        </div>
+        <div class="skills"><span class="chip">Behavioral research</span><span class="chip">Journey mapping</span><span class="chip">Systems thinking</span><span class="chip">Data analytics</span><span class="chip">Service design</span><span class="chip">WCAG 2.2</span><span class="chip">Product thinking</span></div>
+        <a class="btn ghost more" href="about.html">More about me <span class="arr">→</span></a>
+        <div class="timeline" id="resume">
+          <div class="tl"><div><b>B.S. Psychology</b><em>Kennesaw State University</em></div><span>2024 – now</span></div>
+          <div class="tl"><div><b>Patient Representative &amp; Referral Specialist</b><em>Mercy Health Center</em></div><span>2024 – 2025</span></div>
+          <div class="tl"><div><b>WIT Campus Mentee</b><em>Kennesaw State University</em></div><span>2026</span></div>
+        </div>
+        <div class="certs">
+          <div class="cert">Google UX Foundations<small>Google · 2026</small></div>
+          <div class="cert">Agile Project Management<small>Google · 2026</small></div>
+          <div class="cert">IBM Business Analyst<small>IBM · 2026</small></div>
+          <div class="cert">Vibe Coding + Prompt Engineering<small>Kennesaw State · 2025</small></div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- EXPERIENCE / RESUME -->
-<section class="xp-wrap" id="resume">
-  <div class="container">
-    <div class="reveal section-eyebrow"><span class="line"></span><span class="text">Resume · Background</span></div>
-    <h2 class="reveal section-h2">Where I learned to read systems</h2>
-    <div class="xp-grid" id="xpGrid"></div>
-  </div>
-</section>
-
-<!-- CERTIFICATIONS -->
-<section class="cert-wrap">
-  <div class="container">
-    <div class="reveal section-eyebrow"><span class="line"></span><span class="text">Credentials</span></div>
-    <h2 class="reveal section-h2">Certifications</h2>
-    <div class="cert-grid" id="certGrid"></div>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section class="contact-wrap" id="contact">
-  <div class="reveal section-eyebrow" style="justify-content:center"><span class="line"></span><span class="text">Get in touch</span></div>
-  <h2 class="reveal contact-h">What's next?</span></h2>
-  <p class="reveal contact-sub">Joining a product design or UX research team in Fall 2026 — one designing for behavior and outcomes you can measure.</p>
-  <div class="reveal contact-links">
-    <a class="contact-link" href="https://www.linkedin.com/in/jennynegrete" target="_blank" rel="noopener" data-hover>LINKEDIN</a>
-    <a class="contact-link" href="https://www.google.com/maps/place/Atlanta,+GA" target="_blank" rel="noopener" data-hover>ATLANTA, GA</a>
-    <a class="contact-link" href="about.html" data-hover>BACKGROUND</a>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="site-footer">
-  <div class="site-footer__inner">
-    <div class="sf-brand">
-      <a class="sf-logo" href="#top" data-scroll="#top">In This <em>Vessel</em></a>
-      <p>Behavioral product designer</p>
+  <!-- CONTACT -->
+  <section class="contact" id="contact">
+    <div class="wrap">
+      <div class="contact-card glass">
+        <div class="contact-l">
+          <div class="eyebrow">What's next?</div>
+          <h2 id="bigsay"><span class="ln">Let's design</span><span class="ln">for how people</span><span class="ln">actually behave.</span></h2>
+          <p>I'm looking to join a product design or UX research team in Fall 2026, one that designs for behavior and outcomes you can measure.</p>
+          <div class="links2"><a href="https://www.linkedin.com/in/jennynegrete">LinkedIn ↗</a><a href="#resume">Résumé</a><a href="#work">Case studies</a></div>
+        </div>
+        <form class="contact-r" id="composer" novalidate>
+          <div class="field"><label>What brings you here?</label>
+            <div class="pick" id="pick" role="group" aria-label="Reason for reaching out">
+              <button type="button" aria-pressed="true">Product design role</button><button type="button" aria-pressed="false">UX research role</button><button type="button" aria-pressed="false">Internship / new grad</button><button type="button" aria-pressed="false">Coffee chat</button><button type="button" aria-pressed="false">Just saying hi</button>
+            </div>
+          </div>
+          <div class="field"><label for="cname">Your name</label><input id="cname" autocomplete="name" placeholder="Alex Rivera"></div>
+          <div class="field"><label for="cmsg">Message</label><textarea id="cmsg" placeholder="We're hiring for a product designer on our patient experience team…"></textarea></div>
+          <div class="preview" id="cprev" aria-live="polite"></div>
+          <div class="send-row"><button class="btn primary" type="submit">Copy note &amp; open LinkedIn <span class="arr">→</span></button><span class="fine" id="cstatus">Your note is copied so you can paste it into a LinkedIn message.</span></div>
+        </form>
+      </div>
     </div>
-    <nav class="sf-col" aria-label="Explore">
-      <h4>Explore</h4>
-      <ul>
-        <li><a href="#top" data-scroll="#top">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="#contact" data-scroll="#contact">Contact</a></li>
-      </ul>
-    </nav>
-    <nav class="sf-col" aria-label="Case studies">
-      <h4>Case Studies</h4>
-      <ul>
-        <li><a href="closing-the-care-gap.html">Closing the Care Gap</a></li>
-        <li><a href="propresenter-remote.html">Rethink the Remote</a></li>
-      </ul>
-    </nav>
-    <nav class="sf-col" aria-label="Connect">
-      <h4>Connect</h4>
-      <ul>
-        <li><a href="#resume" data-scroll="#resume">Resume</a></li>
-        <li><a href="https://www.linkedin.com/in/jennynegrete" target="_blank" rel="noopener">LinkedIn</a></li>
-      </ul>
-    </nav>
-  </div>
-  <div class="site-footer__bottom">
-    <div class="sf-sign">In This Vessel — Portfolio 2026</div>
-    <div class="sf-meta">Understanding behavior. Designing better outcomes.</div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div><b style="color:var(--ink);font-family:var(--display);font-weight:500">In This Vessel</b><br>Behavioral product designer · Portfolio 2026</div>
+    <nav aria-label="Footer"><a href="#how">Framework</a><a href="care-gap.html">Closing the Care Gap</a><a href="remote.html">Rethink the Remote</a><a href="#about">About</a><a href="https://www.linkedin.com/in/jennynegrete">LinkedIn</a></nav>
   </div>
 </footer>
 
-<!-- CASE STUDY OVERLAY -->
-<div class="overlay" id="csOverlay">
-  <div class="overlay-atmos atmos" aria-hidden="true"><div class="orb orb-1"></div><div class="orb orb-3"></div></div>
-  <button class="cs-close" id="csClose" data-hover aria-label="Close case study">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
-  </button>
-  <div id="csContent"></div>
-</div>
-
 <script>
-// ───────── DATA ─────────
-const caseStudies = [
-  {
-    id: "care-gap",
-    label: "Health Equity",
-    title: "Closing the Care Gap",
-    desc: "Redesigning preventive care workflows to reduce disparities in underserved communities.",
-    summary: "Created the referral workflow at a community clinic so uninsured patients stop falling through the cracks.",
-    outcomeHighlight: "73% lift in patient follow-through",
-    tags: ["Service Design", "Health Equity", "Research"],
-    accent: "#4F7A86",
-    num: "01",
-    role: "UX Researcher & Designer",
-    duration: "4 weeks",
-    skill: "Service Design",
-    snapshot: {
-      problem: "Uninsured patients waited 12+ months for specialist referrals — many fell through the cracks entirely.",
-      approach: "Treated it as a service problem, not a screen: shadowed the clinic, audited a year of referrals, rebuilt the workflow.",
-      outcome: "Referral processing dropped from 12+ months to ~2 weeks — and the system held after I left."
-    },
-    subtitle: "Redesigning preventive care workflows to reach the communities most often left behind.",
-    fullLabel: "Health Equity · Service Design",
-    overview: [
-      { label: "Role", value: "UX Researcher & Designer" },
-      { label: "Timeline", value: "14 Weeks" },
-      { label: "Tools", value: "Figma · Miro · Dovetail" },
-      { label: "Methods", value: "Contextual Inquiry" },
-      { label: "Context", value: "KSU Capstone" },
-      { label: "Impact", value: "73% ↑ Follow-Through" },
-    ],
-    challenge: "Patients at a Federally Qualified Health Center were missing preventive care appointments at alarming rates — not due to lack of interest, but because the scheduling system, reminder workflows, and clinic environment created invisible barriers for non-English speakers, hourly workers, and caregivers. My psychology background gave me a framework for understanding why: the system was triggering shame, cognitive overload, and learned helplessness at every touchpoint.",
-    steps: [
-      { num: "01", title: "Immersive Discovery", body: "Spent 6 weeks embedded in the clinic — observing check-in flows, shadowing care coordinators, and conducting 28 contextual interviews across language groups. Applied behavioral frameworks to map where trust was breaking down in the patient journey." },
-      { num: "02", title: "Synthesis & Framing", body: "Identified 4 structural barriers: language access gaps, scheduling friction, shame-triggering reminder messaging, and transportation invisibility. Built an equity impact matrix to prioritize interventions by reach and feasibility." },
-      { num: "03", title: "Co-Design & Prototyping", body: "Ran 5 co-design sessions with patients and front desk staff. Prototyped multilingual appointment flows, SMS reminder scripts rewritten to remove shame triggers, and a redesigned check-in kiosk reduced to a 4th-grade reading level." },
-      { num: "04", title: "Pilot & Measure", body: "Piloted the redesigned workflows across 3 clinic sites over 6 months. Tracked appointment follow-through by language, insurance status, and distance from clinic. Iterated in 2-week sprints with direct input from care coordinators." },
-    ],
-    stat: { number: "73%", description: "increase in preventive care follow-through among non-English speaking patients within six months of launch" },
-    outcome: "The redesigned care journey resulted in a 73% improvement in appointment follow-through among non-English speaking patients — a population that had historically been 3× more likely to miss preventive screenings. Wait times at check-in dropped by 40%. Care coordinators reported spending less time on administrative re-scheduling and more time on direct patient support. This project shaped my conviction that behavioral psychology is not separate from UX — it is UX.",
-    prev: null,
-    next: { label: "ProPresenter Remote", id: "propresenter-remote" }
-  },
-  {
-    id: "propresenter-remote",
-    label: "Accessibility · Redesign",
-    title: "Rethink the Remote",
-    desc: "An accessibility-first redesign of the ProPresenter Remote, raising contrast, resolving fixed type truncation, and bringing complete VoiceOver screen-reader support.",
-    summary: "Rebuilding ProPresenter Remote with 7.8:1 primary contrast, VoiceOver descriptions, and Dynamic Type scaling.",
-    outcomeHighlight: "2.7:1 → 7.8:1 contrast lift",
-    tags: ["UX Design", "Accessibility", "Research"],
-    accent: "#EA6A2E",
-    num: "02",
-    role: "Product / UX Designer (Solo)",
-    duration: "2 weeks",
-    skill: "Accessibility Design",
-    snapshot: {
-      problem: "Icon-only controls and low-contrast elements leave dim-room screen-readers and volunteers guessing.",
-      approach: "Focused on VoiceOver and Dynamic Type: contrast-compliant branding, always-on text labels, and layouts that absorb larger type.",
-      outcome: "Contrast raised past WCAG AA to 7.8:1, always-on labels, and 100% VoiceOver coverage."
-    },
-    subtitle: "An accessibility-first redesign of the ProPresenter Remote.",
-    fullLabel: "Accessibility · Redesign · Concept",
-    overview: [
-      { label: "Role", value: "Product / UX Designer (Solo)" },
-      { label: "Timeline", value: "2 Weeks" },
-      { label: "Platform", value: "iOS & iPadOS" },
-      { label: "Focus", value: "VoiceOver & Dynamic Type" },
-      { label: "Outcome", value: "7.8:1 contrast lift" }
-    ],
-    challenge: "The ProPresenter Remote is used in dark production booths where visual clarity and screen-reader accessibility are essential. However, the existing app suffered from white-on-orange text (2.7:1 contrast), icon-only controls without labels or screen-reader hints, and a fixed font size that truncated text when scaled. The challenge was to resolve these issues while maintaining the brand's identity.",
-    steps: [
-      { num: "01", title: "Accessibility Audit", body: "Conducted a thorough WCAG 2.2 audit on the remote interface to identify contrast, resizing, and VoiceOver gaps. Evaluated user complaints from app stores regarding interface legibility." },
-      { num: "02", title: "Contrast Refactoring", body: "Re-skinned branding assets by changing white text to dark-slate on orange fills, improving the contrast ratio from 2.7:1 to 7.8:1 without losing the orange brand color." },
-      { num: "03", title: "Layout Optimization", body: "Redesigned presentation screens to dynamically shift and grow. Converted icon-only controls to include always-on labels, preventing text truncation at default and large font scales." },
-      { num: "04", title: "Prototype & Test", body: "Built an interactive simulator using HTML/CSS/JS to test layouts under various Dynamic Type sizes (Default, Large, XL) and screen-reader (VoiceOver) outputs." }
-    ],
-    stat: { number: "7.8:1", description: "primary control contrast ratio reached, moving from 2.7:1 to well beyond WCAG AA standards" },
-    outcome: "The redesigned Remote screen makes every control accessible. Flip on VoiceOver to hear exact cues or scale text to XL without breaking the visual grid.",
-    prev: { label: "Closing the Care Gap", id: "care-gap" },
-    next: null
-  }
-];
+(()=>{
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 
-const experience = [
-  { role: "B.S. Psychology", org: "Kennesaw State University", period: "2024 – Present", type: "edu" },
-  { role: "Patient Representative & Referral Specialist", org: "Mercy Health Center", period: "2024 – 2025", type: "work" },
-  { role: "WIT Campus Mentee", org: "Kennesaw State University", period: "2026", type: "edu" },
-];
+/* hero field notes */
+const notes=$$('.note');let timers=[];
+function playNotes(){
+  timers.forEach(clearTimeout);timers=[];
+  if(reduce){notes.forEach(n=>n.classList.remove('hid'));return}
+  notes.forEach(n=>n.classList.add('hid'));
+  notes.forEach((n,i)=>{timers.push(setTimeout(()=>{
+    notes.forEach(x=>x.querySelector('p').classList.remove('caret'));
+    n.classList.remove('hid');n.querySelector('p').classList.add('caret');
+  },400+i*1300))});
+}
+$('#replay').addEventListener('click',playNotes);playNotes();
 
-const certifications = [
-  { name: "Google User Experience Foundations", issuer: "Google", year: "2026" },
-  { name: "Agile Project Management", issuer: "Google", year: "2026" },
-  { name: "IBM Business Analyst", issuer: "IBM", year: "2026" },
-  { name: "Vibe Coding + Prompt Engineering", issuer: "Kennesaw State University", year: "2025" },
-];
+/* manifesto words */
+const m=$('#manifesto');
+const highlight={behavior:'mark',cause:'mark b',easy:'mark m'};
+m.innerHTML=m.textContent.trim().split(/\s+/).map(w=>{
+  const k=w.replace(/[^a-z]/gi,'').toLowerCase();
+  return `<span class="w${highlight[k]&&/behavior,|cause,|easy/.test(w)?' '+highlight[k]:''}">${w}</span>`;
+}).join(' ');
+const words=[...m.querySelectorAll('.w')];
 
-const ICON = {
-  briefcase: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
-  grad: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5a8 8 0 0 0 12 0v-5"/></svg>',
-  arrow: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M3 8h10m-4-4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>',
-  arrowL: '<svg width="13" height="13" viewBox="0 0 16 16" fill="none"><path d="M13 8H3m4 4l-4-4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+/* count-up */
+const io=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting||reduce)return;io.unobserve(e.target);
+  const el=e.target,to=+el.dataset.count,suf=el.dataset.suffix||'',t0=performance.now();
+  const step=t=>{const p=clamp((t-t0)/1100,0,1),v=Math.round(to*(1-Math.pow(1-p,3)));el.textContent=v+suf;if(p<1)requestAnimationFrame(step)};
+  requestAnimationFrame(step);
+}),{threshold:.6});
+$$('[data-count]').forEach(el=>io.observe(el));
+
+/* reveal on scroll */
+const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('pre');rio.unobserve(e.target)}}),{threshold:.12});
+$$('.reveal').forEach(el=>{const r=el.getBoundingClientRect();if(r.top>innerHeight){el.classList.add('pre');rio.observe(el)}});
+
+/* pinned horizontal framework */
+const pin=$('#pin'),sticky=$('#pinSticky'),track=$('#track'),pbar=$('#pbar'),pcur=$('#pcur');
+const wide=matchMedia('(min-width: 900px)');
+let pinOn=false;
+function setupPin(){
+  pinOn=wide.matches&&!reduce;
+  pin.classList.toggle('free',!pinOn);
+  if(pinOn){
+    const dist=track.scrollWidth-sticky.clientWidth+40;
+    pin.style.height=(sticky.offsetHeight+Math.max(0,dist))+'px';
+    sticky.style.position='sticky';sticky.style.top='80px';
+  }else{pin.style.height='';sticky.style.position='';track.style.transform=''}
+}
+sticky.addEventListener('scroll',()=>{if(pinOn)return;const max=sticky.scrollWidth-sticky.clientWidth;setProg(max?sticky.scrollLeft/max:0)});
+function setProg(p){pbar.style.width=(25+p*75)+'%';pcur.textContent='0'+(1+Math.round(p*3))}
+
+/* scroll loop */
+const vfill=$('#vfill'),rows=$$('.row'),kin=$('.kinetic'),navLinks=$$('.links a');
+const secs=navLinks.map(a=>$(a.getAttribute('href')));
+let ticking=false;
+function onScroll(){
+  ticking=false;
+  const y=scrollY,h=document.documentElement.scrollHeight-innerHeight;
+  vfill.setAttribute('y',30-30*clamp(y/h,0,1));
+  // manifesto
+  const r=m.getBoundingClientRect(),p=clamp((innerHeight*.85-r.top)/(r.height+innerHeight*.35),0,1);
+  const n=reduce?words.length:Math.round(p*words.length);
+  words.forEach((w,i)=>w.classList.toggle('lit',i<n));
+  // kinetic
+  if(!reduce){const kr=kin.getBoundingClientRect(),kp=(innerHeight-kr.top)/(innerHeight+kr.height);
+    rows.forEach(row=>{const d=+row.dataset.dir;row.style.transform=`translateX(${d<0?-kp*30:-30+kp*30}%)`})}
+  // pin
+  if(pinOn){const pr=pin.getBoundingClientRect(),dist=pin.offsetHeight-sticky.offsetHeight,pp=clamp((80-pr.top)/dist,0,1);
+    track.style.transform=`translateX(${-pp*(track.scrollWidth-sticky.clientWidth+40)}px)`;setProg(pp)}
+  // nav
+  let cur=-1;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<innerHeight*.4)cur=i});
+  navLinks.forEach((a,i)=>a.classList.toggle('on',i===cur));
+}
+addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
+addEventListener('resize',()=>{setupPin();onScroll()});
+setupPin();onScroll();
+addEventListener('load',()=>{setupPin();onScroll()});
+
+/* care gap journey */
+const J={
+  before:[["Referral written","A provider writes the order in the chart.","Mercy"],["Handoff","The order enters the office with no defined owner.",null],["Packet sent","The same generic packet is faxed to every specialist.","Mercy"],["Bounced or buried","Returned for missing items, or left unread.","Specialist"],["No follow-up","No one chases status. The referral goes silent.",null],["Patient waits","12+ months pass while symptoms worsen.","Patient"]],
+  after:[["Referral written","A provider writes the order in the chart.","Mercy"],["Coordinator owns it","One referrals coordinator is accountable, by SOP.","Coordinator"],["Tailored packet","Each specialist gets exactly the documents they require.","Coordinator"],["Tracked daily","Every row has a date and a next action.","Tracker"],["Patient supported","Applications filled out together, in person.","Coordinator"],["Patient seen","The loop closes. About 2 weeks on average.","Closed"]]
 };
-
-// ───────── RENDER GRIDS ─────────
-function renderCS() {
-  document.getElementById('csGrid').innerHTML = caseStudies.map((cs, i) => `
-    <div class="reveal" style="transition-delay:${i*0.1}s">
-      <a class="cs-card" data-cs="${cs.id}" style="--accent-bg:${cs.accent}14;--cs-accent:${cs.accent}" data-hover aria-label="View case study: ${cs.title}">
-        <div class="cs-card-head">
-          <span class="cs-index">${cs.num}</span>
-          <span class="cs-label" style="color:${cs.accent}">${cs.label}</span>
-        </div>
-        <h3 class="cs-title">${cs.title}</h3>
-        <p class="cs-summary">${cs.summary || cs.desc}</p>
-       <div class="cs-foot">
-          ${cs.id === 'propresenter-remote' ? `
-          <div class="cs-mockup" aria-hidden="true">
-            <div class="cs-phone cs-phone-back">
-              <div class="cs-phone-screen">
-                <div class="cs-phone-island"></div>
-                <img src="images/remote-back.webp" alt="" loading="lazy">
-              </div>
-            </div>
-            <div class="cs-phone cs-phone-front">
-              <div class="cs-phone-screen">
-                <div class="cs-phone-island"></div>
-                <img src="images/remote-front.webp" alt="" loading="lazy">
-              </div>
-            </div>
-          </div>
-          ` : (cs.outcomeHighlight ? `<div class="cs-outcome" style="--cs-accent:${cs.accent}">
-            <span class="cs-outcome-dot" aria-hidden="true"></span>
-            <span class="cs-outcome-text">${cs.outcomeHighlight}</span>
-          </div>` : '')}
-          <div class="cs-cta" style="color:${cs.accent}">View Case Study ${ICON.arrow}</div>
-        </div>
-      </a>
-    </div>`).join('');
+const jEl=$('#journey'),jcap=$('#jcap');
+function drawJ(k){
+  jEl.innerHTML=J[k].map((s,i)=>`<div class="stage${s[2]?'':' bad'}"><div class="k"><span>Stage ${i+1}</span>${s[2]?'':'<span style="color:var(--warn)">⚠</span>'}</div><b>${s[0]}</b><p>${s[1]}</p><span class="owner${s[2]?'':' none'}">${s[2]||'No owner'}</span></div>`).join('');
+  jcap.textContent=k==='before'?'Same patient, same clinic, same specialists. Two stages had no owner at all.':'Every stage has an owner, and the journey ends at a defined closure point.';
 }
+$$('[data-j]').forEach(b=>b.addEventListener('click',()=>{$$('[data-j]').forEach(x=>x.setAttribute('aria-pressed',x===b));drawJ(b.dataset.j)}));
+drawJ('before');
 
-// case-study id → standalone page (future projects auto-appear in the nav dropdown
-// and the work grid simply by adding to the caseStudies array above)
-const CS_HREF = { 'care-gap': 'closing-the-care-gap.html', 'propresenter-remote': 'propresenter-remote.html' };
-function csHref(cs) { return CS_HREF[cs.id] || (cs.id + '.html'); }
+/* remote */
+const phone=$('#phone'),fixes={
+  before:['White labels on orange wash out in a dark booth.','Icon-only rail with no visible or spoken names.','Live slide marked by color alone.'],
+  after:['Dark slate labels on a lighter brand orange.','Text labels under every icon, plus VoiceOver descriptions.','An explicit LIVE tag, so color isn\'t the only signal.']};
+$$('[data-p]').forEach(b=>b.addEventListener('click',()=>{
+  $$('[data-p]').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const k=b.dataset.p;phone.className='phone '+k;
+  $('#ratio').textContent=k==='before'?'2.7 : 1':'7.8 : 1';
+  const v=$('#verdict');v.className='verdict '+(k==='before'?'fail':'pass');v.textContent=k==='before'?'Fails WCAG 1.4.3':'Passes AAA (7 : 1)';
+  $('#fixes').innerHTML=fixes[k].map(t=>`<li>${t}</li>`).join('');
+}));
+$('#ts').addEventListener('input',e=>{phone.style.setProperty('--ts',e.target.value/100);$('#tsv').textContent=e.target.value+'%'});
 
-function renderNavMenu() {
-  const menu = document.getElementById('workMenu');
-  if (!menu) return;
-  menu.innerHTML = caseStudies.map(cs => `
-    <a class="work-item" href="${csHref(cs)}" role="menuitem" data-hover>${cs.title}<span class="sub">${cs.fullLabel || cs.label}</span></a>`).join('');
+/* tracker */
+const FLOW=['OPEN','AWAITING','SENT','SCHEDULED','CLOSED'];
+const NEXT={OPEN:'Schedule in-office aid session',AWAITING:'Walk patient through documents',SENT:'Follow up with specialist office',SCHEDULED:'Reminder call before appointment',CLOSED:'Patient seen ✓'};
+const LABEL={OPEN:'Open',AWAITING:'Awaiting docs',SENT:'Sent',SCHEDULED:'Scheduled',CLOSED:'Closed'};
+const seed=()=>[["A. Martinez","Cardiology","SCHEDULED",1],["T. Brown","GI · Hepatology","CLOSED",0],["D. Williams","Orthopedics","AWAITING",2],["R. Thompson","Optometry","SENT",1],["M. Davis","Dermatology","OPEN",0],["J. Wilson","Neurology","SCHEDULED",0],["L. Garcia","Mental health","CLOSED",0]].map(r=>({name:r[0],spec:r[1],st:r[2],q:r[3]}));
+let data=seed(),day=1,moved=-1;
+const tb=$('#rows');
+function drawT(){
+  tb.innerHTML=data.map((r,i)=>`<tr class="${r.st!=='CLOSED'&&r.q>=3?'stale':''}${i===moved?' moved':''}"><td><b style="font-weight:600">${r.name}</b></td><td>${r.spec}</td><td>${NEXT[r.st]}</td><td class="quiet">${r.st==='CLOSED'?'–':r.q+'d'}</td><td><span class="st ${r.st}">${LABEL[r.st]}</span></td><td><button class="adv" type="button" data-i="${i}" ${r.st==='CLOSED'?'disabled':''}>${r.st==='CLOSED'?'Done':'Advance →'}</button></td></tr>`).join('');
+  const c=data.filter(r=>r.st==='CLOSED').length,s=data.filter(r=>r.st!=='CLOSED'&&r.q>=3).length;
+  $('#closed').textContent=c;$('#stale').textContent=s;$('#day').textContent=`DAY ${day} · FICTIONALIZED DATA`;
+  moved=-1;
 }
+function flash(d){if(!$('#annot').checked)return;const el=$(`.dec[data-d="${d}"]`);el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),1400)}
+tb.addEventListener('click',e=>{const b=e.target.closest('.adv');if(!b)return;const r=data[+b.dataset.i];
+  r.st=FLOW[Math.min(FLOW.indexOf(r.st)+1,4)];r.q=0;moved=+b.dataset.i;
+  $('#msg').textContent=r.st==='CLOSED'?`${r.name} was seen. That referral is closed.`:`${r.name}: next action is "${NEXT[r.st]}".`;
+  flash(r.st==='CLOSED'?'close':'next');drawT()});
+$('#pass').addEventListener('click',()=>{day++;data.forEach(r=>{if(r.st!=='CLOSED')r.q+=1+(r.name.length%2)});
+  const s=data.filter(r=>r.st!=='CLOSED'&&r.q>=3).length;$('#msg').textContent=s?`${s} referral${s>1?'s have':' has'} gone quiet for 3+ days. Run triage.`:'A day passed. Every open row picked up quiet time.';flash('row');drawT()});
+$('#triage').addEventListener('click',()=>{data.sort((a,b)=>(a.st==='CLOSED')-(b.st==='CLOSED')||b.q-a.q);
+  $('#msg').textContent='Sorted by days without movement. Start at the top.';flash('quiet');drawT()});
+$('#reset').addEventListener('click',()=>{data=seed();day=1;$('#msg').textContent='Tip: let a few days pass, then run triage.';drawT()});
+$('#annot').addEventListener('change',e=>$('#decisions').classList.toggle('annot',e.target.checked));
+$('#decisions').addEventListener('click',()=>{const a=$('#annot');a.checked=!a.checked;a.dispatchEvent(new Event('change'))});
+drawT();
 
-function renderXP() {
-  document.getElementById('xpGrid').innerHTML = experience.map((it, i) => `
-    <div class="reveal xp-item" style="transition-delay:${i*0.06}s">
-      <div class="xp-icon">${it.type === 'edu' ? ICON.grad : ICON.briefcase}</div>
-      <div>
-        <div class="xp-period">${it.period}</div>
-        <div class="xp-role">${it.role}</div>
-        <div class="xp-org">${it.org}</div>
-        ${it.note ? `<div class="xp-note">${it.note}</div>` : ''}
-      </div>
-    </div>`).join('');
-}
-
-function renderCerts() {
-  document.getElementById('certGrid').innerHTML = certifications.map((c, i) => `
-    <div class="reveal cert-card" style="transition-delay:${i*0.08}s">
-      <div class="cert-year">${c.year}</div>
-      <div class="cert-name">${c.name}</div>
-      <div class="cert-issuer">${c.issuer}</div>
-    </div>`).join('');
-}
-
-// ───────── CASE STUDY OVERLAY ─────────
-function renderCaseStudy(id) {
-  const cs = caseStudies.find(c => c.id === id);
-  if (!cs) return;
-  const accent = cs.accent;
-  const html = `
-    <section class="cs-hero" style="background:linear-gradient(155deg, ${accent}1a 0%, transparent 55%)">
-      <div class="cs-hero-inner">
-        <div class="cs-hero-label">
-          <span class="line" style="background:${accent}"></span>
-          <span class="txt" style="color:${accent}">${cs.fullLabel}</span>
-        </div>
-        <h1 class="cs-hero-title">${cs.title}</h1>
-        <p class="cs-hero-sub">${cs.subtitle}</p>
-      </div>
-    </section>
-
-    <div class="cs-overview">
-      <div class="cs-overview-bar">
-        ${cs.overview.map(it => `
-          <div class="cs-overview-item">
-            <div class="cs-overview-label" style="color:${accent}">${it.label}</div>
-            <div class="cs-overview-value">${it.value}</div>
-          </div>`).join('')}
-      </div>
-    </div>
-
-    ${cs.challenge ? `<section class="cs-challenge">
-      <div class="reveal section-eyebrow"><span class="line" style="background:${accent}"></span><span class="text" style="color:${accent}">The Challenge</span></div>
-      <p class="reveal">${cs.challenge}</p>
-    </section>` : ''}
-
-    ${cs.steps.length ? `<section class="cs-process">
-      <div class="reveal section-eyebrow"><span class="line" style="background:${accent}"></span><span class="text" style="color:${accent}">Process</span></div>
-      <h2 class="reveal section-h2">A behavior-led approach</h2>
-      <div class="cs-process-grid">
-        ${cs.steps.map((s, i) => `
-          <div class="reveal cs-step" style="transition-delay:${i*0.1}s">
-            <div class="cs-step-num-bg" style="color:${accent}1f">${s.num}</div>
-            <div class="cs-step-num-pill" style="background:${accent}24;color:${accent}">${s.num}</div>
-            <h3>${s.title}</h3>
-            <p>${s.body}</p>
-          </div>`).join('')}
-      </div>
-    </section>` : ''}
-
-    <section class="cs-stat">
-      <div class="cs-stat-inner">
-        <div class="cs-stat-num" style="color:${accent}">${cs.stat.number}</div>
-        <p class="cs-stat-desc">${cs.stat.description}</p>
-      </div>
-    </section>
-
-    ${cs.outcome ? `<section class="cs-outcome">
-      <div class="reveal section-eyebrow"><span class="line" style="background:${accent}"></span><span class="text" style="color:${accent}">Outcomes</span></div>
-      <h2 class="reveal section-h2">What changed.</h2>
-      <p class="reveal">${cs.outcome}</p>
-    </section>` : ''}
-
-    <section class="cs-keep">
-      <p class="cs-keep-title">Keep Reading</p>
-      <div class="cs-keep-row">
-        ${cs.prev ? `<a class="cs-keep-link prev" data-cs="${cs.prev.id}" data-hover>${ICON.arrowL} ${cs.prev.label}</a>` : '<div></div>'}
-        ${cs.next ? `<a class="cs-keep-link next" data-cs="${cs.next.id}" data-hover>${cs.next.label} ${ICON.arrow}</a>` : '<div></div>'}
-      </div>
-      <div class="cs-back"><a href="#work" data-close-cs data-hover>← Back to Home</a></div>
-    </section>`;
-  document.getElementById('csContent').innerHTML = html;
-  initReveal(document.getElementById('csContent'));
-  document.querySelectorAll('#csContent [data-cs]').forEach(el => {
-    el.addEventListener('click', e => { e.preventDefault(); openCaseStudy(el.dataset.cs); });
-  });
-  document.querySelectorAll('#csContent [data-close-cs]').forEach(el => {
-    el.addEventListener('click', e => { e.preventDefault(); closeCaseStudy(); });
-  });
-}
-
-function openCaseStudy(id) {
-  if (id === 'care-gap') { window.location.href = 'closing-the-care-gap.html'; return; }
-  if (id === 'propresenter-remote') { window.location.href = 'propresenter-remote.html'; return; }
-  renderCaseStudy(id);
-  const ov = document.getElementById('csOverlay');
-  ov.scrollTop = 0; ov.classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-function closeCaseStudy() {
-  document.getElementById('csOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-// ───────── REVEAL OBSERVER ─────────
-let revealObs;
-function initReveal(scope) {
-  scope = scope || document;
-  if (!revealObs) {
-    revealObs = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting) { en.target.classList.add('in'); revealObs.unobserve(en.target); }
-      });
-    }, { rootMargin: '-60px 0px', threshold: 0.05 });
+/* flow art: behavior follows the system */
+const cv=$('#flow'),g=cv.getContext('2d');
+let W=0,H=0,parts=[],mode='system',col={},outs=[],level=0,frame=0,live=false;
+const ms={x:-999,y:-999,vx:0,vy:0};
+const vs=()=>{const w=Math.min(150,W*.34),h=Math.min(110,H*.27);return{x0:W/2,top:H-h-14,w,h}};
+function readCols(){const s=getComputedStyle(document.documentElement),v=k=>s.getPropertyValue(k).trim();
+  col={bg:v('--surface-solid'),ink:v('--ink'),water:v('--accent'),inks:[v('--accent'),v('--accent'),v('--teal'),v('--muted')]};
+  g.globalAlpha=1;g.fillStyle=col.bg;g.fillRect(0,0,W,H)}
+function spawn(p,x,y){p.x=x??Math.random()*W;p.y=y??-Math.random()*H*.6;p.px=p.x;p.py=p.y;p.vx=0;p.vy=1;p.lane=clamp(p.x/W*2-1,-1,1);p.life=0;p.c=col.inks[(Math.random()*col.inks.length)|0]}
+function size(){const d=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;g.setTransform(d,0,0,d,0,0);
+  readCols();const n=W<600?220:380;parts=Array.from({length:n},()=>{const p={};spawn(p);p.y=Math.random()*H*.8;p.py=p.y;return p})}
+function vesselPath(V){const{x0,top,w,h}=V;g.beginPath();g.moveTo(x0-w*.3,top);g.lineTo(x0-w*.3,top+h*.14);
+  g.bezierCurveTo(x0-w*.3,top+h*.26,x0-w*.5,top+h*.3,x0-w*.5,top+h*.52);g.lineTo(x0-w*.5,top+h*.8);g.quadraticCurveTo(x0-w*.5,top+h,x0-w*.3,top+h);
+  g.lineTo(x0+w*.3,top+h);g.quadraticCurveTo(x0+w*.5,top+h,x0+w*.5,top+h*.8);g.lineTo(x0+w*.5,top+h*.52);
+  g.bezierCurveTo(x0+w*.5,top+h*.3,x0+w*.3,top+h*.26,x0+w*.3,top+h*.14);g.lineTo(x0+w*.3,top)}
+function record(ok){outs.push(ok);if(outs.length>260)outs.shift();if(ok)level=Math.min(1,level+.006)}
+function step(){
+  frame++;const V=vs(),mouthY=V.top,half=V.w*.28;
+  g.globalAlpha=.1;g.fillStyle=col.bg;g.fillRect(0,0,W,H);g.lineWidth=1.3;g.lineCap='round';
+  for(const p of parts){
+    p.px=p.x;p.py=p.y;p.life++;
+    if(mode==='system'){
+      const pr=clamp(p.y/mouthY,0,1),e=pr*pr*(3-2*pr);
+      const tx=V.x0+p.lane*(W*.46*(1-e)+half*.75*e)+Math.sin(p.y*.014+p.lane*3+frame*.012)*16*(1-e);
+      p.vx+=((tx-p.x)*.05-p.vx)*.15;p.vy+=(1.7-p.vy)*.05;
+    }else{
+      const a=(Math.sin(p.x*.011+frame*.004)+Math.sin(p.y*.013-frame*.003)+Math.sin((p.x+p.y)*.006+p.lane*2))*1.9;
+      p.vx=(p.vx+Math.cos(a)*.14)*.97;p.vy=(p.vy+Math.sin(a)*.14+.012)*.97;
+    }
+    const dx=p.x-ms.x,dy=p.y-ms.y,d=Math.hypot(dx,dy);
+    if(d<90&&d>0){const f=(1-d/90);p.vx+=dx/d*f*1.4-dy/d*f*.8+ms.vx*f*.15;p.vy+=dy/d*f*1.4+dx/d*f*.8+ms.vy*f*.15}
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0)p.x+=W;if(p.x>W)p.x-=W;if(p.y<-H)p.y=-H;
+    if(p.y>=mouthY&&p.py<mouthY&&Math.abs(p.x-V.x0)<half){record(1);spawn(p);continue}
+    if(p.y>H-6||p.life>1100){record(0);spawn(p);continue}
+    if(p.py>=mouthY-1&&Math.abs(p.x-V.x0)<V.w*.55&&p.y>mouthY){record(0);spawn(p);continue}
+    if(Math.abs(p.x-p.px)>W/2)continue;
+    g.globalAlpha=.75;g.strokeStyle=p.c;g.beginPath();g.moveTo(p.px,p.py);g.lineTo(p.x,p.y);g.stroke();
   }
-  scope.querySelectorAll('.reveal:not(.in)').forEach(el => revealObs.observe(el));
+  level=Math.max(0,level-.0007);
+  g.save();vesselPath(V);g.closePath();g.clip();g.globalAlpha=1;g.fillStyle=col.bg;g.fillRect(V.x0-V.w,V.top,V.w*2,V.h+2);
+  g.globalAlpha=.4;g.fillStyle=col.water;const wl=V.top+V.h-(V.h*.86*level)-Math.sin(frame*.05)*1.5;g.fillRect(V.x0-V.w,wl,V.w*2,V.h);g.restore();
+  g.globalAlpha=.85;g.strokeStyle=col.ink;g.lineWidth=1.6;vesselPath(V);g.stroke();
+  ms.vx*=.85;ms.vy*=.85;
+  if(frame%15===0&&outs.length>40)$('#rate').textContent=Math.round(outs.reduce((a,b)=>a+b,0)/outs.length*100)+'%';
 }
+function loop(){if(!live)return;step();if(reduce&&frame>260){live=false;return}requestAnimationFrame(loop)}
+cv.addEventListener('pointermove',e=>{const r=cv.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;ms.vx=x-ms.x;ms.vy=y-ms.y;if(Math.abs(ms.vx)>60){ms.vx=0;ms.vy=0}ms.x=x;ms.y=y});
+cv.addEventListener('pointerleave',()=>{ms.x=ms.y=-999});
+cv.addEventListener('pointerdown',e=>{const r=cv.getBoundingClientRect();for(let i=0;i<14;i++){const p=parts[(Math.random()*parts.length)|0];spawn(p,e.clientX-r.left+(Math.random()-.5)*30,e.clientY-r.top+(Math.random()-.5)*30)}});
+$$('[data-flow]').forEach(b=>b.addEventListener('click',()=>{$$('[data-flow]').forEach(x=>x.setAttribute('aria-pressed',x===b));mode=b.dataset.flow;outs=[];$('#rate').textContent='–';if(!live){live=true;frame=0;loop()}}));
+new IntersectionObserver(es=>{const vis=es[0].isIntersecting;if(vis&&!live&&!(reduce&&frame>260)){live=true;loop()}else if(!vis)live=false}).observe(cv);
+matchMedia('(prefers-color-scheme: dark)').addEventListener('change',()=>{readCols();parts.forEach(p=>p.c=col.inks[(Math.random()*col.inks.length)|0])});
+new MutationObserver(()=>{readCols();parts.forEach(p=>p.c=col.inks[(Math.random()*col.inks.length)|0])}).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+size();for(let i=0;i<120;i++)step();
+let rw;addEventListener('resize',()=>{clearTimeout(rw);rw=setTimeout(()=>{if(cv.clientWidth!==W)size()},200)});
 
-// ───────── NAV BEHAVIOR ─────────
-function initNav() {
-  const nav = document.getElementById('nav');
-  let lastScrollY = window.scrollY;
-  const onScroll = () => {
-    const y = window.scrollY;
-    nav.classList.toggle('scrolled', y > 40);
-    if (y < 80) {
-      nav.classList.remove('nav-hidden');      // always visible near the top
-    } else if (y > lastScrollY) {
-      nav.classList.add('nav-hidden');         // scrolling down
-    } else if (y < lastScrollY) {
-      nav.classList.remove('nav-hidden');      // scrolling up
-    }
-    lastScrollY = y;
-  };
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
+/* contact composer */
+const pick=$$('#pick button');let reason=pick[0].textContent;
+const nm=$('#cname'),msg=$('#cmsg'),prev=$('#cprev');
+function note(){return `Hi Jenny, I found your portfolio (In This Vessel).\nReason: ${reason}\n\n${msg.value.trim()||'…'}\n\n${nm.value.trim()?'— '+nm.value.trim():''}`.trim()}
+function drawNote(){prev.textContent=note()}
+pick.forEach(b=>b.addEventListener('click',()=>{pick.forEach(x=>x.setAttribute('aria-pressed',x===b));reason=b.textContent;drawNote()}));
+[nm,msg].forEach(el=>el.addEventListener('input',drawNote));drawNote();
+$('#composer').addEventListener('submit',e=>{e.preventDefault();const t=note(),st=$('#cstatus');
+  const go=()=>{const a=document.createElement('a');a.href='https://www.linkedin.com/in/jennynegrete';a.target='_blank';a.rel='noopener';document.body.appendChild(a);a.click();a.remove()};
+  if(navigator.clipboard){navigator.clipboard.writeText(t).then(()=>{st.textContent='Copied. Paste it into a LinkedIn message.';go()}).catch(()=>{selectPrev();st.textContent='Select the note above and copy it, then message me on LinkedIn.';go()})}else{selectPrev();go()}});
+function selectPrev(){const r=document.createRange();r.selectNodeContents(prev);const s=getSelection();s.removeAllRanges();s.addRange(r)}
 
-  document.querySelectorAll('[data-scroll]').forEach(el => {
-    el.addEventListener('click', e => {
-      e.preventDefault();
-      const target = document.querySelector(el.dataset.scroll);
-      if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
-  });
-
-  const workToggle = document.getElementById('workToggle');
-  const workMenu = document.getElementById('workMenu');
-  const workChev = document.getElementById('workChev');
-  const workDD = document.getElementById('workDD');
-  const setWork = (open) => {
-    workMenu.classList.toggle('open', open);
-    workChev.style.transform = open ? 'rotate(180deg)' : '';
-    workToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-  };
-  workToggle.addEventListener('click', e => { e.stopPropagation(); setWork(!workMenu.classList.contains('open')); });
-  workToggle.addEventListener('keydown', e => {
-    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault(); setWork(true);
-      const first = workMenu.querySelector('.work-item'); if (first) first.focus();
-    }
-  });
-  workMenu.addEventListener('keydown', e => {
-    const items = [...workMenu.querySelectorAll('.work-item')];
-    const i = items.indexOf(document.activeElement);
-    if (e.key === 'ArrowDown') { e.preventDefault(); (items[i + 1] || items[0]).focus(); }
-    else if (e.key === 'ArrowUp') { e.preventDefault(); (items[i - 1] || items[items.length - 1]).focus(); }
-    else if (e.key === 'Escape') { setWork(false); workToggle.focus(); }
-  });
-  document.addEventListener('click', e => { if (!workDD.contains(e.target)) setWork(false); });
-
-  // mobile hamburger
-  const navBurger = document.getElementById('navBurger');
-  const navLinks = document.getElementById('navLinks');
-  navBurger.addEventListener('click', () => {
-    const open = navLinks.classList.toggle('open');
-    navBurger.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-  // collapse the mobile menu after any nav action inside it
-  navLinks.addEventListener('click', e => {
-    if (e.target.closest('.nav-link, .nav-cta, .work-item')) {
-      navLinks.classList.remove('open');
-      navBurger.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-  document.querySelectorAll('[data-cs]').forEach(el => {
-    el.addEventListener('click', e => { e.preventDefault(); openCaseStudy(el.dataset.cs); });
-  });
-
-  document.getElementById('csClose').addEventListener('click', closeCaseStudy);
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      closeCaseStudy();
-      setWork(false);
-      if (navLinks) navLinks.classList.remove('open');
-      if (navBurger) navBurger.setAttribute('aria-expanded', 'false');
-    }
-  });
-
-}
-
-// ───────── CUSTOM CURSOR ─────────
-function initCursor() {
-  const c = document.getElementById('cursor');
-  const cl = document.getElementById('cursor-ring');
-  let tx = innerWidth/2, ty = innerHeight/2, lx = tx, ly = ty;
-  document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; c.style.left = tx+'px'; c.style.top = ty+'px'; });
-  (function tick(){ lx += (tx-lx)*0.18; ly += (ty-ly)*0.18; cl.style.left = lx+'px'; cl.style.top = ly+'px'; requestAnimationFrame(tick); })();
-  document.addEventListener('mouseleave', () => { c.classList.add('hide'); cl.classList.add('hide'); });
-  document.addEventListener('mouseenter', () => { c.classList.remove('hide'); cl.classList.remove('hide'); });
-  document.body.addEventListener('mouseover', e => { if (e.target.closest('[data-hover], a, button')) cl.classList.add('lg'); });
-  document.body.addEventListener('mouseout', e => { if (e.target.closest('[data-hover], a, button')) cl.classList.remove('lg'); });
-}
-
-
-// ───────── STATE RESET (fixes broken homepage after returning from a case study) ─────────
-// Overlays lock body scroll; navigating away from an open overlay would otherwise leave
-// the page scroll-locked / overlay-open when restored from the browser's back-forward cache.
-function resetUIState() {
-  const cs = document.getElementById('csOverlay');
-  if (cs) cs.classList.remove('open');
-  document.body.style.overflow = '';                 // release scroll-lock
-  const wm = document.getElementById('workMenu');
-  const wc = document.getElementById('workChev');
-  const wt = document.getElementById('workToggle');
-  if (wm) wm.classList.remove('open');
-  if (wc) wc.style.transform = '';
-  if (wt) wt.setAttribute('aria-expanded', 'false');
-  const nl = document.getElementById('navLinks');
-  const nb = document.getElementById('navBurger');
-  if (nl) nl.classList.remove('open');
-  if (nb) nb.setAttribute('aria-expanded', 'false');
-  const cur = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
-  if (cur) cur.classList.remove('hide');
-  if (ring) ring.classList.remove('hide', 'lg');
-  const nav = document.getElementById('nav');
-  if (nav) nav.classList.toggle('scrolled', window.scrollY > 40);
-  if (nav) nav.classList.remove('nav-hidden');
-}
-// Clean the snapshot before it is frozen for bfcache…
-window.addEventListener('pagehide', resetUIState);
-// …and force a clean slate if the page is restored from bfcache.
-window.addEventListener('pageshow', e => { if (e.persisted) resetUIState(); });
-
-// ───────── BOOT ─────────
-document.addEventListener('DOMContentLoaded', () => {
-  renderCS(); renderNavMenu(); renderXP(); renderCerts();
-  initNav(); initReveal(); initCursor();
-});
+/* contact headline parallax */
+const lns=$$('#bigsay .ln');
+if(!reduce)addEventListener('scroll',()=>{const r=$('#bigsay').getBoundingClientRect(),p=clamp(1-r.top/innerHeight,0,1);lns.forEach((l,i)=>l.style.transform=`translateX(${(1-p)*(i%2?-40:40)}px)`)},{passive:true});
+})();
 </script>
 
-</body>
 </html>
