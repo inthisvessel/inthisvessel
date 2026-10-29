@@ -138,14 +138,6 @@ button{font:inherit;color:inherit}
 .card p{color:var(--muted);font-size:15.5px}
 .big-quote{font:500 clamp(26px,3.4vw,42px)/1.2 var(--display);letter-spacing:-.015em;max-width:26ch}
 
-/* method card: the instructional unit used in every phase */
-.method{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-radius:var(--r-md);background:var(--bg-2);overflow:hidden}
-.method>div{padding:16px 18px;display:flex;flex-direction:column;gap:6px;border-right:1px solid var(--line);min-width:0}
-.method>div:last-child{border-right:0}
-.method p{font-size:14.5px}
-.method .lim p{color:var(--muted)}
-@media (max-width:860px){.method{grid-template-columns:1fr 1fr}.method>div{border-bottom:1px solid var(--line)}.method>div:nth-child(2n){border-right:0}}
-@media (max-width:520px){.method{grid-template-columns:1fr}.method>div{border-right:0}}
 
 /* research questions */
 .rqs{list-style:none;padding:0;border-top:1px solid var(--ink)}
@@ -154,16 +146,41 @@ button{font:inherit;color:inherit}
 .rqs li small{font:500 11px var(--mono);color:var(--muted);text-align:right}
 @media (max-width:640px){.rqs li{grid-template-columns:44px 1fr}.rqs li small{grid-column:2;text-align:left}}
 
-/* research plan gantt */
-.plan{padding:22px;display:flex;flex-direction:column;gap:20px}
-.gantt{display:grid;grid-template-columns:200px repeat(12,minmax(0,1fr));min-width:720px;row-gap:6px}
-.gantt .wk{font:500 10.5px var(--mono);color:var(--muted);text-align:center;padding-bottom:6px;border-bottom:1px solid var(--line)}
-.gantt .lab{grid-column:1;font-size:13.5px;font-weight:500;display:flex;align-items:center;padding-right:10px}
-.gantt .row{display:contents}
-.gantt button{border:0;border-radius:8px;height:30px;margin-block:2px;cursor:pointer;background:var(--peri);font:500 11px var(--mono);color:var(--ink);text-align:left;padding:0 10px;white-space:nowrap;overflow:hidden;transition:background .2s,transform .2s}
-.gantt button:hover{transform:translateY(-1px)}
-.gantt button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
-.gantt .ph{font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);padding:10px 0 2px;grid-column:1/-1}
+/* research plan: each method is plotted inside the double diamond it belongs to */
+.plan{padding:24px;display:flex;flex-direction:column;gap:22px}
+.plan-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.lenses{display:flex;flex-wrap:wrap;gap:8px}
+.lenses button{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface-solid);border-radius:var(--r-pill);padding:5px 14px 5px 6px;font-size:13px;font-weight:600;cursor:pointer}
+.lenses button svg{width:26px;height:26px}
+.lenses button span{font-weight:400;color:var(--muted)}
+.lenses button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.lenses button[aria-pressed="true"] span{color:inherit;opacity:.7}
+.lic circle{fill:var(--surface-solid);stroke:var(--lens);stroke-width:2;transition:fill .25s}
+.lic .ic{fill:none;stroke:var(--lens);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+.dd{display:block;width:100%;height:auto;overflow:visible}
+.dd .env{fill:var(--peri);fill-opacity:.35;stroke:var(--accent);stroke-width:1.5;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1),fill-opacity .8s .8s}
+.dd .phl{font:500 11px var(--mono);letter-spacing:.12em;fill:var(--muted)}
+.dd .wkl{font:500 10px var(--mono);letter-spacing:.08em;fill:var(--faint)}
+.dd .head{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:3 4;opacity:0}
+.mnode{cursor:pointer;outline:none;transition:opacity .3s}
+.mnode .pop{transform-origin:0 0;transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .3s}
+.mnode:hover .pop{transform:scale(1.12)}
+.mnode text{font:600 12.5px var(--body);fill:var(--ink)}
+.mnode[aria-pressed="true"] circle{fill:var(--lens)}
+.mnode[aria-pressed="true"] .ic{stroke:var(--surface-solid)}
+.mnode:focus-visible circle{stroke:var(--ink);stroke-width:3}
+.mnode.dim{opacity:.2}
+.dd.pre .env{stroke-dashoffset:1;fill-opacity:0}
+.dd.pre .pop{transform:scale(0);opacity:0}
+.dd.instant *{transition:none!important}
+.mcard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1.3fr);gap:24px;padding:18px 20px;border-radius:var(--r-md);background:var(--bg-2)}
+.mcard .who{display:flex;gap:12px;align-items:center}
+.mcard .who svg{width:44px;height:44px;flex:none}
+.mcard b{display:block;font:500 19px/1.2 var(--display)}
+.mcard p{font-size:15px}
+.mcard p .mono{display:block;margin-bottom:4px}
+.mcard .blind{color:var(--muted)}
+@media (max-width:760px){.mcard{grid-template-columns:1fr;gap:14px}}
 
 /* artifact audit dots */
 .audit{padding:24px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px}
@@ -471,7 +488,7 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
     </div>
     <div class="guide">
       <span class="tag">How to read this</span>
-      <p>The case study follows the Double Diamond. Each phase opens with the question it had to answer and a <b>method card</b> explaining why I chose that method and what it missed. Blocks marked <span class="tag try">Try it</span> are interactive. Patient details are fictional and figures are illustrative, per HIPAA.</p>
+      <p>The case study follows the Double Diamond. Each phase opens with the question it had to answer, and every research method shows why I chose it and what it missed. Blocks marked <span class="tag try">Try it</span> are interactive. Patient details are fictional and figures are illustrative, per HIPAA.</p>
     </div>
   </section>
 
@@ -503,10 +520,14 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
 
   <section class="sec">
     <div class="wrap">
-      <div class="sec-h"><div><div class="eyebrow">Research plan <span class="tag try">Try it</span></div><h3>Nine methods across twelve weeks.</h3></div><p>I mixed what people <b>say</b> (interviews) with what they <b>do</b> (observation) and what the records <b>show</b> (audit). Select a bar to see why I chose that method and what it couldn’t tell me.</p></div>
+      <div class="sec-h"><div><div class="eyebrow">Research plan <span class="tag try">Try it</span></div><h3>Nine methods, two diamonds.</h3></div><p>Go wide to understand the problem, narrow to define it, then wide and narrow again to build the fix. Tap a method to see why I chose it.</p></div>
       <div class="plan glass">
-        <div class="scroll-x"><div class="gantt" id="gantt"></div></div>
-        <div id="methodCard"></div>
+        <div class="plan-top">
+          <div class="lenses" id="lenses" role="group" aria-label="Highlight methods by research lens"></div>
+          <button class="sbtn" type="button" id="planReplay">↻ Replay the 12 weeks</button>
+        </div>
+        <svg class="dd" id="dd" role="group" aria-label="Research methods placed along the double diamond, weeks 1 to 12"></svg>
+        <div class="mcard" id="mcard" aria-live="polite"></div>
       </div>
     </div>
   </section>
@@ -908,33 +929,91 @@ function runCal(mode){
 pressGroup($$('[data-cal]'),b=>runCal(b.dataset.cal));
 runCal('before');
 
-/* ---------- research plan ---------- */
+/* ---------- research plan: methods inside the double diamond ---------- */
+// each lens is a kind of evidence; icons are drawn around 0,0 to sit inside a circle
+const LENSES={
+ listen:{name:'Listen',hint:'what people say',color:'var(--teal)',ic:'<path d="M-10-8h20a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9l-6 5v-5h-5a3 3 0 0 1-3-3v-9a3 3 0 0 1 3-3z"/>'},
+ watch:{name:'Watch',hint:'what people do',color:'var(--gold)',ic:'<path d="M-12 0Q0-12 12 0Q0 12-12 0z"/><circle r="4"/>'},
+ read:{name:'Read the record',hint:'what the data shows',color:'var(--accent)',ic:'<path d="M-7-10h9l5 5v15h-14z"/><path d="M-3-1h6M-3 4h6"/>'},
+ make:{name:'Make',hint:'what we build to learn',color:'var(--ok)',ic:'<rect x="-10" y="-10" width="12" height="12" rx="2"/><rect x="-2" y="-2" width="12" height="12" rx="2"/>'}
+};
+const lensIcon=(k,r=24,scale=1)=>`<g class="lic" style="--lens:${LENSES[k].color}"><circle r="${r}"/><g class="ic" transform="scale(${scale})">${LENSES[k].ic}</g></g>`;
+// t: position along the 12 weeks (0-1); s: position across the diamond's width (-1 to 1)
 const METHODS=[
- {n:'Artifact audit',ph:'Discover',w:[1,2],who:'214 paper referrals',why:'There was no workflow document. The referrals themselves were the only record of how the process behaved.',out:'A baseline: 61% were over six months old and none had a recorded next action.',lim:'Paper only shows what was written down. Phone calls and verbal handoffs left no trace.'},
- {n:'Specialist office calls',ph:'Discover',w:[1,2],who:'18 partner offices',why:'Every office had its own rules. Asking each the same four questions made them comparable.',out:'11 different aid applications and 4 contact channels, which became the per-office contact cards.',lim:'Answers came from whoever picked up and sometimes changed between calls.'},
- {n:'Contextual inquiry',ph:'Discover',w:[1,3],who:'6 shadowing sessions',why:'Staff couldn’t describe a process that was never written down. Watching the work showed the steps they skipped in conversation.',out:'The as-is service blueprint and the exact handoff where ownership disappeared.',lim:'My presence likely made staff more careful than usual.'},
- {n:'Stakeholder interviews',ph:'Discover',w:[2,3],who:'4 providers · 2 front desk · 1 director',why:'To learn who believed they owned each step, and where those beliefs conflicted.',out:'Every role assumed a different role owned follow-up.',lim:'Volunteer providers had little time, so two sessions ran under 20 minutes.'},
- {n:'Patient interviews',ph:'Discover',w:[3,4],who:'9 patients with open referrals',why:'The audit showed where referrals stalled. Only patients could explain why the paperwork stalled them.',out:'The aid process assumed a printer, paid time off and fluency with forms.',lim:'I only reached patients who still answered the clinic’s calls.'},
- {n:'Affinity synthesis',ph:'Define',w:[4,4],who:'142 notes',why:'To turn observations from five sources into patterns the team could act on.',out:'Five themes, three personas, a journey map and a problem statement.',lim:'Synthesized solo, then checked with two staff members to reduce bias.'},
- {n:'Ideation + scoring',ph:'Develop',w:[5,5],who:'Director + 2 staff',why:'No budget and no developers, so ideas had to be ranked by impact against effort.',out:'Five quick wins to build, two deferred, two rejected.',lim:'Scores were team estimates, not measurements.'},
- {n:'Prototype + usability tests',ph:'Develop',w:[5,8],who:'4 staff · 3 rounds',why:'The tracker only works if a busy person can read it in seconds. Think-aloud tests showed where they hesitated.',out:'Moving “Next action” to the first column cut time to find overdue rows from 94s to 18s.',lim:'Small samples find problems; they don’t prove significance.'},
- {n:'Rollout + measurement',ph:'Deliver',w:[8,12],who:'Every active referral',why:'The outcome that mattered was whether patients were seen sooner.',out:'Median referral time fell to 14 days. Open backlog fell from 214 to 22.',lim:'No baseline instrumentation, so “before” is reconstructed from dates.'}
+ {n:'Artifact audit',l:'Audit',lens:'read',t:.12,s:-.3,w:[1,2],who:'214 paper referrals',why:'There was no workflow document. The referrals were the only record of how the process behaved.',lim:'Paper only shows what was written down. Calls and verbal handoffs left no trace.'},
+ {n:'Specialist office calls',l:'Office calls',lens:'listen',t:.12,s:.3,w:[1,2],who:'18 partner offices',why:'Every office had its own rules. The same four questions made them comparable.',lim:'Answers came from whoever picked up and sometimes changed between calls.'},
+ {n:'Contextual inquiry',l:'Shadowing',lens:'watch',t:.21,s:-.55,w:[1,3],who:'6 shadowing sessions',why:'Staff couldn’t describe a process that was never written down. Watching showed the steps they skipped.',lim:'My presence likely made staff more careful than usual.'},
+ {n:'Stakeholder interviews',l:'Staff interviews',lens:'listen',t:.25,s:.5,w:[2,3],who:'4 providers · 2 front desk · 1 director',why:'To learn who believed they owned each step, and where those beliefs conflicted.',lim:'Volunteer providers had little time, so two sessions ran under 20 minutes.'},
+ {n:'Patient interviews',l:'Patient interviews',lens:'listen',t:.32,s:-.15,w:[3,4],who:'9 patients with open referrals',why:'The audit showed where referrals stalled. Only patients could explain why.',lim:'I only reached patients who still answered the clinic’s calls.'},
+ {n:'Affinity synthesis',l:'Synthesis',lens:'make',t:.45,s:0,w:[4,4],who:'142 notes',why:'To turn observations from five sources into patterns the team could act on.',lim:'Synthesized solo, then checked with two staff members to reduce bias.'},
+ {n:'Ideation + scoring',l:'Ideation',lens:'make',t:.57,s:.3,w:[5,5],who:'Director + 2 staff',why:'No budget and no developers, so ideas had to be ranked by impact against effort.',lim:'Scores were team estimates, not measurements.'},
+ {n:'Prototype + usability tests',l:'Usability tests',lens:'watch',t:.7,s:-.4,w:[5,8],who:'4 staff · 3 rounds',why:'The tracker only works if a busy person can read it in seconds. Think-aloud tests showed where they hesitated.',lim:'Small samples find problems; they don’t prove significance.'},
+ {n:'Rollout + measurement',l:'Rollout',lens:'read',t:.86,s:.2,w:[8,12],who:'Every active referral',why:'The outcome that mattered was whether patients were seen sooner.',lim:'No baseline instrumentation, so “before” is reconstructed from dates.'}
 ];
-const gantt=$('#gantt');
-let gh='<div></div>'+Array.from({length:12},(_,i)=>`<div class="wk">WK ${i+1}</div>`).join(''),lastPh='';
-METHODS.forEach((m,i)=>{
-  if(m.ph!==lastPh){gh+=`<div class="ph">${m.ph}</div>`;lastPh=m.ph}
-  gh+=`<div class="row"><div class="lab">${m.n}</div><div style="grid-column:${m.w[0]+1}/${m.w[1]+2}"><button type="button" style="width:100%" aria-pressed="${i===0}" data-m="${i}" aria-label="${m.n}, weeks ${m.w[0]} to ${m.w[1]}">${m.w[1]>m.w[0]?`${m.w[0]}–${m.w[1]}`:m.w[0]}</button></div></div>`;
+const dd=$('#dd'),mcard=$('#mcard'),lensBtns=$('#lenses');
+let planSel=0,planLens=null,planVert=null,planRaf;
+// wide screens run time left to right; phones run it top to bottom
+const planGeo=vert=>vert?{W:360,H:780,P:(t,s)=>[200+s*140,50+t*680]}:{W:1000,H:400,P:(t,s)=>[40+t*920,200+s*150]};
+function drawPlan(){
+  const vert=dd.clientWidth<600;
+  if(vert===planVert)return;planVert=vert;
+  const {W,H,P}=planGeo(vert),pt=(t,s)=>P(t,s).map(v=>v.toFixed(1)).join(' ');
+  const outline=[[0,0],[.225,1],[.45,0],[.7,1],[1,0],[.7,-1],[.45,0],[.225,-1]];
+  let h=`<path class="env" pathLength="1" d="M${outline.map(([t,s])=>pt(t,s)).join('L')}Z"/>`;
+  [['DISCOVER',.11],['DEFINE',.34],['DEVELOP',.58],['DELIVER',.85]].forEach(([n,t])=>{
+    const [x,y]=vert?[8,P(t,0)[1]]:[P(t,0)[0],24];
+    h+=`<text class="phl" x="${x}" y="${y}" text-anchor="${vert?'start':'middle'}">${n}</text>`;
+  });
+  // the diamonds are drawn by phase, not to a linear week scale, so only the phase edges get a week marker
+  [['WK 1',0,'start'],['WK 4',.45,'middle'],['WK 12',1,'end']].forEach(([n,t,anchor])=>{
+    const [x,y]=vert?[352,P(t,0)[1]+4]:[P(t,0)[0],388];
+    h+=`<text class="wkl" x="${x}" y="${y}" text-anchor="${vert?'end':anchor}">${n}</text>`;
+  });
+  h+='<line class="head" id="ddHead"/>';
+  h+=METHODS.map((m,i)=>{const [x,y]=P(m.t,m.s);return `<g class="mnode" data-m="${i}" data-lens="${m.lens}" role="button" tabindex="0" aria-label="${m.n}, weeks ${m.w[0]} to ${m.w[1]}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><g class="pop">${lensIcon(m.lens)}${vert?'':`<text y="44" text-anchor="middle">${m.l}</text>`}</g></g>`}).join('');
+  dd.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  dd.innerHTML=h;
+  selectMethod(planSel);applyLens();
+}
+function selectMethod(i){
+  planSel=i;
+  $$('.mnode',dd).forEach(g=>g.setAttribute('aria-pressed',+g.dataset.m===i));
+  const m=METHODS[i];
+  mcard.innerHTML=`<div class="who"><svg viewBox="-26 -26 52 52" aria-hidden="true">${lensIcon(m.lens)}</svg><div><b>${m.n}</b><span class="mono">Wk ${m.w[0]}${m.w[1]>m.w[0]?'–'+m.w[1]:''} · ${m.who}</span></div></div><p><span class="mono">Why this method</span>${m.why}</p><p class="blind"><span class="mono">Blind spot</span>${m.lim}</p>`;
+}
+const applyLens=()=>$$('.mnode',dd).forEach(g=>g.classList.toggle('dim',!!planLens&&g.dataset.lens!==planLens));
+dd.addEventListener('click',e=>{const g=e.target.closest('.mnode');if(g)selectMethod(+g.dataset.m)});
+dd.addEventListener('keydown',e=>{const g=e.target.closest('.mnode');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();selectMethod(+g.dataset.m)}});
+lensBtns.innerHTML=Object.entries(LENSES).map(([k,l])=>`<button type="button" aria-pressed="false" data-lens="${k}"><svg viewBox="-17 -17 34 34" aria-hidden="true">${lensIcon(k,15,.62)}</svg>${l.name} <span>${l.hint}</span></button>`).join('');
+lensBtns.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  planLens=planLens===b.dataset.lens?null:b.dataset.lens;
+  $$('button',lensBtns).forEach(x=>x.setAttribute('aria-pressed',x.dataset.lens===planLens));
+  applyLens();
+  if(planLens)selectMethod(METHODS.findIndex(m=>m.lens===planLens));
 });
-gantt.innerHTML=gh;
-const methodCard=$('#methodCard');
-const showMethod=m=>{methodCard.innerHTML=`<div class="method">
-  <div><span class="mono">Method · wk ${m.w[0]}${m.w[1]>m.w[0]?'–'+m.w[1]:''}</span><p><b>${m.n}</b><br>${m.who}</p></div>
-  <div><span class="mono">Why this method</span><p>${m.why}</p></div>
-  <div><span class="mono">What it produced</span><p>${m.out}</p></div>
-  <div class="lim"><span class="mono">What it missed</span><p>${m.lim}</p></div></div>`};
-pressGroup($$('[data-m]',gantt),b=>showMethod(METHODS[b.dataset.m]));
-showMethod(METHODS[0]);
+// draw the outline, then sweep a playhead through the weeks while each method pops in
+function playPlan(){
+  if(reduce)return;
+  cancelAnimationFrame(planRaf);
+  const head=$('#ddHead'),{P}=planGeo(planVert),dur=2600,pops=$$('.mnode .pop',dd);
+  dd.classList.add('pre','instant');dd.getBoundingClientRect();dd.classList.remove('instant');
+  pops.forEach((p,i)=>{p.style.transitionDelay=Math.round(500+METHODS[i].t*dur)+'ms'});
+  // reveal without waiting on a frame, so the diagram never stays hidden in a throttled tab
+  dd.getBoundingClientRect();dd.classList.remove('pre');
+  const t0=performance.now()+500;
+  const step=now=>{
+    const t=clamp((now-t0)/dur,0,1),[x1,y1]=P(t,-1.15),[x2,y2]=P(t,1.15);
+    Object.entries({x1,y1,x2,y2}).forEach(([k,v])=>head.setAttribute(k,v));
+    head.style.opacity=t>0&&t<1?1:0;
+    if(t<1)planRaf=requestAnimationFrame(step);else pops.forEach(p=>{p.style.transitionDelay=''});
+  };
+  planRaf=requestAnimationFrame(step);
+}
+drawPlan();
+new ResizeObserver(drawPlan).observe(dd);
+$('#planReplay').addEventListener('click',playPlan);
+if(!reduce&&dd.getBoundingClientRect().top>innerHeight){dd.classList.add('pre','instant');dd.getBoundingClientRect();dd.classList.remove('instant');onView(dd,playPlan,.4)}
 
 /* ---------- artifact audit ---------- */
 const DIMS={
