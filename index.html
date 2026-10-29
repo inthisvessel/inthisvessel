@@ -130,19 +130,28 @@ section{position:relative}
 .row span.hl{background:var(--peri);border-radius:14px;padding:0 .14em}
 .row span.hl.b{background:var(--blush)}.row span.hl.m{background:var(--mist)}
 
-/* FRAMEWORK (pinned horizontal) */
+/* FRAMEWORK: four stages as tabs around a loop, one stage card open at a time */
 .fw-intro{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;padding-block:100px 40px}
 .fw-intro h2{font-size:clamp(34px,4.6vw,60px)}
 .fw-intro p{color:var(--muted);max-width:52ch}
 @media (max-width:800px){.fw-intro{grid-template-columns:1fr;gap:16px}}
-.pin{position:relative}
-.pin-sticky{overflow:hidden}
-.track{display:flex;gap:24px;padding-block:20px 30px}
-.card-fw{flex:0 0 min(520px,82vw);border-radius:28px;padding:34px;display:flex;flex-direction:column;gap:18px;min-height:420px;border:1px solid var(--line);position:relative;overflow:hidden}
-.card-fw:nth-child(1){background:var(--peri)}
-.card-fw:nth-child(2){background:var(--blush)}
-.card-fw:nth-child(3){background:var(--mist)}
-.card-fw:nth-child(4){background:var(--surface-solid)}
+.fw{display:grid;grid-template-columns:minmax(0,400px) minmax(0,1fr);gap:56px;align-items:center;padding-bottom:20px}
+@media (max-width:860px){.fw{grid-template-columns:1fr;gap:28px}}
+.loop{position:relative;width:100%;max-width:400px;aspect-ratio:1;margin-inline:auto}
+.loop::before{content:"";position:absolute;inset:14%;border-radius:50%;border:2px dashed var(--line)}
+.loop .orbit{position:absolute;inset:14%;border-radius:50%;transition:transform .8s cubic-bezier(.6,0,.3,1)}
+.loop .orbit::after{content:"";position:absolute;left:50%;top:0;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--accent)}
+.loop .hub{position:absolute;inset:0;display:grid;place-items:center;text-align:center;font:500 11px/1.6 var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);pointer-events:none}
+.loop [role="tab"]{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;border:0;background:none;padding:0;cursor:pointer;font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.loop [role="tab"] span{width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font:500 22px var(--display);letter-spacing:0;color:var(--ink);background:var(--surface-solid);border:1px solid var(--line);transition:transform .3s,background .3s,box-shadow .3s}
+.loop [role="tab"]:hover span{transform:scale(1.06)}
+.loop [role="tab"][aria-selected="true"]{color:var(--ink)}
+.loop [role="tab"][aria-selected="true"] span{background:var(--c);transform:scale(1.15);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 20%,transparent)}
+@media (max-width:860px){.loop{max-width:320px}.loop [role="tab"] span{width:54px;height:54px;font-size:19px}}
+.card-fw{border-radius:28px;padding:34px;display:flex;flex-direction:column;gap:18px;min-height:400px;border:1px solid var(--line);position:relative;overflow:hidden;background:var(--c);animation:stage-in .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes stage-in{from{opacity:0;transform:translateY(12px)}}
+.card-fw .go{align-self:flex-start;border:0;background:none;padding:0;cursor:pointer;font:600 14px var(--body);color:var(--accent)}
+.card-fw .go:hover{text-decoration:underline}
 .card-fw .num{font-family:var(--display);font-size:84px;line-height:.8;font-weight:500;color:transparent;-webkit-text-stroke:1.2px var(--ink);opacity:.4}
 .card-fw .tag{position:absolute;top:28px;right:28px;font:600 11px var(--body);letter-spacing:.14em;text-transform:uppercase;background:var(--surface-solid);padding:7px 12px;border-radius:var(--r-sm)}
 .card-fw h3{font-size:36px}
@@ -150,11 +159,6 @@ section{position:relative}
 .card-fw p{max-width:44ch}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:auto}
 .chip{font-size:12.5px;font-weight:500;padding:6px 12px;border-radius:var(--r-sm);background:var(--surface);border:1px solid var(--line)}
-.progress{display:flex;align-items:center;gap:14px;color:var(--muted)}
-.progress .bar{flex:1;height:2px;background:var(--line);position:relative;border-radius:2px}
-.progress .bar i{position:absolute;left:0;top:0;bottom:0;background:var(--accent);width:25%;border-radius:2px}
-.pin.free .pin-sticky{overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-.pin.free .card-fw{scroll-snap-align:start}
 
 /* WORK */
 .work-h{padding-block:110px 40px;display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end}
@@ -436,19 +440,22 @@ footer{padding-block:40px 60px;color:var(--muted);font-size:13.5px}
   <section id="how">
     <div class="wrap fw-intro">
       <div><div class="eyebrow">How I work</div><h2 style="margin-top:14px">A behavioral design framework, <span class="mark">tested in a real clinic.</span></h2></div>
-      <p>Four stages, in order. Each card shows the stage and what it looked like when I rebuilt the specialist referral process at Mercy Health Center.</p>
+      <p>Four stages that loop: what I measure becomes the next thing I observe. Pick a stage to see what it looked like when I rebuilt the specialist referral process at Mercy Health Center.</p>
     </div>
-    <div class="pin" id="pin">
-      <div class="pin-sticky" id="pinSticky">
-        <div class="wrap">
-          <div class="track" id="track">
-            <article class="card-fw"><span class="tag">Observe</span><div class="num">01</div><h3>Identify the friction</h3><p class="q">Go where the system meets real people.</p><p>There was no documented workflow to study, so I followed referrals end to end and called every specialist office we referred to, asking each the same four questions.</p><div class="chips"><span class="chip">Contextual inquiry</span><span class="chip">Process tracing</span><span class="chip">Stakeholder calls</span></div></article>
-            <article class="card-fw"><span class="tag">Understand</span><div class="num">02</div><h3>Name the real problem</h3><p class="q">The cause, not the symptom.</p><p>Patients weren't the problem. Five failures were: no shared mental model, one-size-fits-all packets, no tracking layer, unsupported patient effort, and no closure point.</p><div class="chips"><span class="chip">Affinity mapping</span><span class="chip">Journey mapping</span><span class="chip">Root cause</span></div></article>
-            <article class="card-fw"><span class="tag">Design</span><div class="num">03</div><h3>Build with behavior</h3><p class="q">Fit how people actually think and act.</p><p>An SOP with a single accountable owner, a master tracker where every row carries a next action, tailored packets per specialist, and in-person help with applications.</p><div class="chips"><span class="chip">Service design</span><span class="chip">SOPs</span><span class="chip">Forcing functions</span></div></article>
-            <article class="card-fw"><span class="tag">Measure</span><div class="num">04</div><h3>Evaluate and refine</h3><p class="q">Make it survive without you.</p><p>Referral time fell from 12+ months to about 2 weeks. Daily triage and standing partner meetings kept the loop closing after the first push.</p><div class="chips"><span class="chip">Outcome tracking</span><span class="chip">Iteration</span><span class="chip">Handoff</span></div></article>
-          </div>
-          <div class="progress"><span class="mono" id="pcur">01</span><div class="bar"><i id="pbar"></i></div><span class="mono">04</span></div>
-        </div>
+    <div class="wrap fw">
+      <div class="loop" id="loop" role="tablist" aria-label="Framework stages">
+        <div class="orbit" aria-hidden="true"></div>
+        <p class="hub" aria-hidden="true">Measure feeds<br>the next round</p>
+        <button role="tab" type="button" id="fw-t0" aria-controls="fw-p0" aria-selected="true" style="--x:50%;--y:14%;--c:var(--peri)"><span>01</span>Observe</button>
+        <button role="tab" type="button" id="fw-t1" aria-controls="fw-p1" aria-selected="false" tabindex="-1" style="--x:86%;--y:50%;--c:var(--blush)"><span>02</span>Understand</button>
+        <button role="tab" type="button" id="fw-t2" aria-controls="fw-p2" aria-selected="false" tabindex="-1" style="--x:50%;--y:86%;--c:var(--mist)"><span>03</span>Design</button>
+        <button role="tab" type="button" id="fw-t3" aria-controls="fw-p3" aria-selected="false" tabindex="-1" style="--x:14%;--y:50%;--c:var(--surface-solid)"><span>04</span>Measure</button>
+      </div>
+      <div>
+        <article class="card-fw" role="tabpanel" id="fw-p0" aria-labelledby="fw-t0" style="--c:var(--peri)"><span class="tag">Observe</span><div class="num">01</div><h3>Identify the friction</h3><p class="q">Go where the system meets real people.</p><p>There was no documented workflow to study, so I followed referrals end to end and called every specialist office we referred to, asking each the same four questions.</p><div class="chips"><span class="chip">Contextual inquiry</span><span class="chip">Process tracing</span><span class="chip">Stakeholder calls</span></div><button class="go" type="button" data-go="1">Next: Understand →</button></article>
+        <article class="card-fw" role="tabpanel" id="fw-p1" aria-labelledby="fw-t1" style="--c:var(--blush)" hidden><span class="tag">Understand</span><div class="num">02</div><h3>Name the real problem</h3><p class="q">The cause, not the symptom.</p><p>Patients weren't the problem. Five failures were: no shared mental model, one-size-fits-all packets, no tracking layer, unsupported patient effort, and no closure point.</p><div class="chips"><span class="chip">Affinity mapping</span><span class="chip">Journey mapping</span><span class="chip">Root cause</span></div><button class="go" type="button" data-go="2">Next: Design →</button></article>
+        <article class="card-fw" role="tabpanel" id="fw-p2" aria-labelledby="fw-t2" style="--c:var(--mist)" hidden><span class="tag">Design</span><div class="num">03</div><h3>Build with behavior</h3><p class="q">Fit how people actually think and act.</p><p>An SOP with a single accountable owner, a master tracker where every row carries a next action, tailored packets per specialist, and in-person help with applications.</p><div class="chips"><span class="chip">Service design</span><span class="chip">SOPs</span><span class="chip">Forcing functions</span></div><button class="go" type="button" data-go="3">Next: Measure →</button></article>
+        <article class="card-fw" role="tabpanel" id="fw-p3" aria-labelledby="fw-t3" style="--c:var(--surface-solid)" hidden><span class="tag">Measure</span><div class="num">04</div><h3>Evaluate and refine</h3><p class="q">Make it survive without you.</p><p>Referral time fell from 12+ months to about 2 weeks. Daily triage and standing partner meetings kept the loop closing after the first push.</p><div class="chips"><span class="chip">Outcome tracking</span><span class="chip">Iteration</span><span class="chip">Handoff</span></div><button class="go" type="button" data-go="0">Back to Observe ↺</button></article>
       </div>
     </div>
   </section>
@@ -673,21 +680,23 @@ $$('[data-count]').forEach(el=>io.observe(el));
 const rio=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.remove('pre');rio.unobserve(e.target)}}),{threshold:.12});
 $$('.reveal').forEach(el=>{const r=el.getBoundingClientRect();if(r.top>innerHeight){el.classList.add('pre');rio.observe(el)}});
 
-/* pinned horizontal framework */
-const pin=$('#pin'),sticky=$('#pinSticky'),track=$('#track'),pbar=$('#pbar'),pcur=$('#pcur');
-const wide=matchMedia('(min-width: 900px)');
-let pinOn=false;
-function setupPin(){
-  pinOn=wide.matches&&!reduce;
-  pin.classList.toggle('free',!pinOn);
-  if(pinOn){
-    const dist=track.scrollWidth-sticky.clientWidth+40;
-    pin.style.height=(sticky.offsetHeight+Math.max(0,dist))+'px';
-    sticky.style.position='sticky';sticky.style.top='80px';
-  }else{pin.style.height='';sticky.style.position='';track.style.transform=''}
+/* framework loop: stages are tabs placed around a ring */
+const loop=$('#loop'),stageTabs=$$('[role="tab"]',loop),stagePanels=$$('#how [role="tabpanel"]'),orbit=$('.orbit',loop);
+let stage=0,turn=0;
+function showStage(i,focus){
+  // always travel clockwise, so Measure → Observe completes the loop instead of rewinding
+  turn+=((i-stage+4)%4)*90;stage=i;
+  orbit.style.transform=`rotate(${turn}deg)`;
+  stageTabs.forEach((t,j)=>{t.setAttribute('aria-selected',j===i);t.tabIndex=j===i?0:-1});
+  stagePanels.forEach((p,j)=>{p.hidden=j!==i});
+  if(focus)stageTabs[i].focus();
 }
-sticky.addEventListener('scroll',()=>{if(pinOn)return;const max=sticky.scrollWidth-sticky.clientWidth;setProg(max?sticky.scrollLeft/max:0)});
-function setProg(p){pbar.style.width=(25+p*75)+'%';pcur.textContent='0'+(1+Math.round(p*3))}
+loop.addEventListener('click',e=>{const t=e.target.closest('[role="tab"]');if(t)showStage(stageTabs.indexOf(t))});
+loop.addEventListener('keydown',e=>{
+  const d={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];
+  if(d){e.preventDefault();showStage((stage+d+4)%4,true)}
+});
+$('#how').addEventListener('click',e=>{const b=e.target.closest('[data-go]');if(b)showStage(+b.dataset.go)});
 
 /* scroll loop */
 const vfill=$('#vfill'),rows=$$('.row'),kin=$('.kinetic'),navLinks=$$('.links a');
@@ -704,17 +713,13 @@ function onScroll(){
   // kinetic
   if(!reduce){const kr=kin.getBoundingClientRect(),kp=(innerHeight-kr.top)/(innerHeight+kr.height);
     rows.forEach(row=>{const d=+row.dataset.dir;row.style.transform=`translateX(${d<0?-kp*30:-30+kp*30}%)`})}
-  // pin
-  if(pinOn){const pr=pin.getBoundingClientRect(),dist=pin.offsetHeight-sticky.offsetHeight,pp=clamp((80-pr.top)/dist,0,1);
-    track.style.transform=`translateX(${-pp*(track.scrollWidth-sticky.clientWidth+40)}px)`;setProg(pp)}
   // nav
   let cur=-1;secs.forEach((s,i)=>{if(s&&s.getBoundingClientRect().top<innerHeight*.4)cur=i});
   navLinks.forEach((a,i)=>a.classList.toggle('on',i===cur));
 }
 addEventListener('scroll',()=>{if(!ticking){ticking=true;requestAnimationFrame(onScroll)}},{passive:true});
-addEventListener('resize',()=>{setupPin();onScroll()});
-setupPin();onScroll();
-addEventListener('load',()=>{setupPin();onScroll()});
+addEventListener('resize',onScroll);
+onScroll();
 
 /* care gap journey */
 const J={
