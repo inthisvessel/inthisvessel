@@ -140,11 +140,19 @@ button{font:inherit;color:inherit}
 
 
 /* research questions */
-.rqs{list-style:none;padding:0;border-top:1px solid var(--ink)}
-.rqs li{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:baseline;padding:16px 0;border-bottom:1px solid var(--line);font-size:18px}
-.rqs li b{font:500 12px var(--mono);color:var(--accent)}
-.rqs li small{font:500 11px var(--mono);color:var(--muted);text-align:right}
-@media (max-width:640px){.rqs li{grid-template-columns:44px 1fr}.rqs li small{grid-column:2;text-align:left}}
+.rqs{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.rqs li{padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line)}
+.rqs p{font:500 19px/1.3 var(--display)}
+.rqs small{margin-top:auto}
+@media (max-width:900px){.rqs{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.rqs{grid-template-columns:1fr}}
+
+/* line icons: drawn in by stroke when their section scrolls into view */
+.ico{width:24px;height:24px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ico *{stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1) calc(var(--i,0)*110ms)}
+.undrawn .ico *{stroke-dashoffset:1}
+.badge{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--peri);color:var(--accent)}
+.badge .ico{width:26px;height:26px}
 
 /* research plan: each method is plotted inside the double diamond it belongs to */
 .plan{padding:24px;display:flex;flex-direction:column;gap:22px}
@@ -194,12 +202,27 @@ button{font:inherit;color:inherit}
 @media (max-width:820px){.audit{grid-template-columns:1fr}}
 
 /* stats strip */
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
-.stats>div{padding:18px 18px 18px 0;display:flex;flex-direction:column;gap:4px}
-.stats>div+div{padding-left:18px;border-left:1px solid var(--line)}
-.stats strong{font:500 clamp(30px,3.6vw,44px)/1 var(--display);font-variant-numeric:tabular-nums}
-.stats span{font-size:14px;color:var(--muted)}
-@media (max-width:760px){.stats{grid-template-columns:1fr 1fr}.stats>div:nth-child(3){padding-left:0;border-left:0}}
+/* office calls: one tile per office, badged with how it wants to be contacted */
+.calls{padding:24px;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:32px;align-items:center}
+.offices{list-style:none;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.office{position:relative;aspect-ratio:1;border-radius:var(--r-md);background:var(--surface-solid);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);transition:transform .5s cubic-bezier(.3,1.5,.5,1) calc(var(--i,0)*50ms),opacity .4s calc(var(--i,0)*50ms)}
+.office>.ico{width:46%;height:46%}
+.office .ch{position:absolute;right:-6px;bottom:-6px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--ch);color:var(--surface-solid)}
+.office .ch .ico{width:14px;height:14px;stroke-width:2}
+.office.dim{opacity:.18}
+.undrawn .office{transform:scale(.5);opacity:0}
+.chans{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chans button{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface-solid);border-radius:var(--r-pill);padding:5px 12px 5px 5px;font-size:13px;font-weight:600;cursor:pointer}
+.chans button i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--ch);color:var(--surface-solid)}
+.chans button .ico{width:13px;height:13px;stroke-width:2}
+.chans button b{font:500 12px var(--mono);color:var(--muted)}
+.chans button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chans button[aria-pressed="true"] b{color:inherit}
+.call-stats{display:flex;flex-direction:column;gap:22px}
+.call-stats div{display:flex;flex-direction:column;gap:4px;padding-top:18px;border-top:1px solid var(--ink)}
+.call-stats strong{font:500 clamp(44px,5vw,64px)/1 var(--display);font-variant-numeric:tabular-nums}
+.call-stats span{color:var(--muted)}
+@media (max-width:820px){.calls{grid-template-columns:1fr}}
 
 /* affinity board */
 .board{position:relative;padding:20px}
@@ -216,12 +239,24 @@ button{font:inherit;color:inherit}
 .src-key{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
 .src-key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;border:1px solid var(--line)}
 
-/* insights */
-.insight{padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}
-.insight h4{font-size:21px}
-.insight .ev{font:500 11px var(--mono);letter-spacing:.06em;color:var(--muted)}
-.insight .need{margin-top:auto;padding-top:12px;border-top:1px dashed var(--line);font-size:14.5px}
-.insight .need b{display:block;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+/* insights: a sticky note from the wall turns into a design requirement */
+.flow{list-style:none;padding:0;display:flex;flex-direction:column;gap:16px}
+.flow li{display:grid;grid-template-columns:minmax(0,1fr) 110px minmax(0,1.15fr);align-items:center}
+.flow .theme{padding:14px 16px;border-radius:4px;background:var(--surface-solid);border:1px solid var(--line);box-shadow:0 6px 14px -10px rgba(0,0,0,.35);transform:rotate(var(--r,0deg))}
+.flow .theme b{display:block;font:500 18px/1.25 var(--display)}
+.flow .theme small{display:block;margin-top:6px}
+.flow .arrow{height:2px;margin-inline:14px;position:relative;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 11px);transform-origin:left;transition:transform .7s cubic-bezier(.4,0,.2,1) calc(var(--i,0)*140ms + 300ms)}
+.flow .arrow::after{content:"";position:absolute;right:-4px;top:-5px;border:6px solid transparent;border-left:8px solid var(--accent);border-right:0}
+.flow .req{display:flex;gap:14px;align-items:center;padding:12px 18px 12px 12px;border-radius:var(--r-md);background:var(--accent);color:var(--accent-ink);font-weight:600;transition:transform .6s cubic-bezier(.3,1.4,.5,1) calc(var(--i,0)*140ms + 700ms),opacity .4s calc(var(--i,0)*140ms + 700ms)}
+.flow .req .badge{width:44px;height:44px;background:color-mix(in srgb,var(--accent-ink) 16%,transparent);color:inherit}
+.undrawn .flow .arrow{transform:scale(0,1)}
+.undrawn .flow .req{transform:translateX(-14px);opacity:0}
+@media (max-width:700px){
+  .flow li{grid-template-columns:1fr}
+  .flow .arrow{width:2px;height:26px;margin:8px 0 8px 28px;background:repeating-linear-gradient(180deg,var(--accent) 0 6px,transparent 6px 11px);transform-origin:top}
+  .flow .arrow::after{right:auto;top:auto;left:-5px;bottom:-4px;border:6px solid transparent;border-top:8px solid var(--accent);border-bottom:0}
+  .undrawn .flow .arrow{transform:scale(1,0)}
+}
 
 /* tabs (personas, decisions, iterations, solution) */
 .tabs{display:flex;gap:4px;overflow-x:auto;padding:14px 14px 0;border-bottom:1px solid var(--line)}
@@ -230,15 +265,20 @@ button{font:inherit;color:inherit}
 .panel{padding:28px;min-width:0}
 
 /* personas */
-.persona{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:32px}
-.persona .who{display:flex;flex-direction:column;gap:14px}
-.avatar{width:72px;height:72px;border-radius:50%;display:grid;place-items:center;font:500 24px var(--display);background:var(--peri)}
-.persona h4{font-size:30px}
-.persona blockquote{font:500 19px/1.4 var(--display);padding-left:14px;border-left:2px solid var(--accent)}
-.persona .cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
-.persona ul{padding-left:18px;font-size:14.5px;color:var(--muted);display:flex;flex-direction:column;gap:6px}
-.persona .impl{grid-column:1/-1;padding:14px 16px;border-radius:var(--r-md);background:var(--bg-2);font-size:15px}
-@media (max-width:860px){.persona,.persona .cols{grid-template-columns:1fr}}
+.persona{display:grid;grid-template-columns:200px minmax(0,1fr);gap:36px;align-items:center}
+.portrait{width:100%;max-width:200px;height:auto;animation:rise .6s cubic-bezier(.3,1.3,.5,1)}
+@keyframes rise{from{transform:translateY(14px) scale(.94);opacity:0}}
+.persona .body{display:flex;flex-direction:column;gap:18px;min-width:0}
+.persona h4{font-size:32px;margin-top:4px}
+.persona blockquote{font:500 clamp(20px,2.2vw,26px)/1.3 var(--display);letter-spacing:-.01em}
+.facts{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.facts li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
+.facts .badge{width:40px;height:40px}
+.facts .badge .ico{width:20px;height:20px}
+.facts small{display:block;margin-bottom:2px}
+.persona .impl{padding:12px 16px;border-radius:var(--r-md);background:var(--bg-2);font-size:14.5px;color:var(--muted)}
+.persona .impl b{color:var(--ink)}
+@media (max-width:860px){.persona{grid-template-columns:1fr;gap:16px}.portrait{max-width:140px}.facts{grid-template-columns:1fr}}
 
 /* journey */
 .journey{padding:24px}
@@ -273,7 +313,7 @@ button{font:inherit;color:inherit}
 .principles{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
 .principles li{padding:18px 18px 18px 0;display:flex;flex-direction:column;gap:6px}
 .principles li+li{padding-left:18px;border-left:1px solid var(--line)}
-.principles h4{font-size:19px}
+.principles h4{font-size:19px;margin-top:8px}
 .principles p{font-size:14.5px;color:var(--muted)}
 @media (max-width:860px){.principles{grid-template-columns:1fr 1fr}.principles li:nth-child(3){padding-left:0;border-left:0}}
 @media (max-width:520px){.principles{grid-template-columns:1fr}.principles li+li{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
@@ -506,14 +546,14 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" data-draw>
     <div class="wrap">
-      <div class="sec-h"><div><div class="eyebrow">Research questions</div><h3>Four questions framed the research.</h3></div><p>Writing them down first kept the work focused, and every method in the plan below maps to at least one of them.</p></div>
-      <ol class="rqs">
-        <li><b>RQ1</b>Where in the referral journey do referrals stall, and for how long?<small>Audit · Inquiry</small></li>
-        <li><b>RQ2</b>Who believes they own each step, and where do those beliefs conflict?<small>Interviews · Inquiry</small></li>
-        <li><b>RQ3</b>What does each specialist office need before it will accept a patient?<small>Office calls</small></li>
-        <li><b>RQ4</b>What stops patients from completing their part of the process?<small>Patient interviews</small></li>
+      <div class="sec-h"><div><div class="eyebrow">Research questions</div><h3>Four questions framed the research.</h3></div><p>I wrote them down before choosing any method.</p></div>
+      <ol class="rqs" data-stagger>
+        <li><span class="badge" data-icon="clock"></span><p>Where do referrals stall, and for how long?</p><small class="mono">RQ1 · Audit, shadowing</small></li>
+        <li><span class="badge" data-icon="people"></span><p>Who thinks they own each step?</p><small class="mono">RQ2 · Interviews</small></li>
+        <li><span class="badge" data-icon="building"></span><p>What does each specialist office need?</p><small class="mono">RQ3 · Office calls</small></li>
+        <li><span class="badge" data-icon="form"></span><p>What stops patients from doing their part?</p><small class="mono">RQ4 · Patient interviews</small></li>
       </ol>
     </div>
   </section>
@@ -547,14 +587,18 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" data-draw>
     <div class="wrap">
-      <div class="sec-h"><div><div class="eyebrow">Specialist office calls</div><h3>Same four questions, eighteen different answers.</h3></div><p>I called every office Mercy referred to and asked: what counts as a complete financial aid application, what clinical documents do you need, how should we contact you, and who handles aid questions?</p></div>
-      <div class="stats">
-        <div><strong>18</strong><span>offices called in two weeks</span></div>
-        <div><strong>11</strong><span>different financial aid applications</span></div>
-        <div><strong>4</strong><span>preferred contact channels: fax, phone, email, portal</span></div>
-        <div><strong>0</strong><span>offices whose requirements Mercy had on file</span></div>
+      <div class="sec-h"><div><div class="eyebrow">Specialist office calls <span class="tag try">Try it</span></div><h3>Same four questions, eighteen different answers.</h3></div><p>I called every partner office in two weeks. Each tile is one office, badged with how it wanted to be contacted.</p></div>
+      <div class="calls glass">
+        <div style="min-width:0">
+          <ul class="offices" id="offices" data-stagger aria-label="18 specialist offices by preferred contact channel"></ul>
+          <div class="chans" id="chans" role="group" aria-label="Highlight offices by contact channel"></div>
+        </div>
+        <div class="call-stats">
+          <div><strong>11</strong><span>different financial aid applications</span></div>
+          <div><strong>0</strong><span>offices whose requirements the clinic had on file</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -580,10 +624,10 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" data-draw>
     <div class="wrap">
-      <div class="sec-h"><div><div class="eyebrow">Insights</div><h3>Five themes became five design requirements.</h3></div><p>An insight is only useful if it tells you what to build. Each theme below ends with the requirement it created.</p></div>
-      <div class="grid-3" id="insights"></div>
+      <div class="sec-h"><div><div class="eyebrow">Insights</div><h3>Five themes became five design requirements.</h3></div><p>Each theme from the wall turned into one thing the design had to do.</p></div>
+      <ol class="flow" id="insights" data-stagger></ol>
     </div>
   </section>
 
@@ -623,11 +667,11 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
         </ul>
       </div>
       <div class="eyebrow" style="margin:48px 0 16px">Design principles</div>
-      <ul class="principles">
-        <li><h4>Visible by default</h4><p>Every referral shows its status and age without anyone asking.</p></li>
-        <li><h4>One owner, one next action</h4><p>No row exists without a person and a date attached.</p></li>
-        <li><h4>Carry the load for the patient</h4><p>If a step is hard for a patient, staff do it with them.</p></li>
-        <li><h4>Outlive the designer</h4><p>Anyone on staff can run it from the written SOP.</p></li>
+      <ul class="principles" data-draw data-stagger>
+        <li><span class="badge" data-icon="eye"></span><h4>Visible by default</h4><p>Every referral shows its status and age without anyone asking.</p></li>
+        <li><span class="badge" data-icon="owner"></span><h4>One owner, one next action</h4><p>No row exists without a person and a date attached.</p></li>
+        <li><span class="badge" data-icon="heart"></span><h4>Carry the load for the patient</h4><p>If a step is hard for a patient, staff do it with them.</p></li>
+        <li><span class="badge" data-icon="sprout"></span><h4>Outlive the designer</h4><p>Anyone on staff can run it from the written SOP.</p></li>
       </ul>
     </div>
   </section>
@@ -897,6 +941,31 @@ function dataTabs(listId,panelId,items,label,render){
   tabs(list,i=>{panel.setAttribute('aria-labelledby',`${listId}-${i}`);panel.innerHTML=render(items[i],i)});
 }
 
+/* ---------- line icons (24px grid), drawn in by stroke ---------- */
+const ICONS={
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ people:'<circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c3 0 5 2 5 5"/>',
+ building:'<path d="M4 20V7l8-4 8 4v13H4"/><path d="M9 20v-4h6v4M8 10h2M14 10h2"/>',
+ form:'<path d="M7 3h7l4 4v14H7V3"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
+ fax:'<rect x="3" y="9" width="18" height="10" rx="2"/><path d="M7 9V4h8l2 2v3M7 14h5"/>',
+ phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+ email:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+ portal:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M3 8h18M8 21h8M12 17v4"/>',
+ eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12"/><circle cx="12" cy="12" r="3"/>',
+ owner:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>',
+ heart:'<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10"/>',
+ sprout:'<path d="M12 21v-9M12 12C12 8 9 6 5 6c0 4 3 6 7 6M12 10c0-3 2-5 6-5 0 3-2 5-6 5"/>',
+ checklist:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8l1.5 1.5L12 7M14 8h3M8 14l1.5 1.5L12 13M14 14h3"/>',
+ table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16"/>',
+ flag:'<path d="M5 21V4h12l-2 4 2 4H5"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ knot:'<path d="M3 12c2-6 5 6 7 0s5 6 7 0 3 2 4 0"/>',
+ key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>'
+};
+// pathLength="1" lets one dash rule draw any shape in, whatever its length
+const icon=n=>`<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n].replace(/<(path|circle|rect)/g,'<$1 pathLength="1"')}</svg>`;
+$$('[data-icon]').forEach(el=>{el.innerHTML=icon(el.dataset.icon)});
+
 /* ---------- nav: logo fill, reading bar, active phase ---------- */
 const vfill=$('#vfill'),bar=$('.readbar'),railLinks=$$('.rail a'),phases=$$('[data-phase]');
 let phaseCur=-2;
@@ -1091,28 +1160,51 @@ let notesW=0;
 new ResizeObserver(()=>{if(notesEl.clientWidth!==notesW){notesW=notesEl.clientWidth;layoutNotes()}}).observe(notesEl);
 if(reduce)setCluster(true);else onView(notesEl,()=>setTimeout(()=>setCluster(true),900),.15);
 
+/* ---------- specialist office calls ---------- */
+const CHANNELS={fax:['Fax','var(--accent)'],phone:['Phone','var(--teal)'],email:['Email','var(--gold)'],portal:['Portal','var(--ok)']};
+// one letter per office, in call order: f=fax p=phone e=email o=portal
+const OFFICES=[...'fpfeffpfoepfpfeofp'].map(c=>({f:'fax',p:'phone',e:'email',o:'portal'})[c]);
+const officesEl=$('#offices'),chansEl=$('#chans');
+officesEl.innerHTML=OFFICES.map((c,i)=>`<li class="office" data-ch="${c}" aria-label="Office ${i+1}, prefers ${CHANNELS[c][0].toLowerCase()}">${icon('building')}<span class="ch" style="--ch:${CHANNELS[c][1]}">${icon(c)}</span></li>`).join('');
+chansEl.innerHTML=Object.entries(CHANNELS).map(([k,[n,col]])=>`<button type="button" aria-pressed="false" data-ch="${k}"><i style="--ch:${col}">${icon(k)}</i>${n} <b>${OFFICES.filter(c=>c===k).length}</b></button>`).join('');
+let chanSel=null;
+chansEl.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  chanSel=chanSel===b.dataset.ch?null:b.dataset.ch;
+  $$('button',chansEl).forEach(x=>x.setAttribute('aria-pressed',x.dataset.ch===chanSel));
+  $$('.office',officesEl).forEach(o=>o.classList.toggle('dim',!!chanSel&&o.dataset.ch!==chanSel));
+});
+
 /* ---------- insights ---------- */
+// [theme, evidence, requirement icon, requirement, sticky-note tilt]
 const INSIGHTS=[
- ['No shared owner','Every role believed another role owned follow-up, so no one did.','4 notes · 7 of 7 staff interviews','A single named coordinator accountable for each referral.'],
- ['One-size-fits-all packets','The clinic sent every office the same packet, but no two offices wanted the same thing.','4 notes · 18 office calls','A checklist and contact card for each specialist office.'],
- ['No visibility','Once a referral left the building, nobody could see where it was or how old it was.','4 notes · 214 audited referrals','One shared tracker with a status and next action on every row.'],
- ['Patient carries the load','The aid process assumed time, a printer and form fluency that most patients didn’t have.','4 notes · 9 patient interviews','Staff complete the paperwork with the patient, in person.'],
- ['No closure point','There was no moment when a referral counted as done, so none ever reached one.','4 notes · 0 closed referrals','A Closed status defined as “patient seen.”']
+ ['No shared owner','7 of 7 staff interviews','owner','One named coordinator owns every referral',-1.5],
+ ['One-size-fits-all packets','18 office calls','checklist','A checklist for each specialist office',1],
+ ['No visibility','214 audited referrals','table','A tracker with a next action on every row',-.8],
+ ['Patient carries the load','9 patient interviews','heart','Staff do the paperwork with the patient',1.4],
+ ['No closure point','0 closed referrals','flag','“Closed” means the patient was seen',-1]
 ];
-$('#insights').innerHTML=INSIGHTS.map(([t,i,e,n],k)=>`<article class="insight glass"><span class="mono">Theme ${k+1}</span><h4>${t}</h4><p class="muted">${i}</p><span class="ev">EVIDENCE · ${e}</span><p class="need"><b>So the design needs</b>${n}</p></article>`).join('')+
- '<div class="card" style="justify-content:center"><p class="big-quote" style="font-size:24px">These weren’t isolated mistakes. They were predictable symptoms of a process nobody owned.</p></div>';
+$('#insights').innerHTML=INSIGHTS.map(([t,e,ic,req,r])=>`<li><div class="theme" style="--r:${r}deg"><b>${t}</b><small class="mono">${e}</small></div><span class="arrow" aria-hidden="true"></span><div class="req"><span class="badge">${icon(ic)}</span>${req}</div></li>`).join('');
 
 /* ---------- personas ---------- */
+// flat portraits: background tint, body color and a prop that says what the person does
+const PROPS={
+ headset:'<path d="M42 50a18 18 0 0 1 36 0" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><rect x="37" y="47" width="7" height="12" rx="3" fill="var(--ink)"/><rect x="76" y="47" width="7" height="12" rx="3" fill="var(--ink)"/><path d="M80 59q0 9-10 10" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>',
+ stethoscope:'<path d="M48 84v12a12 12 0 0 0 24 0V84" fill="none" stroke="var(--surface-solid)" stroke-width="3" stroke-linecap="round"/><circle cx="60" cy="110" r="5" fill="var(--surface-solid)"/>',
+ folder:'<g transform="rotate(-8 74 100)"><rect x="60" y="88" width="34" height="26" rx="3" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="2"/><path d="M66 97h20M66 104h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/></g>'
+};
+const portrait=p=>`<svg class="portrait" viewBox="0 0 120 120" aria-hidden="true"><defs><clipPath id="pc-${p.prop}"><circle cx="60" cy="60" r="58"/></clipPath></defs><circle cx="60" cy="60" r="58" fill="${p.tint}"/><g clip-path="url(#pc-${p.prop})"><path d="M18 122c0-27 19-42 42-42s42 15 42 42z" fill="${p.body}"/><circle cx="60" cy="50" r="17" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="2"/>${PROPS[p.prop]}</g></svg>`;
 const PERSONAS=[
- {role:'Primary user',name:'The Coordinator',ini:'Co',bio:'Front-desk staff member, two years at the clinic. Handles check-in, phones and every referral, often at the same time.',quote:'I want to come in and know exactly which five things to do first.',goals:['Know what to do next each morning','Never lose a patient in the shuffle','Spend less time re-asking offices'],pains:['No list of open referrals','Constant interruptions','Every office has different rules'],needs:['One queue sorted by urgency','Per-office checklists','A clear definition of done'],impl:'Shaped the tracker’s “next action first” layout and the per-office checklists.'},
- {role:'Stakeholder',name:'The Referring Provider',ini:'Pr',bio:'Volunteer physician who sees patients one day a week. Writes referrals but rarely learns what happened to them.',quote:'I refer someone, and three months later they’re back in my chair asking what happened.',goals:['Get patients seen in time','Keep admin out of clinic hours'],pains:['No feedback after referring','Re-explaining cases to staff'],needs:['Status visible at the next visit','Confidence someone owns it'],impl:'Shaped the five-state status taxonomy, readable in two seconds.'},
- {role:'Who it’s for',name:'The Patient',ini:'Pa',bio:'Uninsured adult in their fifties, works hourly shifts, prefers Spanish, no printer or reliable internet at home.',quote:'I stopped calling. I figured they forgot about me.',goals:['See a specialist before things get worse','Not lose a day’s wages to paperwork'],pains:['Forms full of unfamiliar terms','Long silences with no updates','Multiple trips for one document'],needs:['Someone to do the paperwork with','One call when it’s scheduled'],impl:'Shaped in-person document sessions and the rule that staff call the patient once it’s booked.'}
+ {role:'Primary user',name:'The Coordinator',prop:'headset',tint:'var(--peri)',body:'var(--accent)',bio:'Front-desk staff member. Handles check-in, phones and every referral, often at once.',quote:'I want to come in and know exactly which five things to do first.',goal:'Know what to do next each morning',pain:'No list of open referrals',need:'One queue sorted by urgency',impl:'the tracker’s “next action first” layout.'},
+ {role:'Stakeholder',name:'The Referring Provider',prop:'stethoscope',tint:'var(--mist)',body:'var(--teal)',bio:'Volunteer physician, one day a week. Writes referrals, rarely learns what happened.',quote:'Three months later they’re back in my chair asking what happened.',goal:'Get patients seen in time',pain:'No word after referring',need:'Status visible at the next visit',impl:'a five-state status anyone can read in two seconds.'},
+ {role:'Who it’s for',name:'The Patient',prop:'folder',tint:'var(--blush)',body:'var(--gold)',bio:'Uninsured, works hourly shifts, prefers Spanish. No printer at home.',quote:'I stopped calling. I figured they forgot about me.',goal:'See a specialist before it gets worse',pain:'Forms full of unfamiliar terms',need:'Someone to do the paperwork with',impl:'in-person paperwork sessions and one call once it’s booked.'}
 ];
-const list=a=>`<ul>${a.map(x=>`<li>${x}</li>`).join('')}</ul>`;
-dataTabs('personaTabs','personaPanel',PERSONAS,p=>p.name,p=>`<div class="persona">
-  <div class="who"><div class="avatar" aria-hidden="true">${p.ini}</div><span class="mono">${p.role} · composite</span><h4>${p.name}</h4><p class="muted">${p.bio}</p><blockquote>“${p.quote}”</blockquote></div>
-  <div class="cols"><div><span class="mono">Goals</span>${list(p.goals)}</div><div><span class="mono">Frustrations</span>${list(p.pains)}</div><div><span class="mono">Needs</span>${list(p.needs)}</div>
-  <p class="impl"><b>How this changed the design:</b> ${p.impl}</p></div></div>`);
+const fact=(ic,label,text)=>`<li><span class="badge">${icon(ic)}</span><div><small class="mono">${label}</small>${text}</div></li>`;
+dataTabs('personaTabs','personaPanel',PERSONAS,p=>p.name,p=>`<div class="persona">${portrait(p)}
+  <div class="body"><div><span class="mono">${p.role} · composite</span><h4>${p.name}</h4><p class="muted" style="margin-top:6px">${p.bio}</p></div>
+  <blockquote>“${p.quote}”</blockquote>
+  <ul class="facts">${fact('target','Goal',p.goal)}${fact('knot','Frustration',p.pain)}${fact('key','Needs',p.need)}</ul>
+  <p class="impl"><b>Shaped:</b> ${p.impl}</p></div></div>`);
 
 /* ---------- journey map ---------- */
 const LANES=['Clinic','Specialist','Patient','No owner'];
@@ -1259,6 +1351,15 @@ if(!reduce){
     onView(charts,()=>{burn.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)';burn.style.strokeDashoffset=0;ring.style.strokeDashoffset=37.7;fills.forEach(f=>{f.style.width=f.dataset.w+'%'})});
   }
 }
+
+/* ---------- draw-in for illustrated sections ---------- */
+// children of a [data-stagger] list get an index so they arrive one after another
+$$('[data-stagger]').forEach(list=>[...list.children].forEach((el,i)=>el.style.setProperty('--i',i)));
+// like the charts, only sections that start below the fold wait to be drawn in
+if(!reduce)$$('[data-draw]').forEach(sec=>{
+  if(sec.getBoundingClientRect().top<=innerHeight)return;
+  sec.classList.add('undrawn');onView(sec,()=>sec.classList.remove('undrawn'),.2);
+});
 })();
 </script>
 </body>
