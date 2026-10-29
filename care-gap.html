@@ -3,125 +3,538 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="claude:viewport-fit-sides" content="cover">
 <title>Closing the Care Gap · In This Vessel</title>
-<meta name="description" content="Case study: building the specialist referral workflow at a free community clinic. Referral time fell from 12+ months to 2 weeks.">
-<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=satoshi@300,400,500,700&display=swap">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="site.css">
+<meta name="description" content="UX case study: researching and redesigning the specialist referral workflow at a free community clinic. Median referral time fell from 12+ months to 14 days.">
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600&f[]=satoshi@400,500,700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
 <style>
-/* page-specific: referral journey, tracker, building blocks, outcome charts */
-.mini{padding:18px;min-width:0}
-.mini-h{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:var(--muted);padding-bottom:12px;border-bottom:1px solid var(--line)}
-.tbl{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13.5px}
-th{text-align:left;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
-td{padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
-tbody tr{transition:opacity .3s}
-tbody tr.dim{opacity:.18}
-.st{font:600 10.5px var(--body);letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:var(--r-sm);white-space:nowrap;display:inline-block}
-.st.open{background:var(--blush)}.st.awaiting{border:1px dashed var(--muted)}.st.sent{background:var(--peri)}.st.scheduled{background:var(--mist)}.st.closed{background:var(--ink);color:var(--bg)}
+/* Layout: one reading column with a sticky Double Diamond phase rail.
+   Every phase opens with the question it answers, then shows the method, the evidence and what it changed. */
+:root{
+  --bg:#e8ebf1;--bg-2:#dfe4ed;--surface:rgba(255,255,255,.62);--surface-solid:#f6f8fb;--line:rgba(27,35,46,.1);
+  --ink:#1b232e;--muted:#525c6b;--faint:#8e98a8;--accent:#3d5a80;--accent-ink:#fff;
+  --peri:#c7d3ec;--blush:#eadfdd;--mist:#cde2e6;--teal:#4f7a86;--gold:#9a7a35;--warn:#a5533a;--ok:#3f7a5a;
+  --shadow:0 20px 50px -24px rgba(27,35,46,.28);
+  --display:"General Sans","Figtree",system-ui,sans-serif;
+  --body:"Satoshi","Figtree",system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+  --r-lg:22px;--r-md:14px;--r-pill:999px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10151c;--bg-2:#151c25;--surface:rgba(32,40,53,.62);--surface-solid:#1b232e;--line:rgba(230,234,241,.1);
+  --ink:#e6eaf1;--muted:#a3adbd;--faint:#5f6a7b;--accent:#93acd6;--accent-ink:#0f141b;
+  --peri:#2c3a57;--blush:#3d3133;--mist:#1f373c;--teal:#82b4c1;--gold:#d4b46e;--warn:#e19478;--ok:#7fc29c;
+  --shadow:0 20px 50px -24px rgba(0,0,0,.6);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10151c;--bg-2:#151c25;--surface:rgba(32,40,53,.62);--surface-solid:#1b232e;--line:rgba(230,234,241,.1);
+  --ink:#e6eaf1;--muted:#a3adbd;--faint:#5f6a7b;--accent:#93acd6;--accent-ink:#0f141b;
+  --peri:#2c3a57;--blush:#3d3133;--mist:#1f373c;--teal:#82b4c1;--gold:#d4b46e;--warn:#e19478;--ok:#7fc29c;
+  --shadow:0 20px 50px -24px rgba(0,0,0,.6);color-scheme:dark}
+
+/* base */
+*{box-sizing:border-box}
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--body);overflow-x:hidden;
+  background-image:radial-gradient(60vw 50vw at 0% 0%,var(--peri),transparent 60%),radial-gradient(50vw 40vw at 100% 30%,var(--blush),transparent 60%),radial-gradient(50vw 50vw at 30% 100%,var(--mist),transparent 60%);
+  background-attachment:fixed}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+[hidden]{display:none!important}
+a{color:inherit}
+h1,h2,h3,h4{font-family:var(--display);font-weight:500;line-height:1.1;letter-spacing:-.02em;text-wrap:balance;margin:0}
+p,figure,blockquote,dl,dd,ul,ol{margin:0}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.wrap{max-width:1180px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+.narrow{max-width:800px}
+.eyebrow{font:600 12px var(--body);letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+.mono{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.muted{color:var(--muted)}
+.glass{background:var(--surface);backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow)}
+.mark{background:linear-gradient(var(--peri),var(--peri)) no-repeat 0 88%/100% .38em;padding:0 .06em}
+.mark.b{background-image:linear-gradient(var(--blush),var(--blush))}
+.tag{display:inline-flex;align-items:center;gap:6px;font:500 10.5px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:var(--r-pill);border:1px dashed var(--faint);color:var(--muted);white-space:nowrap}
+.tag.try{border:0;background:var(--accent);color:var(--accent-ink)}
+.seg{display:inline-flex;flex-wrap:wrap;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-pill);padding:4px}
+.seg button{border:0;background:none;font-weight:600;font-size:13px;padding:8px 16px;border-radius:var(--r-pill);cursor:pointer;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.sbtn{font:600 12.5px var(--body);padding:9px 14px;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--surface-solid);color:var(--ink);cursor:pointer}
+.sbtn[aria-pressed="true"],.sbtn.dark{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.sbtn:disabled{opacity:.4;cursor:default}
+.scroll-x{overflow-x:auto}
+.cap{font-size:13px;color:var(--muted)}
+
+/* nav + phase rail */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 78%,transparent);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid var(--line)}
+.nav-in{display:flex;align-items:center;gap:16px;justify-content:space-between;padding-block:10px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font:500 18px var(--display)}
+.vessel{width:26px;height:30px;flex:none}
+.links{display:flex;gap:2px;padding:5px;border-radius:var(--r-pill)}
+.links a{font-size:13px;font-weight:500;text-decoration:none;padding:8px 14px;border-radius:var(--r-pill);color:var(--muted);white-space:nowrap}
+.links a[aria-current="page"],.links a:hover{background:var(--surface-solid);color:var(--ink)}
+.status{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pulse 2.4s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 60%,transparent)}100%{box-shadow:0 0 0 10px transparent}}
+@media (max-width:520px){.status span{display:none}}
+.rail{display:flex;gap:4px;overflow-x:auto;padding-block:0 10px;scrollbar-width:none}
+.rail a{flex:none;display:flex;align-items:center;gap:8px;text-decoration:none;font-size:12.5px;font-weight:600;color:var(--muted);padding:6px 12px;border-radius:var(--r-pill);transition:background .25s,color .25s}
+.rail a span{font:500 10.5px var(--mono);color:var(--faint)}
+.rail a.on{background:var(--ink);color:var(--bg)}
+.rail a.on span{color:inherit;opacity:.7}
+.readbar{position:absolute;left:0;bottom:-1px;height:2px;background:var(--accent);width:0}
+@media (max-width:860px){.links{display:none}}
+
+/* hero */
+.hero{padding-block:56px 32px}
+.back{display:inline-flex;font:600 13px var(--body);text-decoration:none;color:var(--muted);margin-bottom:24px}
+.back:hover{color:var(--ink)}
+.hero-split{display:grid;grid-template-columns:1fr 1.05fr;gap:48px;align-items:center}
+.hero h1{font-size:clamp(46px,7.4vw,100px);font-weight:400;margin-top:14px}
+.lede{font-size:clamp(18px,2vw,21px);color:var(--muted);max-width:46ch;margin-top:22px}
+.hero-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.hero-facts span{font-size:13px;padding:6px 12px;border-radius:var(--r-pill);background:var(--surface);border:1px solid var(--line)}
+.wait{padding:24px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.wait-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.wait-count{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.wait-count strong{font:500 clamp(48px,6vw,72px)/1 var(--display);font-variant-numeric:tabular-nums;letter-spacing:-.03em;min-width:3.2ch}
+.wait-count span{color:var(--muted);font-size:15px}
+.cal{display:grid;grid-template-rows:repeat(7,1fr);grid-auto-flow:column;grid-auto-columns:1fr;gap:2px}
+.cal i{aspect-ratio:1;border-radius:2px;background:var(--bg-2);transition:background .2s}
+.cal i.w{background:var(--warn);opacity:.7}
+.cal i.s{background:var(--accent)}
+@media (max-width:900px){.hero-split{grid-template-columns:1fr;gap:32px}}
+
+/* snapshot + reading guide */
+.snap{display:grid;grid-template-columns:repeat(4,1fr);overflow:hidden}
+.snap>div{padding:20px 22px;border-right:1px solid var(--line);min-width:0}
+.snap>div:last-child{border-right:0}
+.snap small{display:block;margin-bottom:6px}
+@media (max-width:860px){.snap{grid-template-columns:1fr 1fr}.snap>div{border-bottom:1px solid var(--line)}.snap>div:nth-child(2n){border-right:0}}
+@media (max-width:480px){.snap{grid-template-columns:1fr}.snap>div{border-right:0}}
+.guide{display:grid;grid-template-columns:auto 1fr;gap:12px 18px;align-items:center;margin-top:20px;padding:20px 22px;border-radius:var(--r-md);border:1px dashed var(--faint)}
+.guide p{font-size:14.5px;color:var(--muted)}
+
+/* sections */
+.sec{padding-block:88px 16px;scroll-margin-top:110px}
+.phase{padding-block:110px 8px;scroll-margin-top:110px}
+.phase-h{display:grid;grid-template-columns:auto 1fr;gap:12px 28px;align-items:end;padding-bottom:28px;border-bottom:1px solid var(--ink)}
+.phase-h .num{font:400 clamp(64px,10vw,128px)/.8 var(--display);color:var(--faint);letter-spacing:-.04em}
+.phase-h h2{font-size:clamp(34px,5vw,64px)}
+.phase-h p{grid-column:2;color:var(--muted);max-width:60ch}
+.phase-h p b{color:var(--ink)}
+@media (max-width:640px){.phase-h{grid-template-columns:1fr}.phase-h p{grid-column:1}}
+.sec-h{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:end;margin-bottom:32px}
+.sec-h h3{font-size:clamp(28px,3.4vw,42px);margin-top:10px}
+.sec-h p{color:var(--muted);max-width:56ch}
+@media (max-width:800px){.sec-h{grid-template-columns:1fr;gap:14px}}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+.grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px}
+@media (max-width:900px){.grid-3{grid-template-columns:1fr 1fr}}
+@media (max-width:680px){.grid-2,.grid-3{grid-template-columns:1fr}}
+.card{padding:26px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.card h4{font-size:21px}
+.card p{color:var(--muted);font-size:15.5px}
+.big-quote{font:500 clamp(26px,3.4vw,42px)/1.2 var(--display);letter-spacing:-.015em;max-width:26ch}
+
+
+/* research questions */
+.rqs{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.rqs li{padding:22px;display:flex;flex-direction:column;gap:14px;min-width:0;border-radius:var(--r-lg);background:var(--surface);border:1px solid var(--line)}
+.rqs p{font:500 19px/1.3 var(--display)}
+.rqs small{margin-top:auto}
+@media (max-width:900px){.rqs{grid-template-columns:1fr 1fr}}
+@media (max-width:480px){.rqs{grid-template-columns:1fr}}
+
+/* line icons: drawn in by stroke when their section scrolls into view */
+.ico{width:24px;height:24px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.ico *{stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.1s cubic-bezier(.4,0,.2,1) calc(var(--i,0)*110ms)}
+.undrawn .ico *{stroke-dashoffset:1}
+.badge{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;flex:none;background:var(--peri);color:var(--accent)}
+.badge .ico{width:26px;height:26px}
+
+/* research plan: each method is plotted inside the double diamond it belongs to */
+.plan{padding:24px;display:flex;flex-direction:column;gap:22px}
+.plan-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.lenses{display:flex;flex-wrap:wrap;gap:8px}
+.lenses button{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface-solid);border-radius:var(--r-pill);padding:5px 14px 5px 6px;font-size:13px;font-weight:600;cursor:pointer}
+.lenses button svg{width:26px;height:26px}
+.lenses button span{font-weight:400;color:var(--muted)}
+.lenses button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.lenses button[aria-pressed="true"] span{color:inherit;opacity:.7}
+.lic circle{fill:var(--surface-solid);stroke:var(--lens);stroke-width:2;transition:fill .25s}
+.lic .ic{fill:none;stroke:var(--lens);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:stroke .25s}
+.dd{display:block;width:100%;height:auto;overflow:visible}
+.dd .env{fill:var(--peri);fill-opacity:.35;stroke:var(--accent);stroke-width:1.5;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:0;transition:stroke-dashoffset 1.6s cubic-bezier(.4,0,.2,1),fill-opacity .8s .8s}
+.dd .phl{font:500 11px var(--mono);letter-spacing:.12em;fill:var(--muted)}
+.dd .wkl{font:500 10px var(--mono);letter-spacing:.08em;fill:var(--faint)}
+.dd .head{stroke:var(--ink);stroke-width:1.5;stroke-dasharray:3 4;opacity:0}
+.mnode{cursor:pointer;outline:none;transition:opacity .3s}
+.mnode .pop{transform-origin:0 0;transition:transform .5s cubic-bezier(.3,1.6,.5,1),opacity .3s}
+.mnode:hover .pop{transform:scale(1.12)}
+.mnode text{font:600 12.5px var(--body);fill:var(--ink)}
+.mnode[aria-pressed="true"] circle{fill:var(--lens)}
+.mnode[aria-pressed="true"] .ic{stroke:var(--surface-solid)}
+.mnode:focus-visible circle{stroke:var(--ink);stroke-width:3}
+.mnode.dim{opacity:.2}
+.dd.pre .env{stroke-dashoffset:1;fill-opacity:0}
+.dd.pre .pop{transform:scale(0);opacity:0}
+.dd.instant *{transition:none!important}
+.mcard{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr) minmax(0,1.3fr);gap:24px;padding:18px 20px;border-radius:var(--r-md);background:var(--bg-2)}
+.mcard .who{display:flex;gap:12px;align-items:center}
+.mcard .who svg{width:44px;height:44px;flex:none}
+.mcard b{display:block;font:500 19px/1.2 var(--display)}
+.mcard p{font-size:15px}
+.mcard p .mono{display:block;margin-bottom:4px}
+.mcard .blind{color:var(--muted)}
+@media (max-width:760px){.mcard{grid-template-columns:1fr;gap:14px}}
+
+/* artifact audit dots */
+.audit{padding:24px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:28px}
+.dots{display:grid;grid-template-columns:repeat(auto-fill,minmax(14px,1fr));gap:4px;align-content:start}
+.dots i{aspect-ratio:1;border-radius:50%;background:var(--faint);transition:background .5s}
+.legend{list-style:none;padding:0;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.legend li{display:grid;grid-template-columns:14px 1fr auto;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:14.5px}
+.legend li i{width:12px;height:12px;border-radius:50%}
+.legend li b{font:500 13px var(--mono);font-variant-numeric:tabular-nums}
+.audit-note{font:500 20px/1.35 var(--display)}
+@media (max-width:820px){.audit{grid-template-columns:1fr}}
+
+/* stats strip */
+/* office calls: one tile per office, badged with how it wants to be contacted */
+.calls{padding:24px;display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:32px;align-items:center}
+.offices{list-style:none;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:14px}
+.office{position:relative;aspect-ratio:1;border-radius:var(--r-md);background:var(--surface-solid);border:1px solid var(--line);display:grid;place-items:center;color:var(--muted);transition:transform .5s cubic-bezier(.3,1.5,.5,1) calc(var(--i,0)*50ms),opacity .4s calc(var(--i,0)*50ms)}
+.office>.ico{width:46%;height:46%}
+.office .ch{position:absolute;right:-6px;bottom:-6px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--ch);color:var(--surface-solid)}
+.office .ch .ico{width:14px;height:14px;stroke-width:2}
+.office.dim{opacity:.18}
+.undrawn .office{transform:scale(.5);opacity:0}
+.chans{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.chans button{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface-solid);border-radius:var(--r-pill);padding:5px 12px 5px 5px;font-size:13px;font-weight:600;cursor:pointer}
+.chans button i{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;background:var(--ch);color:var(--surface-solid)}
+.chans button .ico{width:13px;height:13px;stroke-width:2}
+.chans button b{font:500 12px var(--mono);color:var(--muted)}
+.chans button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chans button[aria-pressed="true"] b{color:inherit}
+.call-stats{display:flex;flex-direction:column;gap:22px}
+.call-stats div{display:flex;flex-direction:column;gap:4px;padding-top:18px;border-top:1px solid var(--ink)}
+.call-stats strong{font:500 clamp(44px,5vw,64px)/1 var(--display);font-variant-numeric:tabular-nums}
+.call-stats span{color:var(--muted)}
+@media (max-width:820px){.calls{grid-template-columns:1fr}}
+
+/* affinity board */
+.board{position:relative;padding:20px}
+.board-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.notes{position:relative;list-style:none;margin:0;padding:0;transition:height .6s cubic-bezier(.2,.8,.2,1)}
+.notes li{position:absolute;left:0;top:0;transition:transform .8s cubic-bezier(.2,.8,.2,1),opacity .5s}
+.note{padding:10px 12px;border-radius:4px;font-size:13.5px;line-height:1.4;background:var(--surface-solid);border:1px solid var(--line);box-shadow:0 6px 14px -10px rgba(0,0,0,.35)}
+.note small{display:block;margin-top:6px;font:500 10px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.note[data-src="audit"]{background:var(--mist)}
+.note[data-src="patient"]{background:var(--blush)}
+.note[data-src="office"]{background:var(--peri)}
+.notes .head{font:600 12px var(--body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent);opacity:0}
+.notes.clustered .head{opacity:1}
+.src-key{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
+.src-key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px;border:1px solid var(--line)}
+
+/* insights: a sticky note from the wall turns into a design requirement */
+.flow{list-style:none;padding:0;display:flex;flex-direction:column;gap:16px}
+.flow li{display:grid;grid-template-columns:minmax(0,1fr) 110px minmax(0,1.15fr);align-items:center}
+.flow .theme{padding:14px 16px;border-radius:4px;background:var(--surface-solid);border:1px solid var(--line);box-shadow:0 6px 14px -10px rgba(0,0,0,.35);transform:rotate(var(--r,0deg))}
+.flow .theme b{display:block;font:500 18px/1.25 var(--display)}
+.flow .theme small{display:block;margin-top:6px}
+.flow .arrow{height:2px;margin-inline:14px;position:relative;background:repeating-linear-gradient(90deg,var(--accent) 0 6px,transparent 6px 11px);transform-origin:left;transition:transform .7s cubic-bezier(.4,0,.2,1) calc(var(--i,0)*140ms + 300ms)}
+.flow .arrow::after{content:"";position:absolute;right:-4px;top:-5px;border:6px solid transparent;border-left:8px solid var(--accent);border-right:0}
+.flow .req{display:flex;gap:14px;align-items:center;padding:12px 18px 12px 12px;border-radius:var(--r-md);background:var(--accent);color:var(--accent-ink);font-weight:600;transition:transform .6s cubic-bezier(.3,1.4,.5,1) calc(var(--i,0)*140ms + 700ms),opacity .4s calc(var(--i,0)*140ms + 700ms)}
+.flow .req .badge{width:44px;height:44px;background:color-mix(in srgb,var(--accent-ink) 16%,transparent);color:inherit}
+.undrawn .flow .arrow{transform:scale(0,1)}
+.undrawn .flow .req{transform:translateX(-14px);opacity:0}
+@media (max-width:700px){
+  .flow li{grid-template-columns:1fr}
+  .flow .arrow{width:2px;height:26px;margin:8px 0 8px 28px;background:repeating-linear-gradient(180deg,var(--accent) 0 6px,transparent 6px 11px);transform-origin:top}
+  .flow .arrow::after{right:auto;top:auto;left:-5px;bottom:-4px;border:6px solid transparent;border-top:8px solid var(--accent);border-bottom:0}
+  .undrawn .flow .arrow{transform:scale(1,0)}
+}
+
+/* tabs (personas, decisions, iterations, solution) */
+.tabs{display:flex;gap:4px;overflow-x:auto;padding:14px 14px 0;border-bottom:1px solid var(--line)}
+.tabs [role="tab"]{flex:none;border:0;background:none;font-weight:600;font-size:13.5px;padding:10px 14px;cursor:pointer;color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs [role="tab"][aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.panel{padding:28px;min-width:0}
+
+/* personas */
+.persona{display:grid;grid-template-columns:200px minmax(0,1fr);gap:36px;align-items:center}
+.portrait{width:100%;max-width:200px;height:auto;animation:rise .6s cubic-bezier(.3,1.3,.5,1)}
+@keyframes rise{from{transform:translateY(14px) scale(.94);opacity:0}}
+.persona .body{display:flex;flex-direction:column;gap:18px;min-width:0}
+.persona h4{font-size:32px;margin-top:4px}
+.persona blockquote{font:500 clamp(20px,2.2vw,26px)/1.3 var(--display);letter-spacing:-.01em}
+.facts{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.facts li{display:flex;gap:12px;align-items:flex-start;font-size:15px}
+.facts .badge{width:40px;height:40px}
+.facts .badge .ico{width:20px;height:20px}
+.facts small{display:block;margin-bottom:2px}
+.persona .impl{padding:12px 16px;border-radius:var(--r-md);background:var(--bg-2);font-size:14.5px;color:var(--muted)}
+.persona .impl b{color:var(--ink)}
+@media (max-width:860px){.persona{grid-template-columns:1fr;gap:16px}.portrait{max-width:140px}.facts{grid-template-columns:1fr}}
 
 /* journey */
-.journey{padding:28px}
-.j-top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
-.j-legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted)}
-.j-legend i{display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:6px;vertical-align:-1px}
-.lane-wrap{overflow-x:auto;margin-top:26px}
-.lanes{display:grid;grid-template-columns:110px repeat(6,minmax(130px,1fr));min-width:900px;position:relative}
-.lanes .lab{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:14px 0;border-top:1px solid var(--line);display:flex;align-items:center}
-.cell{border-top:1px solid var(--line);padding:10px 6px;min-height:76px;display:flex;align-items:center;justify-content:center}
-.node{width:100%;border-radius:12px;padding:10px;font-size:13px;line-height:1.3;background:var(--surface-solid);border:1px solid var(--line);cursor:pointer;text-align:left;font-family:inherit;color:inherit;transition:transform .2s,border-color .2s,background .3s}
+.journey{padding:24px}
+.lanes{display:grid;grid-template-columns:120px repeat(6,minmax(120px,1fr));min-width:880px}
+.lanes .lab{font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 0;border-top:1px solid var(--line);display:flex;align-items:center}
+.lanes .stg{font:500 10.5px var(--mono);color:var(--muted);padding:0 6px 10px}
+.cell{border-top:1px solid var(--line);padding:8px 6px;min-height:68px;display:flex;align-items:center}
+.node{width:100%;border-radius:12px;padding:10px;font-size:13px;font-weight:600;line-height:1.3;background:var(--surface-solid);border:1px solid var(--line);cursor:pointer;text-align:left;transition:transform .2s,border-color .2s}
 .node:hover{transform:translateY(-2px)}
 .node.cur{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
 .node.none{border:1px dashed var(--warn);background:transparent;color:var(--warn)}
-.node b{display:block;font-weight:600}
-.j-detail{display:grid;grid-template-columns:auto 1fr auto;gap:20px;align-items:center;margin-top:22px;padding:18px 20px;border-radius:var(--r-md);background:var(--bg-2)}
-.j-detail .n{font-family:var(--display);font-size:44px;line-height:1;color:var(--faint)}
-.j-detail h3{font-size:22px}
-.j-detail p{color:var(--muted);font-size:15px}
-.j-detail .warn{color:var(--warn);font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;white-space:nowrap}
-.j-scrub{display:flex;align-items:center;gap:14px;margin-top:16px}
-.j-scrub input{flex:1;accent-color:var(--accent)}
-@media (max-width:600px){.j-detail{grid-template-columns:1fr}}
+.feel{grid-column:2/-1;position:relative;height:96px;border-top:1px solid var(--line)}
+.feel svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.feel path{fill:none;stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
+.feel line{stroke:var(--line);stroke-dasharray:3 4;vector-effect:non-scaling-stroke}
+.feel b{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:var(--accent);border:2px solid var(--surface-solid)}
+.feel b.low{background:var(--warn)}
+.j-detail{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px;margin-top:20px;padding:18px 20px;border-radius:var(--r-md);background:var(--bg-2)}
+.j-detail h4{font-size:22px;margin-top:6px}
+.j-detail p{color:var(--muted);font-size:15px;margin-top:6px}
+.j-detail .opp{border-left:2px solid var(--accent);padding-left:16px}
+.j-ctrl{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap}
+@media (max-width:640px){.j-detail{grid-template-columns:1fr}}
 
-/* questions */
-.qs{counter-reset:q;display:flex;flex-direction:column;border-top:1px solid var(--ink)}
-.qs li{list-style:none;display:grid;grid-template-columns:56px 1fr;gap:12px;padding:18px 0;border-bottom:1px solid var(--line);font-size:18px}
-.qs li::before{counter-increment:q;content:"0" counter(q);font:500 13px var(--mono);color:var(--accent);padding-top:4px}
-.qs{padding:0;margin:0}
+/* problem statement */
+.pov{padding:36px;display:flex;flex-direction:column;gap:18px}
+.pov p.big{font:500 clamp(22px,2.6vw,30px)/1.35 var(--display);letter-spacing:-.01em;max-width:44ch}
+.hmw{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.hmw li{padding:18px;border-radius:var(--r-md);background:var(--bg-2);font-size:15.5px}
+.hmw li b{display:block;font:500 10.5px var(--mono);letter-spacing:.1em;color:var(--accent);margin-bottom:6px}
+@media (max-width:760px){.hmw{grid-template-columns:1fr}}
+.principles{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--ink)}
+.principles li{padding:18px 18px 18px 0;display:flex;flex-direction:column;gap:6px}
+.principles li+li{padding-left:18px;border-left:1px solid var(--line)}
+.principles h4{font-size:19px;margin-top:8px}
+.principles p{font-size:14.5px;color:var(--muted)}
+@media (max-width:860px){.principles{grid-template-columns:1fr 1fr}.principles li:nth-child(3){padding-left:0;border-left:0}}
+@media (max-width:520px){.principles{grid-template-columns:1fr}.principles li+li{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
 
-/* solution tabs */
-.sol{display:grid;grid-template-columns:300px 1fr;gap:0;overflow:hidden}
-.sol-list{display:flex;flex-direction:column;border-right:1px solid var(--line);padding:10px}
-.sol-list button{display:grid;grid-template-columns:34px 1fr;gap:8px;text-align:left;border:0;background:none;padding:14px;border-radius:14px;cursor:pointer;font:500 15px var(--body);color:var(--muted)}
-.sol-list button span{font:500 12px var(--mono);padding-top:2px}
-.sol-list button[aria-selected="true"]{background:var(--surface-solid);color:var(--ink)}
-.sol-panel{padding:32px;min-width:0;display:flex;flex-direction:column;gap:16px}
-.sol-panel h3{font-size:clamp(26px,3vw,36px)}
-.sol-panel .tagline{background:var(--peri)}
-.sol-panel > p{color:var(--muted);max-width:60ch}
-@media (max-width:820px){.sol{grid-template-columns:1fr}.sol-list{flex-direction:row;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}.sol-list button{flex:none;grid-template-columns:auto}.sol-list button b{display:none}}
-.sketch{border:1.5px dashed var(--muted);border-radius:12px;padding:16px;font-family:var(--mono);font-size:12px;color:var(--muted);overflow-x:auto}
-.sketch .cols{display:flex;gap:8px;min-width:560px}
-.sketch .cols span{flex:1;border-bottom:1.5px solid var(--muted);padding:6px 2px;text-align:center}
-.sketch .cols span.hot{color:var(--accent);border-color:var(--accent);font-weight:600}
-.sketch .note{margin-top:10px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+/* impact / effort matrix */
+.matrix-wrap{padding:24px;display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px}
+.matrix{position:relative;aspect-ratio:1.25;max-width:100%;border-left:1px solid var(--ink);border-bottom:1px solid var(--ink);margin:0 0 28px 28px}
+.matrix::before,.matrix::after{content:"";position:absolute;background:var(--line)}
+.matrix::before{left:50%;top:0;bottom:0;width:1px}
+.matrix::after{top:50%;left:0;right:0;height:1px}
+.q{position:absolute;font:500 10px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--faint);padding:8px}
+.ax-x,.ax-y{position:absolute;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ax-x{left:0;right:0;bottom:-26px;text-align:center}
+.ax-y{left:-14px;top:50%;transform:translate(-50%,-50%) rotate(-90deg);white-space:nowrap}
+.pt{position:absolute;transform:translate(-50%,50%);width:18px;height:18px;border-radius:50%;border:2px solid var(--surface-solid);cursor:pointer;padding:0;z-index:1;transition:transform .2s}
+.pt:hover,.pt[aria-pressed="true"]{transform:translate(-50%,50%) scale(1.35)}
+.pt[aria-pressed="true"]{box-shadow:0 0 0 4px color-mix(in srgb,var(--ink) 25%,transparent)}
+.pt.build{background:var(--accent)}.pt.later{background:var(--gold)}.pt.no{background:var(--faint)}
+.verdict{display:inline-block;font:600 10.5px var(--body);letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;border-radius:var(--r-pill)}
+.verdict.build{background:var(--accent);color:var(--accent-ink)}.verdict.later{background:var(--gold);color:var(--bg)}.verdict.no{border:1px dashed var(--faint);color:var(--muted)}
+.m-detail{display:flex;flex-direction:column;gap:12px}
+.m-detail h4{font-size:24px}
+.m-detail p{color:var(--muted);font-size:15px}
+.m-key{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:auto}
+.m-key i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+@media (max-width:820px){.matrix-wrap{grid-template-columns:1fr}}
+
+/* decision log */
+.dec{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:28px}
+.dec h4{font-size:clamp(24px,2.6vw,32px);margin-top:10px}
+.steps{display:flex;flex-direction:column}
+.stepx{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 0;border-bottom:1px dashed var(--line);opacity:.3;transition:opacity .35s}
+.stepx.on{opacity:1}
+.stepx:last-child{border-bottom:0}
+.stepx small{font:500 11px var(--mono);letter-spacing:.1em;color:var(--accent);text-transform:uppercase;padding-top:3px}
+.stepx.trade small{color:var(--warn)}
+.dec-ctrl{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+@media (max-width:760px){.dec{grid-template-columns:1fr}.stepx{grid-template-columns:1fr;gap:2px}}
+
+/* prototype iterations */
+.iter{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:28px}
+.mock{border-radius:var(--r-md);border:1px solid var(--line);background:var(--surface-solid);overflow-x:auto}
+.mock.sketch{border:1.5px dashed var(--muted);background:transparent;font-family:var(--mono)}
+.mock table{font-size:12.5px;min-width:560px}
+.mock.sketch th{border-bottom:1.5px solid var(--muted)}
+.mock .hot{color:var(--accent);font-weight:600}
+.mock tr.late td{background:color-mix(in srgb,var(--warn) 14%,transparent)}
+.iter ul{padding-left:18px;display:flex;flex-direction:column;gap:8px;font-size:15px;color:var(--muted)}
+.iter ul b{color:var(--ink)}
+.task{font-size:13.5px;min-width:0}
+.task td:first-child{max-width:220px}
+.up{color:var(--ok);font-weight:600}
+@media (max-width:860px){.iter{grid-template-columns:1fr}}
+
+/* tables */
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{text-align:left;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+tbody tr:last-child td{border-bottom:0}
+.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* solution */
+.sol{display:grid;grid-template-columns:280px minmax(0,1fr);overflow:hidden}
+.sol .tabs{flex-direction:column;border-bottom:0;border-right:1px solid var(--line);padding:10px}
+.sol .tabs [role="tab"]{display:grid;grid-template-columns:30px 1fr;gap:6px;text-align:left;border-radius:12px;border-bottom:0;margin:0;padding:13px 14px;font-size:14.5px;font-weight:500}
+.sol .tabs [role="tab"] span{font:500 12px var(--mono);padding-top:2px}
+.sol .tabs [role="tab"][aria-selected="true"]{background:var(--surface-solid)}
+.sol [role="tabpanel"]{display:flex;flex-direction:column;gap:14px}
+.sol h4{font-size:clamp(24px,2.8vw,34px)}
+.sol [role="tabpanel"]>p{color:var(--muted);max-width:62ch}
+.sol .from{display:flex;gap:12px;align-items:center;font-size:14.5px;color:var(--muted)}
+.sol .from .badge{width:40px;height:40px}
+.sol .from .badge .ico{width:20px;height:20px}
+.sol .from b{display:block;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.sol-art{padding:24px;border-radius:var(--r-md);background:var(--bg-2);min-width:0}
+/* SOP: a referral passes through four hands, one of which owns it */
+.handoff{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;position:relative}
+.handoff::before{content:"";position:absolute;left:12.5%;right:12.5%;top:25px;height:2px;background:repeating-linear-gradient(90deg,var(--faint) 0 6px,transparent 6px 11px)}
+.handoff::after{content:"";position:absolute;top:20px;left:12.5%;width:12px;height:12px;border-radius:50%;background:var(--accent);animation:run 4.5s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes run{85%,100%{left:calc(87.5% - 12px)}}
+.handoff li{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;font-size:13.5px;color:var(--muted)}
+.handoff li b{display:block;font-size:14.5px;color:var(--ink)}
+.handoff .badge{background:var(--surface-solid);border:1px solid var(--line);color:var(--muted)}
+.handoff .own .badge{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 22%,transparent)}
+@media (max-width:560px){.handoff{grid-template-columns:1fr 1fr;row-gap:22px}.handoff::before,.handoff::after{display:none}}
+/* tracker: rows slide into due-date order and the overdue one flags itself */
+.sortdemo{position:relative;height:178px}
+.sortdemo>div{position:absolute;inset:0 0 auto;height:38px;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding-inline:14px;border-radius:10px;background:var(--surface-solid);border:1px solid var(--line);font-size:13.5px;white-space:nowrap;animation:sortrow .9s cubic-bezier(.5,0,.2,1) .8s both}
+.sortdemo>div span:nth-child(2){overflow:hidden;text-overflow:ellipsis}
+.sortdemo>.late{animation:sortrow .9s cubic-bezier(.5,0,.2,1) .8s both,flagrow .5s 1.8s both}
+.sortdemo .due{font:500 12px var(--mono)}
+@keyframes sortrow{from{transform:translateY(var(--from))}to{transform:translateY(var(--to))}}
+@keyframes flagrow{to{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,var(--surface-solid))}}
+/* paperwork: two people at a table, the form ticks itself off */
+.scene{display:block;width:100%;max-width:440px;height:auto;margin:0 auto}
+.scene .tick{fill:none;stroke:var(--ok);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:tick .45s ease forwards}
+@keyframes tick{to{stroke-dashoffset:0}}
+.steps4{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}
+.steps4 li{display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.steps4 .badge{width:40px;height:40px}
+.steps4 .badge .ico{width:20px;height:20px}
+@media (max-width:560px){.steps4{grid-template-columns:1fr 1fr}}
+/* daily loop: four steps around a ring, with a dot doing the rounds */
+.cycle{display:block;width:100%;max-width:460px;height:auto;margin:0 auto;overflow:visible}
+.cycle .ring{fill:none;stroke:var(--faint);stroke-width:2;stroke-dasharray:4 7}
+.cycle .stop{fill:var(--surface-solid);stroke:var(--line);stroke-width:1.5}
+.cycle .ico{color:var(--accent)}
+.cycle text{font:600 13px var(--body);fill:var(--ink)}
+.cycle .hub{font:500 11px var(--mono);letter-spacing:.1em;fill:var(--muted)}
+.cycle .orbit{fill:var(--accent);transform-origin:220px 135px;animation:spin 7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (max-width:820px){.sol{grid-template-columns:1fr}.sol .tabs{flex-direction:row;border-right:0;border-bottom:1px solid var(--line)}.sol .tabs [role="tab"]{flex:none}}
 .blocks{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .block{background:var(--surface-solid);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
-.block h4{font-size:16px;font-family:var(--body);font-weight:600;letter-spacing:0}
+.block h5{margin:0;font:600 15px var(--body)}
 .block small{color:var(--muted);font-size:12.5px}
 .tax{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
 .tax div{display:flex;gap:10px;align-items:center}
-.check label{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:4px 0;cursor:pointer}
-.check input{accent-color:var(--accent);margin-top:4px}
-.check .done{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--ok)}
+.block.check{grid-column:1/-1}
+.check label{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:3px 0;cursor:pointer}
+.check input{accent-color:var(--accent);margin-top:5px}
+.check output{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.check output.ok{color:var(--ok)}
 .kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:13.5px}
-.kv dt{color:var(--muted)}.kv dd{margin:0}
-.prep{padding-left:18px;margin:0;font-size:13.5px;display:flex;flex-direction:column;gap:4px}
+.kv dt{color:var(--muted)}
 @media (max-width:640px){.blocks{grid-template-columns:1fr}}
 
+/* status pills */
+.st{font:600 10.5px var(--body);letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border-radius:var(--r-pill);white-space:nowrap;display:inline-block}
+.st.open{background:var(--blush)}.st.awaiting{border:1px dashed var(--muted)}.st.sent{background:var(--peri)}.st.scheduled{background:var(--mist)}.st.closed{background:var(--ink);color:var(--bg)}
+.due{font-variant-numeric:tabular-nums;white-space:nowrap}
+.due.late{color:var(--warn);font-weight:600}
+
+/* tracker */
+.tracker{overflow:hidden}
+.tracker-top{padding:16px 18px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.tracker table{min-width:900px}
+.tracker td:first-child{font-weight:600}
+
 /* outcomes */
+.metrics td:nth-child(3),.metrics td:nth-child(4){font-variant-numeric:tabular-nums;white-space:nowrap}
+.metrics td:nth-child(4){font-weight:600}
 .charts{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:20px}
 @media (max-width:900px){.charts{grid-template-columns:1fr}}
 .chart{padding:24px;display:flex;flex-direction:column;gap:12px;min-width:0}
 .chart svg{width:100%;height:auto;overflow:visible}
 .chart .ax{stroke:var(--line);stroke-width:1}
 .chart text{fill:var(--muted);font:500 10px var(--mono)}
+.chart text.end{fill:var(--ink);font-weight:600}
 .burn{fill:none;stroke:var(--accent);stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .burn-area{fill:var(--peri);opacity:.6}
+.burn-end{fill:var(--accent)}
 .bars{display:flex;flex-direction:column;gap:14px;margin-top:6px}
 .barrow{display:grid;grid-template-columns:56px 1fr;gap:10px;align-items:center;font-size:13px}
-.barrow .track{height:26px;background:var(--bg-2);border-radius:8px;overflow:hidden}
-.barrow .fill{height:100%;border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font:600 12px var(--body);transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
+.track{height:26px;background:var(--bg-2);border-radius:8px;overflow:hidden}
+.fill{height:100%;border-radius:8px;display:flex;align-items:center;justify-content:flex-end;padding-right:8px;font:600 12px var(--body);white-space:nowrap;transition:width 1.2s cubic-bezier(.2,.8,.2,1)}
 .ring{width:150px;height:150px;align-self:center}
 .ring circle{fill:none;stroke-width:12}
-.ring .bg{stroke:var(--bg-2)}.ring .fg{stroke:var(--accent);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)}
+.ring .bg{stroke:var(--bg-2)}
+.ring .fg{stroke:var(--accent);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1.4s cubic-bezier(.2,.8,.2,1)}
 .ring text{fill:var(--ink);font:500 30px var(--display);text-anchor:middle}
-.cap{font-size:13px;color:var(--muted)}
-.res{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--ink);margin-top:28px}
-.res div{padding:18px 18px 18px 0;display:flex;flex-direction:column;gap:6px}
-.res div + div{padding-left:18px;border-left:1px solid var(--line)}
-.res small{font:500 11px var(--mono);letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
-@media (max-width:800px){.res{grid-template-columns:1fr 1fr}.res div:nth-child(3){padding-left:0;border-left:0}}
-.quote{padding:40px;display:flex;flex-direction:column;gap:20px}
-.quote blockquote{margin:0;font-family:var(--display);font-size:clamp(22px,2.6vw,30px);line-height:1.3;letter-spacing:-.01em}
+.quote{padding:36px;display:flex;flex-direction:column;gap:18px}
+.quote blockquote{font:500 clamp(21px,2.4vw,28px)/1.3 var(--display);letter-spacing:-.01em}
 .quote cite{font:500 11px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-style:normal}
+
+/* reflection */
+.refl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-top:1px solid var(--ink)}
+.refl>div{padding:24px 24px 24px 0;display:flex;flex-direction:column;gap:10px}
+.refl>div+div{padding-left:24px;border-left:1px solid var(--line)}
+.refl h4{font-size:21px}
+.refl p{color:var(--muted);font-size:15.5px}
+@media (max-width:800px){.refl{grid-template-columns:1fr}.refl>div+div{padding-left:0;border-left:0;border-top:1px solid var(--line)}}
 details.tr{border-bottom:1px solid var(--line)}
-details.tr summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;padding:20px 0;font-family:var(--display);font-size:20px;font-weight:500}
+details.tr summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:16px;padding:18px 0;font:500 19px var(--display)}
 details.tr summary::-webkit-details-marker{display:none}
 details.tr summary::after{content:"+";font-size:24px;color:var(--accent);transition:transform .3s;line-height:1}
 details.tr[open] summary::after{transform:rotate(45deg)}
-details.tr p{color:var(--muted);padding-bottom:20px;max-width:64ch}
-.nextlist{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none;border-top:1px solid var(--ink)}
-.nextlist li{display:grid;grid-template-columns:1fr 2fr;gap:20px;padding:16px 0;border-bottom:1px solid var(--line)}
-.nextlist b{font-weight:600}
-.nextlist span{color:var(--muted)}
-@media (max-width:640px){.nextlist li{grid-template-columns:1fr;gap:4px}}
+details.tr p{color:var(--muted);padding-bottom:18px;max-width:64ch}
+/* what I'd build next: stops on a dotted road */
+.roadmap{list-style:none;padding:0;margin-top:18px;display:flex;flex-direction:column;position:relative}
+.roadmap::before{content:"";position:absolute;left:21px;top:30px;bottom:30px;width:2px;background:repeating-linear-gradient(180deg,var(--faint) 0 5px,transparent 5px 10px)}
+.roadmap li{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;align-items:center;padding-block:10px}
+.roadmap .badge{width:44px;height:44px;background:var(--surface-solid);border:1px solid var(--line);color:var(--accent);transition:transform .5s cubic-bezier(.3,1.5,.5,1) calc(var(--i,0)*150ms),opacity .4s calc(var(--i,0)*150ms)}
+.roadmap .badge .ico{width:22px;height:22px}
+.roadmap span{display:block;color:var(--muted);font-size:14.5px}
+.undrawn .roadmap .badge{transform:scale(0);opacity:0}
+/* legacy: my twelve weeks, then the line keeps going without me */
+.legacy{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+.legacy>div{display:flex;flex-direction:column;gap:10px}
+.legacy .line{position:relative;height:60px;display:flex;align-items:center;justify-content:space-around}
+.legacy .line::before{content:"";position:absolute;left:0;right:0;top:29px;height:3px;background:var(--accent);transform-origin:left;transition:transform 1s cubic-bezier(.4,0,.2,1)}
+.legacy .after .line::before{right:10px;background:repeating-linear-gradient(90deg,var(--accent) 0 8px,transparent 8px 14px);transition-delay:1s}
+.legacy .after .line::after{content:"";position:absolute;right:0;top:24px;border:6.5px solid transparent;border-left:10px solid var(--accent);border-right:0}
+.legacy .pin{position:absolute;right:-8px;top:23px;width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--surface-solid)}
+.legacy .badge{position:relative;width:46px;height:46px;background:var(--surface-solid);border:1px solid var(--line);color:var(--accent);transition:transform .5s cubic-bezier(.3,1.5,.5,1) calc(var(--i,0)*150ms + 1.4s),opacity .4s calc(var(--i,0)*150ms + 1.4s)}
+.undrawn .legacy .line::before{transform:scaleX(0)}
+.undrawn .legacy .badge{transform:scale(0);opacity:0}
+.legacy-card{padding:28px;display:flex;flex-direction:column;gap:18px}
+.legacy-card h3{font-size:clamp(28px,3.2vw,40px)}
+.moment{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:var(--r-md);background:var(--blush);font-size:15px}
+.moment .badge{width:42px;height:42px;background:var(--surface-solid);color:var(--warn)}
+.moment .badge .ico{width:21px;height:21px}
+.next{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:36px;text-decoration:none;transition:transform .3s}
+.next:hover{transform:translateY(-3px)}
+.next h3{font-size:clamp(30px,4vw,48px);margin-top:8px}
+.next .arr{font-size:36px;transition:transform .3s}
+.next:hover .arr{transform:translateX(6px)}
+footer{padding-block:60px;color:var(--muted);font-size:13.5px}
+.foot{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;border-top:1px solid var(--line);padding-top:28px}
+.foot a{text-decoration:none}
+.foot a:hover{color:var(--ink)}
+.foot nav{display:flex;gap:18px;flex-wrap:wrap}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
 </style>
 </head>
 <body>
-<div class="nav">
+<header class="nav">
   <div class="wrap nav-in">
     <a class="brand" href="index.html" aria-label="In This Vessel, home">
       <svg class="vessel" viewBox="0 0 26 30" aria-hidden="true"><defs><clipPath id="vclip"><path d="M5 2h16v4c0 2 3 4 3 9v8a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5v-8c0-5 3-7 3-9z"/></clipPath></defs><g clip-path="url(#vclip)"><rect id="vfill" x="0" y="30" width="26" height="30" fill="var(--accent)" opacity=".55"/></g><path d="M5 2h16v4c0 2 3 4 3 9v8a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5v-8c0-5 3-7 3-9z" fill="none" stroke="var(--ink)" stroke-width="1.6"/></svg>
@@ -130,378 +543,944 @@ details.tr p{color:var(--muted);padding-bottom:20px;max-width:64ch}
     <nav class="links glass" aria-label="Site"><a href="index.html#work">Work</a><a href="care-gap.html" aria-current="page">Care Gap</a><a href="remote.html">Remote</a><a href="about.html">About</a><a href="index.html#contact">Contact</a></nav>
     <div class="status"><i class="dot"></i><span>Open to roles · Fall 2026</span></div>
   </div>
+  <nav class="wrap rail" aria-label="Case study phases">
+    <a href="#discover"><span>01</span>Discover</a>
+    <a href="#define"><span>02</span>Define</a>
+    <a href="#develop"><span>03</span>Develop</a>
+    <a href="#deliver"><span>04</span>Deliver</a>
+    <a href="#measure"><span>05</span>Measure</a>
+    <a href="#reflect"><span>06</span>Reflect</a>
+  </nav>
   <div class="readbar"></div>
-</div>
+</header>
 
 <main>
-  <section class="phero">
+  <!-- HERO: the problem, felt in one glance -->
+  <section class="hero">
     <div class="wrap">
       <a class="back" href="index.html#work">← All case studies</a>
       <div class="hero-split">
         <div>
-          <div class="eyebrow">Service design · Health equity</div>
+          <div class="eyebrow">UX research · Service design · Health equity</div>
           <h1>Closing the <span class="mark">Care Gap</span></h1>
-          <p class="lede">I created a documented referral workflow at a free community clinic so that underserved patients are actually seen.</p>
+          <p class="lede">Patients at a free clinic waited more than a year for specialist care. I researched why, then designed the referral workflow that got them seen in about two weeks.</p>
+          <div class="hero-facts"><span>12 weeks</span><span>214 referrals audited</span><span>34 research participants</span><span>3 usability rounds</span></div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:16px;min-width:0">
-          <div class="ba glass"><span class="k">Average referral processing time</span><div class="was"><small>Before</small><strong>12+ months</strong></div><span class="to">→</span><div><small>After</small><strong>2 weeks</strong></div></div>
-          <div class="mini glass">
-            <div class="mini-h"><span class="mono">MERCY REFERRALS TRACKER · PREVIEW</span><span class="mono">FICTIONALIZED</span></div>
-            <div class="tbl"><table><thead><tr><th>Patient</th><th>Specialty</th><th>Status</th></tr></thead><tbody>
-              <tr><td>A. Martinez</td><td>Cardiology</td><td><span class="st scheduled">Scheduled</span></td></tr>
-              <tr><td>D. Williams</td><td>Orthopedics</td><td><span class="st awaiting">Awaiting docs</span></td></tr>
-              <tr><td>M. Davis</td><td>Dermatology</td><td><span class="st open">Open</span></td></tr>
-              <tr><td>L. Garcia</td><td>Mental health</td><td><span class="st closed">Closed</span></td></tr>
-            </tbody></table></div>
+        <figure class="wait glass" aria-labelledby="calCap">
+          <div class="wait-top">
+            <span class="mono">One patient’s wait, one square per day</span>
+            <div class="seg" role="group" aria-label="Compare the wait"><button type="button" aria-pressed="true" data-cal="before">Before</button><button type="button" aria-pressed="false" data-cal="after">After</button></div>
           </div>
-        </div>
+          <div class="wait-count" aria-live="polite"><strong id="calDay">365+</strong><span id="calLab">days and still waiting</span></div>
+          <div class="cal" id="cal" aria-hidden="true"></div>
+          <figcaption class="cap" id="calCap">Median time from referral to specialist appointment. Before: reconstructed from referral dates in the clinic’s paper backlog. After: measured in the new tracker.</figcaption>
+        </figure>
       </div>
     </div>
   </section>
 
-  <section class="wrap">
+  <section class="wrap" aria-label="Project snapshot">
     <div class="snap glass">
-      <div><small>Organization</small>Mercy Health Center</div>
-      <div><small>Role</small>UX Researcher + Product Designer</div>
-      <div><small>Duration</small>3 months of iteration</div>
-      <div><small>Target users</small>Care coordinators managing specialist referrals at a free clinic</div>
-      <div><small>Team</small>Care coordinators and healthcare stakeholders</div>
-      <div><small>Tools</small>eClinicalWorks · Epic EHR · Microsoft Excel</div>
+      <div><small class="mono">Organization</small>Mercy Health Center, a free clinic</div>
+      <div><small class="mono">My role</small>UX researcher + service designer (solo)</div>
+      <div><small class="mono">Primary users</small>Front-desk staff coordinating specialist referrals</div>
+      <div><small class="mono">Tools</small>eClinicalWorks · Excel · paper + Sharpies</div>
     </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="eyebrow">The problem</div>
-      <p class="big-quote" style="margin-top:16px">A process existed on paper, <span class="mark b">but not in practice.</span></p>
-      <div class="prose" style="margin-top:28px">
-        <p>Patients weren't missing specialty care because providers didn't care. They were getting lost inside a referral process that <b>no one truly owned.</b></p>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-h">
-        <div><div class="eyebrow">Research</div><h2>Understanding a system no one could explain.</h2></div>
-        <p>There was no documented workflow to study. I rebuilt it by following referrals from start to finish, interviewing providers, and learning how each specialist office actually accepted patients.</p>
-      </div>
-      <div class="grid-2" style="align-items:start">
-        <div>
-          <div class="mono muted" style="margin-bottom:14px">UNDERSTANDING SPECIALIST WORKFLOWS</div>
-          <p class="muted" style="margin-bottom:18px">In my first two weeks I called the specialist offices Mercy referred to and asked each the same questions:</p>
-          <ol class="qs">
-            <li>What is your financial aid application, and what counts as complete?</li>
-            <li>What clinical documentation do you require with each referral?</li>
-            <li>What is your preferred method of contact: fax, phone, email or portal?</li>
-            <li>Who should I reach for financial aid questions, and what is their direct line?</li>
-          </ol>
-        </div>
-        <div class="card glass">
-          <div class="mono muted">UNDERSTANDING INTERNAL WORKFLOWS</div>
-          <p style="font-size:18px;color:var(--ink);font-family:var(--display);line-height:1.35">Referral failures were driven less by patient behavior than by inconsistent processes.</p>
-          <p>Every specialist office operated differently, ownership shifted between people, and no one had visibility once a referral left the clinic.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec" id="journey">
-    <div class="wrap">
-      <div class="sec-h">
-        <div><div class="eyebrow">Research findings</div><h2>The referral journey, before and after.</h2></div>
-        <p>Same patient, same clinic, same specialists. What changed was where ownership lived and whether anyone could see the whole path. Switch views, then drag the patient through each stage.</p>
-      </div>
-      <div class="journey glass">
-        <div class="j-top">
-          <div class="seg" role="group" aria-label="Journey view"><button type="button" aria-pressed="true" data-v="before">Before</button><button type="button" aria-pressed="false" data-v="after">After</button></div>
-          <div class="j-legend"><span><i style="background:var(--surface-solid);border:1px solid var(--line)"></i>Owned step</span><span><i style="border:1px dashed var(--warn)"></i>No owner</span></div>
-        </div>
-        <div class="lane-wrap"><div class="lanes" id="lanes"></div></div>
-        <div class="j-detail" id="jdetail"></div>
-        <div class="j-scrub"><span class="mono muted">STAGE</span><input type="range" id="jscrub" min="0" max="5" value="0" aria-label="Move the patient through the referral stages"><span class="mono" id="jnum">1 / 6</span></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-h">
-        <div><div class="eyebrow">What I learned</div><h2>Five failures. <span class="mark">One design brief.</span></h2></div>
-        <p>These weren't isolated mistakes. They were predictable symptoms of a process with no shared ownership, no visibility and no standard workflow. Tap a card to see what was going on.</p>
-      </div>
-      <div class="grid-3">
-        <button class="flip" type="button" aria-pressed="false"><div class="flip-in"><div class="flip-face glass"><div class="mono muted">FAILURE 01</div><h3>No shared mental model</h3><span class="hint">Tap to flip</span></div><div class="flip-face flip-back"><div class="mono">FAILURE 01</div><p>Providers, the coordinator role and specialist offices each assumed someone else was responsible for follow-up.</p></div></div></button>
-        <button class="flip" type="button" aria-pressed="false"><div class="flip-in"><div class="flip-face glass"><div class="mono muted">FAILURE 02</div><h3>One-size-fits-all packets</h3><span class="hint">Tap to flip</span></div><div class="flip-face flip-back"><div class="mono">FAILURE 02</div><p>Mercy sent the same materials to every specialist, regardless of what each office actually required.</p></div></div></button>
-        <button class="flip" type="button" aria-pressed="false"><div class="flip-in"><div class="flip-face glass"><div class="mono muted">FAILURE 03</div><h3>No tracking layer</h3><span class="tagline" style="margin-top:4px">Invisible systems</span><span class="hint">Tap to flip</span></div><div class="flip-face flip-back"><div class="mono">FAILURE 03</div><p>Once a referral left Mercy, no one could see where it was or whether it had stalled.</p></div></div></button>
-        <button class="flip" type="button" aria-pressed="false"><div class="flip-in"><div class="flip-face glass"><div class="mono muted">FAILURE 04</div><h3>Patient effort assumed, not supported</h3><span class="tagline" style="margin-top:4px">Cognitive load</span><span class="hint">Tap to flip</span></div><div class="flip-face flip-back"><div class="mono">FAILURE 04</div><p>Applications expected a level of independent document gathering most patients couldn't manage without help.</p></div></div></button>
-        <button class="flip" type="button" aria-pressed="false"><div class="flip-in"><div class="flip-face glass"><div class="mono muted">FAILURE 05</div><h3>No closure point</h3><span class="tagline" style="margin-top:4px">Learned helplessness</span><span class="hint">Tap to flip</span></div><div class="flip-face flip-back"><div class="mono">FAILURE 05</div><p>There was no defined moment when a referral counted as done, so referrals never reached one.</p></div></div></button>
-        <div class="card" style="justify-content:center"><p style="font-family:var(--display);font-size:22px;color:var(--ink);line-height:1.3">These five failures became the design brief for what came next.</p></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-h">
-        <div><div class="eyebrow">Solution</div><h2>No workflow existed, <span class="mark m">so I built one.</span></h2></div>
-        <p>Five components and one coordinator. Together they turned lost referrals into closed loops.</p>
-      </div>
-      <div class="sol glass">
-        <div class="sol-list" role="tablist" aria-label="Solution components">
-          <button role="tab" type="button" aria-selected="true" data-s="0"><span>01</span><b>Standard operating procedure</b></button>
-          <button role="tab" type="button" aria-selected="false" data-s="1"><span>02</span><b>Master tracking spreadsheet</b></button>
-          <button role="tab" type="button" aria-selected="false" data-s="2"><span>03</span><b>Reusable building blocks</b></button>
-          <button role="tab" type="button" aria-selected="false" data-s="3"><span>04</span><b>In-person document help</b></button>
-          <button role="tab" type="button" aria-selected="false" data-s="4"><span>05</span><b>Daily follow-up &amp; partners</b></button>
-        </div>
-        <div class="sol-panel" role="tabpanel">
-          <div data-p="0"><span class="tagline">Step-by-step process document</span><h3 style="margin-top:14px">A standard operating procedure</h3><p class="muted" style="margin-top:12px;max-width:60ch">The SOP defined who does what, in what order, and where the handoffs live. It also made the Referrals Coordinator role the single point of accountability. Referrals were no longer "everyone's job and therefore no one's job."</p></div>
-          <div data-p="1" hidden><span class="tagline">Single source of truth</span><h3 style="margin-top:14px">A master tracking spreadsheet</h3><p class="muted" style="margin:12px 0 18px;max-width:60ch">A central Excel tracker gave every active referral a visible status. It became the engine of the daily workflow: no referral could stall silently, because every row carried a date and a next action.</p>
-            <div class="sketch"><div class="mono">LO-FI · FIRST PAPER SKETCH</div><div class="cols" style="margin-top:12px"><span>patient</span><span>DOB</span><span>specialty</span><span>fin. aid?</span><span>sent?</span><span class="hot">NEXT ACTION</span><span>status</span></div><div class="note"><span>One row = one referral. Never let a row go quiet.</span><span style="color:var(--accent)">↑ the forcing function</span></div></div></div>
-          <div data-p="2" hidden><span class="tagline">Built once, reused on every referral</span><h3 style="margin-top:14px">Reusable building blocks</h3><p class="muted" style="margin:12px 0 18px;max-width:60ch">The system held together because its parts were standard. These were the closest thing this operation had to a design system.</p>
-            <div class="blocks">
-              <div class="block"><h4>Status taxonomy</h4><small>One clear state per referral</small><div class="tax"><div><span class="st open">Open</span>Logged, not yet started</div><div><span class="st awaiting">Awaiting docs</span>Waiting on aid paperwork</div><div><span class="st sent">Sent</span>Complete packet faxed</div><div><span class="st scheduled">Scheduled</span>Appointment booked</div><div><span class="st closed">Closed</span>Patient seen</div></div></div>
-              <div class="block"><h4>Specialist contact card</h4><small>One per partner office · illustrative</small><dl class="kv"><dt>Office</dt><dd>St. Mary's, GI / Hepatology</dd><dt>Contact</dt><dd>Fax, then call to confirm</dd><dt>Aid rep</dt><dd>Direct line on file</dd><dt>Requires</dt><dd>Clinical notes + aid approval</dd><dt>Turnaround</dt><dd>Days, once expedited</dd></dl></div>
-              <div class="block check"><h4>Per-specialist checklist</h4><small>Try it: check every item to clear the packet</small>
-                <label><input type="checkbox" id="c1">Provider clinical notes attached</label><label><input type="checkbox" id="c2">Financial aid application complete</label><label><input type="checkbox" id="c3">Proof of income (DOL letter)</label><label><input type="checkbox" id="c4">Office-specific intake form</label><label><input type="checkbox" id="c5">Fax cover sheet to named contact</label><span class="done" id="cdone" hidden>✓ Packet ready to send</span></div>
-              <div class="block"><h4>Patient prep guide</h4><small>The cognitive load, broken into steps</small><ol class="prep"><li>Book a short in-person session. Bring any ID you have.</li><li>We gather your information and documents.</li><li>We fill out the aid application line by line.</li><li>I send the packet and call you when the appointment is set.</li></ol></div>
-            </div></div>
-          <div data-p="3" hidden><span class="tagline">Reusable patient-facing materials</span><h3 style="margin-top:14px">In-person document assembly</h3><p class="muted" style="margin-top:12px;max-width:60ch">Instead of handing patients a list of documents to gather alone, I sat with each one in dedicated in-office appointments and we filled out applications together. For patients who couldn't easily come back, I made the calls and gathered documents for them. This part of the system took on the cognitive and logistical load the old process had quietly pushed onto patients.</p></div>
-          <div data-p="4" hidden><span class="tagline">Trust with patients and partners</span><h3 style="margin-top:14px">Daily follow-up and partner relationships</h3><p class="muted" style="margin-top:12px;max-width:60ch">Each morning I triaged every open row by next-action date. Standing meetings with specialist partners turned one-off contacts into relationships that moved referrals faster.</p></div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-h">
-        <div><div class="eyebrow">Refined</div><h2>The working tracker.</h2></div>
-        <p>All patient data is fictionalized for portfolio display. Filter by status to see how each state reads at a glance.</p>
-      </div>
-      <div class="mini glass" style="padding:0">
-        <div style="padding:16px 18px;border-bottom:1px solid var(--line);display:flex;gap:8px;flex-wrap:wrap" id="filters" role="group" aria-label="Filter by status">
-          <button class="sbtn dark" type="button" data-f="all">All</button><button class="sbtn" type="button" data-f="open">Open</button><button class="sbtn" type="button" data-f="awaiting">Awaiting docs</button><button class="sbtn" type="button" data-f="sent">Sent</button><button class="sbtn" type="button" data-f="scheduled">Scheduled</button><button class="sbtn" type="button" data-f="closed">Closed</button>
-        </div>
-        <div class="tbl"><table style="min-width:980px"><thead><tr><th>Patient</th><th>DOB</th><th>Specialty</th><th>Referral date</th><th>Financial aid</th><th>Date sent</th><th>Appt scheduled</th><th>Next action</th><th>Status</th></tr></thead><tbody id="ttb">
-          <tr data-s="scheduled"><td>A. Martinez</td><td>04/12/72</td><td>Cardiology</td><td>11/14/24</td><td>Approved</td><td>11/18/24</td><td>Yes · 12/02</td><td>Confirm appt w/ patient</td><td><span class="st scheduled">Scheduled</span></td></tr>
-          <tr data-s="closed"><td>T. Brown</td><td>07/03/68</td><td>GI · Hepatology</td><td>10/22/24</td><td>Approved</td><td>10/28/24</td><td>Yes · 11/15</td><td>Patient seen ✓</td><td><span class="st closed">Closed</span></td></tr>
-          <tr data-s="awaiting"><td>D. Williams</td><td>09/15/81</td><td>Orthopedics</td><td>12/01/24</td><td>Pending DOL letter</td><td>–</td><td>No</td><td>Walk pt through DOL request</td><td><span class="st awaiting">Awaiting docs</span></td></tr>
-          <tr data-s="sent"><td>R. Thompson</td><td>02/28/55</td><td>Optometry</td><td>11/30/24</td><td>Approved</td><td>12/02/24</td><td>Pending</td><td>Follow up w/ St. Mary's</td><td><span class="st sent">Sent</span></td></tr>
-          <tr data-s="open"><td>M. Davis</td><td>06/19/79</td><td>Dermatology</td><td>12/05/24</td><td>Not yet started</td><td>–</td><td>No</td><td>Schedule in-office FA session</td><td><span class="st open">Open</span></td></tr>
-          <tr data-s="scheduled"><td>J. Wilson</td><td>03/08/62</td><td>Neurology</td><td>11/08/24</td><td>Approved</td><td>11/12/24</td><td>Yes · 12/18</td><td>Reminder call 12/16</td><td><span class="st scheduled">Scheduled</span></td></tr>
-          <tr data-s="closed"><td>L. Garcia</td><td>08/22/70</td><td>Mental health</td><td>10/15/24</td><td>Approved</td><td>10/20/24</td><td>Yes · 11/04</td><td>Patient seen ✓</td><td><span class="st closed">Closed</span></td></tr>
-        </tbody></table></div>
-      </div>
-      <div class="card glass" style="margin-top:20px"><div class="mono muted">THE FIRST SIGNAL IT WAS WORKING</div><p style="color:var(--ink);font-size:17px;max-width:70ch">By the end of the first month, the new process produced what the old one couldn't: closed referrals. Patients who had waited over a year started getting scheduled, including a patient with cirrhosis. Rows moved through statuses instead of stalling at "Open," and the backlog shrank week over week.</p></div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-h">
-        <div><div class="eyebrow">Decision log</div><h2>The reasoning, not just the result.</h2></div>
-        <p>Three decisions carried this project. Each follows the same loop: what the evidence showed, what it meant, the call I made, and the tradeoff I accepted. Step through them one at a time.</p>
-      </div>
-      <div class="decision glass">
-        <script type="application/json">[
-{"short":"App or tracker?","q":"Patient-facing app, or an internal tracker?","finding":"Hundreds of referrals lived on paper in a drawer. No one could see what was open or how old it was.","insight":"The bottleneck wasn't effort. It was invisibility. Cases stalled because nothing forced an open referral to demand its next action.","decision":"Build one shared tracker that surfaces every open case and its next action daily, instead of a new patient-facing app.","outcome":"The backlog became burnable. Processing time fell from 12+ months to about 2 weeks.","tradeoff":"Less visible \"design\" than a patient app, but it's the tool the team could actually run every day without me."},
-{"short":"Who owns the handoff?","q":"Who owns the handoff to the specialist?","finding":"Referral packets were sent into a void. Specialist offices had no point of contact and often never responded.","insight":"The failure was structural, not clinical: an ownerless handoff between the clinic and each specialist.","decision":"Name a single point person who holds each specialist relationship and its financial aid contact.","outcome":"Specific cases moved in days, and partners gained a reliable coordinator, cited by name in Mercy's public staff feature.","tradeoff":"Concentrating relationship knowledge in one role created a single point of failure, which decision 03 was built to fix."},
-{"short":"Outlive me","q":"Clear more cases now, or make the process outlive me?","finding":"A process that worked only because one person pushed it would collapse the moment that person left.","insight":"Durability is a design requirement. A win that can't survive a handoff doesn't really count.","decision":"Encode the work into an SOP, per-specialist checklists and a daily follow-up cadence anyone could run.","outcome":"The system stayed in use after I left. That's the outcome I'd point to first.","tradeoff":"I spent time documenting instead of clearing a few more cases in the short term, to buy long-term continuity."}
-]</script>
-        <div class="dec-tabs" role="tablist" aria-label="Decisions"></div>
-        <div class="dec-body"></div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap">
-      <div class="sec-h">
-        <div><div class="eyebrow">Outcomes</div><h2>Three months of work, measured.</h2></div>
-        <p>The change showed up in the only place that mattered: how quickly patients were seen.</p>
-      </div>
-      <div class="charts" id="charts">
-        <div class="chart glass">
-          <div class="mono muted">BACKLOG BURN-DOWN</div>
-          <svg viewBox="0 0 360 180" role="img" aria-label="Open referrals fell steadily from week 0 to about week 12">
-            <line class="ax" x1="30" y1="10" x2="30" y2="150"/><line class="ax" x1="30" y1="150" x2="350" y2="150"/>
-            <path class="burn-area" id="burnArea" d=""/><path class="burn" id="burn" d=""/>
-            <text x="30" y="168">WK 0</text><text x="130" y="168">WK 4</text><text x="230" y="168">WK 8</text><text x="322" y="168">~WK 12</text>
-            <text x="36" y="8">OPEN REFERRALS</text>
-          </svg>
-          <p class="cap">Open referrals fell week over week as the daily cadence cleared the year-plus backlog.</p>
-        </div>
-        <div class="chart glass">
-          <div class="mono muted">PROCESSING TIME</div>
-          <div class="bars">
-            <div class="barrow"><span>Before</span><div class="track"><div class="fill" data-w="100" style="width:100%;background:var(--blush)">12+ mo</div></div></div>
-            <div class="barrow"><span>After</span><div class="track"><div class="fill" data-w="6" style="width:6%;background:var(--accent);color:var(--accent-ink);min-width:52px">2 wk</div></div></div>
-          </div>
-          <p class="cap" style="margin-top:auto">Roughly a 26× reduction in average referral processing time.</p>
-        </div>
-        <div class="chart glass">
-          <div class="mono muted">CLOSURE RATE</div>
-          <svg class="ring" viewBox="0 0 150 150" role="img" aria-label="About 90 percent reached scheduled care"><circle class="bg" cx="75" cy="75" r="60"/><circle class="fg" id="ring" cx="75" cy="75" r="60" stroke-dasharray="377" stroke-dashoffset="37.7"/><text x="75" y="85">~90%</text></svg>
-          <p class="cap">Of the referrals I personally managed, about nine in ten reached scheduled specialist care.</p>
-        </div>
-      </div>
-      <p class="cap" style="margin-top:14px">Illustrative, reconstructed from the tracker records that ran the process. Exact patient figures are withheld and the shapes are approximate.</p>
-      <div class="res">
-        <div><small>Backlog when I started</small>Hundreds of stalled paper referrals, most over a year old</div>
-        <div><small>Closure rate</small>~90% reached scheduled care</div>
-        <div><small>Processing time</small>12+ months down to 2 weeks</div>
-        <div><small>Continuity</small>The process stayed in use after I left</div>
-      </div>
-    </div>
-  </section>
-
-  <section class="sec">
-    <div class="wrap grid-2" style="align-items:start">
-      <div class="prose">
-        <div class="eyebrow">What changed structurally</div>
-        <p>The shift wasn't only in throughput. Mercy's relationships with its specialist partners changed too. Where the clinic used to send packets into a void, it now had a <b>named point person</b> who knew each office's financial aid contact by name and could move cases in days rather than weeks.</p>
-        <div class="eyebrow" style="margin-top:16px">The outcome I'm most proud of</div>
-        <p><b>The system outlived my role.</b> When I left Mercy, the SOP, the tracker, the checklists and the daily cadence stayed in use. A process that depends on one person is fragile. A process that keeps running after that person leaves is a system. Mercy now has one.</p>
-      </div>
-      <figure class="quote glass" style="margin:0">
-        <div class="eyebrow">In Mercy's words</div>
-        <blockquote>"Since her arrival, she has tremendously improved our patients' access to specialty care around Athens and has given our partners, like St. Mary's, a point person for care coordination."</blockquote>
-        <cite>Mercy Health Center · Public staff feature, 2025</cite>
-      </figure>
+    <div class="guide">
+      <span class="tag">How to read this</span>
+      <p>The case study follows the Double Diamond. Each phase opens with the question it had to answer, and every research method shows why I chose it and what it missed. Blocks marked <span class="tag try">Try it</span> are interactive. Patient details are fictional and figures are illustrative, per HIPAA.</p>
     </div>
   </section>
 
   <section class="sec">
     <div class="wrap narrow">
-      <div class="eyebrow">What it meant for patients</div>
-      <p class="big-quote" style="margin-top:16px;max-width:none;font-size:clamp(22px,2.6vw,32px)">Most case studies I read in school were about conversion rates. This one was about whether a patient with cirrhosis would see a hepatologist before their disease progressed.</p>
-      <div class="prose" style="margin-top:24px"><p>The patients who had waited longest were the first to benefit, including that patient, who was scheduled and seen in the first cycle of the new process. Many told me they had stopped expecting the system to work at all. The redesign was built, in part, to earn that expectation back. It taught me to take design seriously, because the people on the other side of it are taking their lives seriously.</p></div>
+      <div class="eyebrow">The brief I was given</div>
+      <p class="big-quote" style="margin-top:16px">“Can you help with referrals?” There was no workflow, no owner and a drawer full of paper. A process existed on paper, <span class="mark b">but not in practice.</span></p>
+    </div>
+  </section>
+
+  <!-- 01 DISCOVER -->
+  <section class="phase" id="discover" data-phase>
+    <div class="wrap">
+      <div class="phase-h"><span class="num">01</span><h2>Discover</h2><p><b>What this phase answers:</b> where do referrals actually break, and for whom? I couldn’t study a documented process, so I reconstructed the real one from records, observation and interviews.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" data-draw>
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Research questions</div><h3>Four questions framed the research.</h3></div><p>I wrote them down before choosing any method.</p></div>
+      <ol class="rqs" data-stagger>
+        <li><span class="badge" data-icon="clock"></span><p>Where do referrals stall, and for how long?</p><small class="mono">RQ1 · Audit, shadowing</small></li>
+        <li><span class="badge" data-icon="people"></span><p>Who thinks they own each step?</p><small class="mono">RQ2 · Interviews</small></li>
+        <li><span class="badge" data-icon="building"></span><p>What does each specialist office need?</p><small class="mono">RQ3 · Office calls</small></li>
+        <li><span class="badge" data-icon="form"></span><p>What stops patients from doing their part?</p><small class="mono">RQ4 · Patient interviews</small></li>
+      </ol>
     </div>
   </section>
 
   <section class="sec">
     <div class="wrap">
-      <div class="eyebrow" style="margin-bottom:20px">Reflection</div>
-      <div class="refl">
-        <div><h3>Walking into ambiguity</h3><p>No training, no documented process, a year-plus backlog. Not knowing what to do next isn't the same as having nothing to do. The work was to ask, observe and map until the system's shape appeared.</p></div>
-        <div><h3>Designing for people, not users</h3><p>I sat with sick, exhausted people and asked them to gather bank statements. I called the Department of Labor while they waited beside me. The person on the other side of every screen has a body and a limit.</p></div>
-        <div><h3>Building systems that outlive you</h3><p>I could have been the system, holding every relationship in my head and calling it competence. Writing it down so someone else could inherit it was the harder, better choice.</p></div>
+      <div class="sec-h"><div><div class="eyebrow">Research plan <span class="tag try">Try it</span></div><h3>Nine methods, two diamonds.</h3></div><p>Go wide to understand the problem, narrow to define it, then wide and narrow again to build the fix. Tap a method to see why I chose it.</p></div>
+      <div class="plan glass">
+        <div class="plan-top">
+          <div class="lenses" id="lenses" role="group" aria-label="Highlight methods by research lens"></div>
+          <button class="sbtn" type="button" id="planReplay">↻ Replay the 12 weeks</button>
+        </div>
+        <svg class="dd" id="dd" role="group" aria-label="Research methods placed along the double diamond, weeks 1 to 12"></svg>
+        <div class="mcard" id="mcard" aria-live="polite"></div>
       </div>
-      <div class="card glass" style="margin-top:28px"><div class="mono muted">WHAT SURPRISED ME</div><p style="color:var(--ink);font-size:17px;max-width:72ch">I expected the fix to be about chasing specialist offices harder. It wasn't. No one owned the handoff, so the highest-leverage move was making every open case visible in one place. <b>Visibility changed behavior more than effort did.</b></p></div>
     </div>
   </section>
 
   <section class="sec">
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Artifact audit <span class="tag try">Try it</span></div><h3>The drawer: 214 referrals, coded one by one.</h3></div><p>Each dot is one paper referral I found on day one. I logged its age, specialty and the step where it stopped moving. Switch the view to see the same backlog three ways.</p></div>
+      <div class="audit glass">
+        <div><div class="dots" id="dots" role="img" aria-label="214 referrals, colored by the selected view"></div></div>
+        <div style="display:flex;flex-direction:column;gap:18px;min-width:0">
+          <div class="seg" role="group" aria-label="Color referrals by" id="dimBtns"><button type="button" aria-pressed="true" data-dim="age">Age</button><button type="button" aria-pressed="false" data-dim="stall">Where it stalled</button><button type="button" aria-pressed="false" data-dim="next">Next action</button></div>
+          <p class="audit-note" id="auditNote" aria-live="polite"></p>
+          <ul class="legend" id="legend"></ul>
+          <span class="tag">Illustrative data</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" data-draw>
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Specialist office calls <span class="tag try">Try it</span></div><h3>Same four questions, eighteen different answers.</h3></div><p>I called every partner office in two weeks. Each tile is one office, badged with how it wanted to be contacted.</p></div>
+      <div class="calls glass">
+        <div style="min-width:0">
+          <ul class="offices" id="offices" data-stagger aria-label="18 specialist offices by preferred contact channel"></ul>
+          <div class="chans" id="chans" role="group" aria-label="Highlight offices by contact channel"></div>
+        </div>
+        <div class="call-stats">
+          <div><strong>11</strong><span>different financial aid applications</span></div>
+          <div><strong>0</strong><span>offices whose requirements the clinic had on file</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 DEFINE -->
+  <section class="phase" id="define" data-phase>
+    <div class="wrap">
+      <div class="phase-h"><span class="num">02</span><h2>Define</h2><p><b>What this phase answers:</b> what is the real problem, and who are we solving it for? I turned 142 research notes into themes, personas, a journey map and one problem statement.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Affinity mapping <span class="tag try">Try it</span></div><h3>From scattered notes to five themes.</h3></div><p>A sample of 20 notes from the wall. Each note is one observation from one source. Clustering them by what they had in common, rather than by who said them, is what revealed the pattern.</p></div>
+      <div class="board glass">
+        <div class="board-top">
+          <div class="src-key"><span><i style="background:var(--surface-solid)"></i>Staff</span><span><i style="background:var(--blush)"></i>Patient</span><span><i style="background:var(--peri)"></i>Specialist office</span><span><i style="background:var(--mist)"></i>Audit data</span></div>
+          <button class="sbtn dark" type="button" id="clusterBtn" aria-pressed="false">Cluster by theme</button>
+        </div>
+        <ul class="notes" id="notes"></ul>
+        <p class="cap" style="margin-top:14px">Quotes are composites, paraphrased and de-identified.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" data-draw>
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Insights</div><h3>Five themes became five design requirements.</h3></div><p>Each theme from the wall turned into one thing the design had to do.</p></div>
+      <ol class="flow" id="insights" data-stagger></ol>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Personas</div><h3>Three people, one referral.</h3></div><p>Composite personas built from interviews and shadowing. The coordinator is the primary user of what I built. The patient is who it’s for.</p></div>
+      <div class="glass">
+        <div class="tabs" role="tablist" aria-label="Personas" id="personaTabs"></div>
+        <div class="panel" role="tabpanel" id="personaPanel"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Journey map <span class="tag try">Try it</span></div><h3>The referral journey, before and after.</h3></div><p>Same patient, same clinic, same specialists. The bottom row tracks how the patient felt at each stage. Select a stage to see the pain point and the design opportunity it created.</p></div>
+      <div class="journey glass">
+        <div class="j-ctrl">
+          <div class="seg" role="group" aria-label="Journey view"><button type="button" aria-pressed="true" data-v="before">Before</button><button type="button" aria-pressed="false" data-v="after">After</button></div>
+          <span class="mono" id="jnum"></span>
+        </div>
+        <div class="scroll-x" style="margin-top:22px"><div class="lanes" id="lanes"></div></div>
+        <div class="j-detail" id="jdetail" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="pov glass">
+        <div class="eyebrow">Problem statement</div>
+        <p class="big">Front-desk coordinators at a free clinic need one visible place to move every referral to its next step, because today referrals have no owner, no status and no end point, and patients wait more than a year as a result.</p>
+        <ul class="hmw">
+          <li><b>HOW MIGHT WE</b>make every open referral impossible to forget?</li>
+          <li><b>HOW MIGHT WE</b>send each specialist exactly what they need the first time?</li>
+          <li><b>HOW MIGHT WE</b>take the paperwork burden off patients who can’t carry it?</li>
+        </ul>
+      </div>
+      <div class="eyebrow" style="margin:48px 0 16px">Design principles</div>
+      <ul class="principles" data-draw data-stagger>
+        <li><span class="badge" data-icon="eye"></span><h4>Visible by default</h4><p>Every referral shows its status and age without anyone asking.</p></li>
+        <li><span class="badge" data-icon="owner"></span><h4>One owner, one next action</h4><p>No row exists without a person and a date attached.</p></li>
+        <li><span class="badge" data-icon="heart"></span><h4>Carry the load for the patient</h4><p>If a step is hard for a patient, staff do it with them.</p></li>
+        <li><span class="badge" data-icon="sprout"></span><h4>Outlive the designer</h4><p>Anyone on staff can run it from the written SOP.</p></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 03 DEVELOP -->
+  <section class="phase" id="develop" data-phase>
+    <div class="wrap">
+      <div class="phase-h"><span class="num">03</span><h2>Develop</h2><p><b>What this phase answers:</b> what should we build with no budget and no developers? I generated concepts, ranked them with the team, then prototyped and tested the winner.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Prioritization <span class="tag try">Try it</span></div><h3>Nine concepts, scored for impact and effort.</h3></div><p>I scored each concept with the clinic director and two staff members. The flashiest idea, a patient app, scored lowest. Select a point to see the reasoning.</p></div>
+      <div class="matrix-wrap glass">
+        <div style="min-width:0">
+          <div class="matrix" id="matrix">
+            <span class="q" style="left:0;top:0">Quick wins</span><span class="q" style="right:0;top:0">Big bets</span><span class="q" style="left:0;bottom:0">Fill-ins</span><span class="q" style="right:0;bottom:0">Money pits</span>
+            <span class="ax-x">Effort →</span><span class="ax-y">Impact →</span>
+          </div>
+        </div>
+        <div class="m-detail" id="mDetail" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Decision log <span class="tag try">Try it</span></div><h3>The reasoning, not just the result.</h3></div><p>Three decisions carried the project. Each follows the same loop: what the evidence showed, what it meant, the call I made and the tradeoff I accepted.</p></div>
+      <div class="glass">
+        <div class="tabs" role="tablist" aria-label="Decisions" id="decTabs"></div>
+        <div class="panel" role="tabpanel" id="decPanel"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">Prototype + test</div><h3>Three versions of the tracker.</h3></div><p>I ran think-aloud tests with four staff members on each version, using the same three tasks and redacted real rows. The numbers are small on purpose. The goal was to find where people hesitated.</p></div>
+      <div class="glass">
+        <div class="tabs" role="tablist" aria-label="Tracker versions" id="iterTabs"></div>
+        <div class="panel" role="tabpanel" id="iterPanel"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 DELIVER -->
+  <section class="phase" id="deliver" data-phase>
+    <div class="wrap">
+      <div class="phase-h"><span class="num">04</span><h2>Deliver</h2><p><b>What this phase answers:</b> what shipped, and how does each part trace back to the research? Five components, one coordinator role.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sol glass">
+        <div class="tabs" role="tablist" aria-label="Solution components" aria-orientation="vertical" id="solTabs">
+          <button role="tab" type="button" id="sol-t0" aria-controls="sol-p0" aria-selected="true"><span>01</span>Standard operating procedure</button>
+          <button role="tab" type="button" id="sol-t1" aria-controls="sol-p1" aria-selected="false"><span>02</span>Referral tracker</button>
+          <button role="tab" type="button" id="sol-t2" aria-controls="sol-p2" aria-selected="false"><span>03</span>Reusable building blocks</button>
+          <button role="tab" type="button" id="sol-t3" aria-controls="sol-p3" aria-selected="false"><span>04</span>Paperwork, together</button>
+          <button role="tab" type="button" id="sol-t4" aria-controls="sol-p4" aria-selected="false"><span>05</span>Daily follow-up loop</button>
+        </div>
+        <div class="panel" role="tabpanel" id="sol-p0" aria-labelledby="sol-t0">
+          <h4>A standard operating procedure</h4>
+          <p>One written process, with one coordinator accountable from order to appointment.</p>
+          <div class="sol-art">
+            <ol class="handoff">
+              <li><span class="badge" data-icon="doctor"></span><span><b>Provider</b>writes the referral</span></li>
+              <li class="own"><span class="badge" data-icon="owner"></span><span><b>Coordinator</b>owns it end to end</span></li>
+              <li><span class="badge" data-icon="building"></span><span><b>Specialist</b>books the visit</span></li>
+              <li><span class="badge" data-icon="flag"></span><span><b>Patient seen</b>referral closed</span></li>
+            </ol>
+          </div>
+          <p class="from"><span class="badge" data-icon="people"></span><span><b>From research</b>Every role assumed another role owned follow-up.</span></p>
+        </div>
+        <div class="panel" role="tabpanel" id="sol-p1" aria-labelledby="sol-t1" hidden>
+          <h4>One referral tracker</h4>
+          <p>Every referral gets a status, a next action and a due date. Clinical detail stays in the EHR.</p>
+          <div class="sol-art">
+            <div class="sortdemo" role="img" aria-label="Four tracker rows sorting into due-date order, with the overdue row flagged">
+              <div class="late" style="--from:46px;--to:0px"><span class="due">12/09</span><span>Book in-office aid session</span><span class="st open">Open</span></div>
+              <div style="--from:138px;--to:46px"><span class="due">12/10</span><span>Call DOL with patient</span><span class="st awaiting">Awaiting docs</span></div>
+              <div style="--from:0px;--to:92px"><span class="due">12/11</span><span>Follow up with partner office</span><span class="st sent">Sent</span></div>
+              <div style="--from:92px;--to:138px"><span class="due">12/13</span><span>Reminder call to patient</span><span class="st scheduled">Scheduled</span></div>
+            </div>
+            <p class="mono" style="margin-top:14px">Rows sort by due date. Overdue ones flag themselves.</p>
+          </div>
+          <p class="from"><span class="badge" data-icon="table"></span><span><b>From research</b>0 of 214 referrals had a recorded next action.</span></p>
+        </div>
+        <div class="panel" role="tabpanel" id="sol-p2" aria-labelledby="sol-t2" hidden>
+          <h4>Reusable building blocks</h4>
+          <p>Standard parts, built once and reused on every referral.</p>
+          <div class="blocks">
+            <div class="block"><h5>Status taxonomy</h5><small>Five states replaced 14 free-text spellings</small><div class="tax"><div><span class="st open">Open</span>Logged, not started</div><div><span class="st awaiting">Awaiting docs</span>Aid paperwork pending</div><div><span class="st sent">Sent</span>Complete packet sent</div><div><span class="st scheduled">Scheduled</span>Appointment booked</div><div><span class="st closed">Closed</span>Patient seen</div></div></div>
+            <div class="block"><h5>Specialist contact card</h5><small>One per office, from the phone survey</small><dl class="kv"><dt>Office</dt><dd>Partner hospital, GI</dd><dt>Contact</dt><dd>Fax, then call to confirm</dd><dt>Aid rep</dt><dd>Direct line on file</dd><dt>Requires</dt><dd>Clinical notes + aid approval</dd></dl></div>
+            <div class="block check"><h5>Per-office checklist <span class="tag try">Try it</span></h5><small>Check every item to clear the packet</small>
+              <label><input type="checkbox" id="ck1">Provider clinical notes attached</label>
+              <label><input type="checkbox" id="ck2">Office’s own aid application complete</label>
+              <label><input type="checkbox" id="ck3">Proof of income attached</label>
+              <label><input type="checkbox" id="ck4">Office-specific intake form</label>
+              <label><input type="checkbox" id="ck5">Cover sheet to named contact</label>
+              <output id="ckOut" aria-live="polite">0 of 5 ready</output>
+            </div>
+          </div>
+        </div>
+        <div class="panel" role="tabpanel" id="sol-p3" aria-labelledby="sol-t3" hidden>
+          <h4>Paperwork, done together</h4>
+          <p>Patients filled out aid forms in person with me beside them. For those who couldn’t come back, I made the calls.</p>
+          <div class="sol-art">
+            <svg class="scene" viewBox="0 0 400 186" role="img" aria-label="A coordinator and a patient at a table, ticking off an aid form together">
+              <path d="M140 54Q200 24 260 54" fill="none" stroke="var(--faint)" stroke-width="2" stroke-dasharray="3 6"/>
+              <path d="M78 132c0-28 16-44 36-44s36 16 36 44z" fill="var(--accent)"/>
+              <circle cx="114" cy="68" r="19" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="2"/>
+              <path d="M250 132c0-28 16-44 36-44s36 16 36 44z" fill="var(--gold)"/>
+              <circle cx="286" cy="68" r="19" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="2"/>
+              <rect x="70" y="128" width="260" height="8" rx="4" fill="var(--faint)"/>
+              <rect x="96" y="136" width="6" height="46" rx="2" fill="var(--faint)"/>
+              <rect x="298" y="136" width="6" height="46" rx="2" fill="var(--faint)"/>
+              <g transform="rotate(-4 200 108)">
+                <rect x="170" y="84" width="60" height="44" rx="3" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="1.5"/>
+                <path d="M194 96h26M194 106h26M194 116h20" stroke="var(--faint)" stroke-width="3" stroke-linecap="round"/>
+                <path class="tick" pathLength="1" d="M177 95l4 4 6-7" style="animation-delay:.6s"/>
+                <path class="tick" pathLength="1" d="M177 105l4 4 6-7" style="animation-delay:1.1s"/>
+                <path class="tick" pathLength="1" d="M177 115l4 4 6-7" style="animation-delay:1.6s"/>
+              </g>
+              <path d="M146 118l22-14" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <ol class="steps4">
+              <li><span class="badge" data-icon="idcard"></span>Bring any ID you have</li>
+              <li><span class="badge" data-icon="form"></span>Gather documents together</li>
+              <li><span class="badge" data-icon="pen"></span>Fill the form line by line</li>
+              <li><span class="badge" data-icon="phone"></span>Get a call when it’s booked</li>
+            </ol>
+          </div>
+          <p class="from"><span class="badge" data-icon="heart"></span><span><b>From research</b>82 referrals stalled on aid paperwork.</span></p>
+        </div>
+        <div class="panel" role="tabpanel" id="sol-p4" aria-labelledby="sol-t4" hidden>
+          <h4>A daily follow-up loop</h4>
+          <p>The same four steps every morning. Standing check-ins turned one-off faxes into working relationships.</p>
+          <div class="sol-art"><svg class="cycle" id="cycle" viewBox="0 0 440 280" role="img" aria-label="Every morning: open the tracker, work top-down, call offices, update rows"></svg></div>
+          <p class="from"><span class="badge" data-icon="flag"></span><span><b>From research</b>No referral had ever been marked done.</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="sec-h"><div><div class="eyebrow">The working tracker <span class="tag try">Try it</span></div><h3>What the coordinator sees each morning.</h3></div><p>Version 3, sorted by due date. Overdue rows surface themselves. Filter by status to see how each state reads at a glance. All patient data is fictional.</p></div>
+      <div class="tracker glass">
+        <div class="tracker-top">
+          <div class="filters" role="group" aria-label="Filter by status" id="filters"></div>
+          <span class="mono" id="trackCount" aria-live="polite"></span>
+        </div>
+        <div class="scroll-x"><table><thead><tr><th>Next action</th><th>Due</th><th>Patient</th><th>Specialty</th><th>Financial aid</th><th>Sent</th><th>Appointment</th><th>Status</th></tr></thead><tbody id="trackBody"></tbody></table></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 MEASURE -->
+  <section class="phase" id="measure" data-phase>
+    <div class="wrap">
+      <div class="phase-h"><span class="num">05</span><h2>Measure</h2><p><b>What this phase answers:</b> did patients get seen sooner? I defined each metric before rollout so the result couldn’t be cherry-picked afterward.</p></div>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <div class="glass scroll-x" style="margin-bottom:24px">
+        <table class="metrics" style="min-width:720px">
+          <thead><tr><th>Metric</th><th>How I measured it</th><th>Before</th><th>After (wk 12)</th></tr></thead>
+          <tbody>
+            <tr><td>Median referral time</td><td>Referral date to appointment date, per tracker row</td><td>365+ days</td><td>14 days</td></tr>
+            <tr><td>Open backlog</td><td>Rows not Scheduled or Closed, counted each Friday</td><td>214</td><td>22</td></tr>
+            <tr><td>Closure rate</td><td>Referrals I managed that reached Scheduled or Closed</td><td>Unknown</td><td>~90%</td></tr>
+            <tr><td>Referrals with a next action</td><td>Rows with a next action and a due date</td><td>0%</td><td>100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="charts" id="charts">
+        <figure class="chart glass">
+          <div class="mono">Open backlog, by week</div>
+          <svg viewBox="0 0 360 190" role="img" aria-label="Open referrals fell from 214 in week 0 to 22 in week 12">
+            <line class="ax" x1="34" y1="10" x2="34" y2="150"/><line class="ax" x1="34" y1="150" x2="350" y2="150"/>
+            <text x="28" y="153" text-anchor="end">0</text><text x="28" y="88" text-anchor="end">100</text><text x="28" y="23" text-anchor="end">200</text>
+            <path class="burn-area" id="burnArea"/><path class="burn" id="burn"/><circle class="burn-end" id="burnEnd" r="4"/>
+            <text x="34" y="168">WK 0</text><text x="139" y="168" text-anchor="middle">WK 4</text><text x="245" y="168" text-anchor="middle">WK 8</text><text x="350" y="168" text-anchor="end">WK 12</text>
+            <text class="end" id="burnLab" text-anchor="end"></text>
+          </svg>
+          <figcaption class="cap">The daily cadence cleared the year-plus backlog week over week.</figcaption>
+        </figure>
+        <figure class="chart glass">
+          <div class="mono">Median referral time</div>
+          <div class="bars">
+            <div class="barrow"><span>Before</span><div class="track"><div class="fill" data-w="100" style="width:100%;background:var(--blush)">365+ days</div></div></div>
+            <div class="barrow"><span>After</span><div class="track"><div class="fill" data-w="3.8" style="width:3.8%;min-width:64px;background:var(--accent);color:var(--accent-ink)">14 days</div></div></div>
+          </div>
+          <figcaption class="cap" style="margin-top:auto">Roughly 26 times faster. Bars are drawn to scale.</figcaption>
+        </figure>
+        <figure class="chart glass">
+          <div class="mono">Closure rate</div>
+          <svg class="ring" viewBox="0 0 150 150" role="img" aria-label="About 90 percent reached scheduled care"><circle class="bg" cx="75" cy="75" r="60"/><circle class="fg" id="ring" cx="75" cy="75" r="60" stroke-dasharray="376.99" stroke-dashoffset="37.7"/><text x="75" y="85">~90%</text></svg>
+          <figcaption class="cap">About nine in ten referrals I managed reached a scheduled specialist visit.</figcaption>
+        </figure>
+      </div>
+      <p class="cap" style="margin-top:14px">Illustrative. Shapes are reconstructed from tracker records; exact patient figures are withheld.</p>
+    </div>
+  </section>
+
+  <section class="sec" data-draw>
     <div class="wrap grid-2" style="align-items:start">
+      <div class="legacy-card glass">
+        <div class="eyebrow">The outcome I’m most proud of</div>
+        <div class="legacy" role="img" aria-label="My 12 weeks, then the SOP, tracker, checklists and daily loop kept running after I left">
+          <div><span class="mono">My 12 weeks</span><div class="line"><span class="pin"></span></div></div>
+          <div class="after"><span class="mono">After I left</span><div class="line" data-stagger><span class="badge" data-icon="form"></span><span class="badge" data-icon="table"></span><span class="badge" data-icon="checklist"></span><span class="badge" data-icon="sun"></span></div></div>
+        </div>
+        <h3>The system outlived my role.</h3>
+        <p class="muted">The SOP, tracker, checklists and daily loop all stayed in use.</p>
+        <p class="moment"><span class="badge" data-icon="heart"></span>First cycle: a patient with cirrhosis, waiting over a year, saw a hepatologist.</p>
+      </div>
+      <figure class="quote glass">
+        <div class="eyebrow">In Mercy’s words</div>
+        <blockquote>“Since her arrival, she has tremendously improved our patients’ access to specialty care around Athens and has given our partners, like St. Mary’s, a point person for care coordination.”</blockquote>
+        <cite>Mercy Health Center · Public staff feature, 2025</cite>
+      </figure>
+    </div>
+  </section>
+
+  <!-- 06 REFLECT -->
+  <section class="phase" id="reflect" data-phase>
+    <div class="wrap">
+      <div class="phase-h"><span class="num">06</span><h2>Reflect</h2><p><b>What this phase answers:</b> what would I keep, and what would I do differently? Good research names its own blind spots.</p></div>
+    </div>
+  </section>
+
+  <section class="sec" data-draw>
+    <div class="wrap">
+      <div class="refl" data-stagger>
+        <div><span class="badge" data-icon="eye"></span><h4>Visibility beat effort</h4><p>Making every open case visible changed behavior more than chasing offices harder.</p></div>
+        <div><span class="badge" data-icon="heart"></span><h4>Design for people, not users</h4><p>The person on the other side of every form has a body and a limit.</p></div>
+        <div><span class="badge" data-icon="sprout"></span><h4>Build systems that outlive you</h4><p>Writing it down so someone else could inherit it was the harder, better choice.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" style="padding-top:56px" data-draw>
+    <div class="wrap grid-2" style="align-items:start;gap:48px">
       <div>
-        <div class="eyebrow">Design tradeoffs I weighed</div>
+        <div class="eyebrow">Research limitations</div>
         <div style="margin-top:18px;border-top:1px solid var(--ink)">
-          <details class="tr"><summary>A lightweight tracker now, not a perfect tool later</summary><p>An Excel tracker shipped in days and made every open case visible. Waiting on a built-in EHR feature would have meant patients kept waiting, so I chose speed and visibility over elegance.</p></details>
-          <details class="tr"><summary>One named owner first, then documented</summary><p>Centralizing accountability fixed the void right away, but a one-person process is brittle. Writing the SOP and checklists traded short-term effort for a system that could outlive me.</p></details>
-          <details class="tr"><summary>Triaged by clinical urgency, not arrival order</summary><p>A year-old backlog can't be worked first in, first out. Sickest-first was less "fair" by queue logic, but it was the only defensible choice with a cirrhosis patient in the stack.</p></details>
-          <details class="tr"><summary>Documented while clearing, not after</summary><p>Slower throughput in the first weeks bought a process that still ran months later. I treated durability as the real deliverable.</p></details>
+          <details class="tr"><summary>Survivorship bias in patient interviews</summary><p>I could only interview patients who still answered the clinic’s calls. The patients who had given up entirely, arguably the most important group, are underrepresented. Next time I’d partner with community health workers to reach them.</p></details>
+          <details class="tr"><summary>No baseline instrumentation</summary><p>The “before” time is reconstructed from referral dates on paper. I’d instrument the old process for two weeks before changing anything, so the comparison is cleaner.</p></details>
+          <details class="tr"><summary>Solo synthesis</summary><p>I clustered the notes alone, then checked the themes with two staff members. A second researcher in the room would have challenged my framing earlier.</p></details>
+          <details class="tr"><summary>Small usability samples</summary><p>Four participants per round finds the biggest problems quickly, but it can’t prove an effect size. The timing numbers show direction, not significance.</p></details>
         </div>
       </div>
       <div>
-        <div class="eyebrow">What I'd build next</div>
-        <ul class="nextlist" style="margin-top:18px">
-          <li><b>Automated follow-up</b><span>Status-based reminders, so a stalled referral surfaces itself.</span></li>
-          <li><b>Behavioral SMS reminders</b><span>Multilingual and rewritten to remove shame triggers.</span></li>
-          <li><b>Referral-health dashboard</b><span>Closure rate and aging cases at a glance for leadership.</span></li>
-          <li><b>Baseline instrumentation</b><span>Measure processing time and closure from day one.</span></li>
-          <li><b>SOP inside the EHR</b><span>Move the checklist into eClinicalWorks, where the work already happens.</span></li>
-        </ul>
+        <div class="eyebrow">What I’d build next</div>
+        <ol class="roadmap" data-stagger>
+          <li><span class="badge" data-icon="bell"></span><div><b>Automated reminders</b><span>A stalled referral surfaces itself.</span></div></li>
+          <li><span class="badge" data-icon="sms"></span><div><b>Multilingual SMS updates</b><span>Plain, shame-free texts when a referral moves.</span></div></li>
+          <li><span class="badge" data-icon="chart"></span><div><b>Referral-health dashboard</b><span>Closure rate and aging cases for leadership.</span></div></li>
+          <li><span class="badge" data-icon="ehr"></span><div><b>SOP inside the EHR</b><span>The checklist lives where the work happens.</span></div></li>
+        </ol>
       </div>
     </div>
   </section>
 
   <section class="sec">
     <div class="wrap">
-      <a class="next glass" href="remote.html"><div><div class="eyebrow">Next case study</div><h3>Rethink the Remote</h3><p class="muted" style="margin-top:8px">Accessibility · Redesign · Concept</p></div><span class="arr">→</span></a>
+      <a class="next glass" href="remote.html"><div><div class="eyebrow">Next case study</div><h3>Rethink the Remote</h3><p class="muted" style="margin-top:8px">Accessibility · Redesign · Concept</p></div><span class="arr" aria-hidden="true">→</span></a>
     </div>
   </section>
 </main>
 
 <footer>
   <div class="wrap foot">
-    <div><b style="color:var(--ink);font-family:var(--display);font-weight:500">In This Vessel</b><br>Behavioral product designer · Portfolio 2026</div>
+    <div><b style="color:var(--ink);font:500 15px var(--display)">In This Vessel</b><br>Behavioral product designer · Portfolio 2026</div>
     <nav aria-label="Footer"><a href="index.html">Home</a><a href="care-gap.html">Closing the Care Gap</a><a href="remote.html">Rethink the Remote</a><a href="about.html">About</a><a href="https://www.linkedin.com/in/jennynegrete">LinkedIn</a></nav>
   </div>
 </footer>
 
-<script src="site.js"></script>
 <script>
 (()=>{
-const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const ease=p=>1-Math.pow(1-p,3);
+// seeded so the mock data looks the same on every visit
+let seed=11;const rand=()=>(seed=seed*16807%2147483647)/2147483647;
+// run fn once when el scrolls into view
+const onView=(el,fn,threshold=.3)=>{const io=new IntersectionObserver(es=>{if(es[0].isIntersecting){io.disconnect();fn()}},{threshold});io.observe(el)};
+// toggle group: one aria-pressed button at a time
+const pressGroup=(btns,onPick)=>btns.forEach(b=>b.addEventListener('click',()=>{btns.forEach(x=>x.setAttribute('aria-pressed',x===b));onPick(b)}));
 
-/* journey swimlanes */
-const LANES=['Mercy','Specialist','Patient','No owner'];
-const J={
-  before:[
-    ['Referral written','A provider writes a specialist referral order in the chart.','Mercy'],
-    ['Handoff','The order enters the office with no defined owner downstream.','No owner','No owner'],
-    ['Packet sent','The same generic packet is faxed to every specialist, whatever their requirements.','Mercy'],
-    ['Bounced or buried','The office returns it for missing items, or it simply sits unread.','Specialist'],
-    ['No follow-up','No one chases status. The referral goes silent and falls off everyone\'s radar.','No owner','No closure point'],
-    ['Patient waits','12+ months pass. Symptoms worsen while the referral sits unclosed.','Patient','Learned helplessness']],
-  after:[
-    ['Referral written','A provider writes a specialist referral order in the chart.','Mercy'],
-    ['Coordinator owns it','The SOP names one Referrals Coordinator as accountable.','Mercy'],
-    ['Tailored packet','Each office gets exactly what its checklist requires, sent to a named contact.','Mercy'],
-    ['Accepted','The specialist receives a complete packet and a coordinator who follows up.','Specialist'],
-    ['Supported','The patient fills out aid applications in person, with help.','Patient'],
-    ['Patient seen','The referral closes when care happens. About 2 weeks on average.','Specialist']]
-};
-let view='before',stage=0;
-const lanes=$('#lanes'),det=$('#jdetail'),scrub=$('#jscrub');
-function drawJ(){
-  const S=J[view];
-  let h='<div></div>'+S.map((s,i)=>`<div class="mono muted" style="padding:0 6px 10px;font-size:10.5px">STAGE ${i+1}</div>`).join('');
-  LANES.forEach(l=>{
-    if(view==='after'&&l==='No owner')return;
-    h+=`<div class="lab">${l}</div>`;
-    S.forEach((s,i)=>{h+=`<div class="cell">${s[2]===l?`<button type="button" class="node${l==='No owner'?' none':''}${i===stage?' cur':''}" data-i="${i}"><b>${s[0]}</b></button>`:''}</div>`});
+// accessible tabs with arrow-key support; onSelect(index) renders the panel
+function tabs(list,onSelect){
+  const ts=$$('[role="tab"]',list);
+  const pick=t=>{ts.forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1});onSelect(ts.indexOf(t))};
+  list.addEventListener('click',e=>{const t=e.target.closest('[role="tab"]');if(t)pick(t)});
+  list.addEventListener('keydown',e=>{
+    const i=ts.indexOf(document.activeElement);if(i<0)return;
+    const step={ArrowRight:1,ArrowDown:1,ArrowLeft:-1,ArrowUp:-1}[e.key];
+    const n=step?(i+step+ts.length)%ts.length:e.key==='Home'?0:e.key==='End'?ts.length-1:-1;
+    if(n<0)return;e.preventDefault();ts[n].focus();pick(ts[n]);
   });
-  lanes.innerHTML=h;
-  const s=S[stage];
-  det.innerHTML=`<div class="n">0${stage+1}</div><div><h3>${s[0]}</h3><p>${s[1]}</p></div>${s[3]?`<span class="warn">⚠ ${s[3]}</span>`:'<span></span>'}`;
-  $('#jnum').textContent=`${stage+1} / 6`;scrub.value=stage;
+  pick(ts.find(t=>t.getAttribute('aria-selected')==='true')||ts[0]);
 }
-lanes.addEventListener('click',e=>{const b=e.target.closest('.node');if(b){stage=+b.dataset.i;drawJ()}});
-scrub.addEventListener('input',()=>{stage=+scrub.value;drawJ()});
-$$('[data-v]').forEach(b=>b.addEventListener('click',()=>{$$('[data-v]').forEach(x=>x.setAttribute('aria-pressed',x===b));view=b.dataset.v;drawJ()}));
-drawJ();
+// build tab buttons from data for a single re-rendered panel
+function dataTabs(listId,panelId,items,label,render){
+  const list=$('#'+listId),panel=$('#'+panelId);
+  list.innerHTML=items.map((d,i)=>`<button role="tab" type="button" id="${listId}-${i}" aria-controls="${panelId}" aria-selected="${i===0}">${label(d,i)}</button>`).join('');
+  tabs(list,i=>{panel.setAttribute('aria-labelledby',`${listId}-${i}`);panel.innerHTML=render(items[i],i)});
+}
 
-/* solution tabs */
-const tabs=$$('[data-s]'),panels=$$('.sol-panel [data-p]');
-tabs.forEach(t=>t.addEventListener('click',()=>{tabs.forEach(x=>x.setAttribute('aria-selected',x===t));panels.forEach(p=>p.hidden=p.dataset.p!==t.dataset.s)}));
+/* ---------- line icons (24px grid), drawn in by stroke ---------- */
+const ICONS={
+ clock:'<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+ people:'<circle cx="9" cy="8" r="3"/><path d="M3 19c0-3 3-5 6-5s6 2 6 5"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c3 0 5 2 5 5"/>',
+ building:'<path d="M4 20V7l8-4 8 4v13H4"/><path d="M9 20v-4h6v4M8 10h2M14 10h2"/>',
+ form:'<path d="M7 3h7l4 4v14H7V3"/><path d="M14 3v4h4M10 12h5M10 16h5"/>',
+ fax:'<rect x="3" y="9" width="18" height="10" rx="2"/><path d="M7 9V4h8l2 2v3M7 14h5"/>',
+ phone:'<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+ email:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/>',
+ portal:'<rect x="3" y="4" width="18" height="13" rx="2"/><path d="M3 8h18M8 21h8M12 17v4"/>',
+ eye:'<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12"/><circle cx="12" cy="12" r="3"/>',
+ owner:'<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/>',
+ heart:'<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10"/>',
+ sprout:'<path d="M12 21v-9M12 12C12 8 9 6 5 6c0 4 3 6 7 6M12 10c0-3 2-5 6-5 0 3-2 5-6 5"/>',
+ checklist:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8l1.5 1.5L12 7M14 8h3M8 14l1.5 1.5L12 13M14 14h3"/>',
+ table:'<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M3 14h18M9 4v16"/>',
+ flag:'<path d="M5 21V4h12l-2 4 2 4H5"/>',
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ knot:'<path d="M3 12c2-6 5 6 7 0s5 6 7 0 3 2 4 0"/>',
+ key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',
+ doctor:'<circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7M9 14v3a3 3 0 0 0 6 0v-3"/>',
+ idcard:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-1.5 1.7-2 3-2s2.5.5 3 2M14 10h4M14 13h3"/>',
+ pen:'<path d="M4 20l4-1L19 8l-3-3L5 16l-1 4"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>',
+ bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4l2-2"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+ sms:'<path d="M4 5h16v11H9l-5 4V5"/><path d="M8 9h8M8 12h5"/>',
+ chart:'<path d="M4 4v16h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+ ehr:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 8v6M9 11h6"/>'
+};
+// pathLength="1" lets one dash rule draw any shape in, whatever its length
+const icon=n=>`<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n].replace(/<(path|circle|rect)/g,'<$1 pathLength="1"')}</svg>`;
+$$('[data-icon]').forEach(el=>{el.innerHTML=icon(el.dataset.icon)});
 
-/* checklist */
-const boxes=$$('.check input');
-boxes.forEach(b=>b.addEventListener('change',()=>{$('#cdone').hidden=!boxes.every(x=>x.checked)}));
+/* ---------- nav: logo fill, reading bar, active phase ---------- */
+const vfill=$('#vfill'),bar=$('.readbar'),railLinks=$$('.rail a'),phases=$$('[data-phase]');
+let phaseCur=-2;
+function onScroll(){
+  const h=document.documentElement.scrollHeight-innerHeight,p=h>0?clamp(scrollY/h,0,1):0;
+  vfill.setAttribute('y',30-30*p);bar.style.width=p*100+'%';
+  // the active phase is the last one whose heading has passed the upper third of the screen
+  let cur=-1;phases.forEach((s,i)=>{if(s.getBoundingClientRect().top<innerHeight*.35)cur=i});
+  if(cur===phaseCur)return;phaseCur=cur;
+  railLinks.forEach((a,i)=>{a.classList.toggle('on',i===cur);i===cur?a.setAttribute('aria-current','true'):a.removeAttribute('aria-current')});
+}
+addEventListener('scroll',onScroll,{passive:true});onScroll();
 
-/* tracker filter */
-$('#filters').addEventListener('click',e=>{const b=e.target.closest('[data-f]');if(!b)return;
-  $$('#filters [data-f]').forEach(x=>x.classList.toggle('dark',x===b));
-  $$('#ttb tr').forEach(r=>r.classList.toggle('dim',b.dataset.f!=='all'&&r.dataset.s!==b.dataset.f))});
+/* ---------- hero: the wait, one square per day ---------- */
+const cal=$('#cal'),DAYS=371;
+cal.innerHTML='<i></i>'.repeat(DAYS);
+const cells=[...cal.children],calDay=$('#calDay'),calLab=$('#calLab');
+let calRaf;
+function runCal(mode){
+  cancelAnimationFrame(calRaf);
+  const before=mode==='before',target=before?DAYS:14,cls=before?'w':'s',dur=before?2400:900;
+  const paint=n=>cells.forEach((c,i)=>{c.className=i<n?cls:''});
+  const finish=()=>{paint(target);calDay.textContent=before?'365+':'14';calLab.textContent=before?'days and still waiting':'days to a specialist visit'};
+  if(reduce){finish();return}
+  calLab.textContent=before?'days waiting':'days to a visit';
+  const t0=performance.now();
+  const step=t=>{const p=clamp((t-t0)/dur,0,1),n=Math.round(target*ease(p));paint(n);calDay.textContent=Math.min(n,365);p<1?calRaf=requestAnimationFrame(step):finish()};
+  calRaf=requestAnimationFrame(step);
+}
+pressGroup($$('[data-cal]'),b=>runCal(b.dataset.cal));
+runCal('before');
 
-/* burn-down: illustrative shape */
-const pts=[100,97,91,84,75,66,56,47,38,29,21,14,9];
-const X=i=>30+i*(320/12),Y=v=>150-v*1.3;
-const d=pts.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
-const burn=$('#burn');burn.setAttribute('d',d);$('#burnArea').setAttribute('d',d+` L350 150 L30 150 Z`);
-const ring=$('#ring'),fills=$$('.fill[data-w]');
+/* ---------- research plan: methods inside the double diamond ---------- */
+// each lens is a kind of evidence; icons are drawn around 0,0 to sit inside a circle
+const LENSES={
+ listen:{name:'Listen',hint:'what people say',color:'var(--teal)',ic:'<path d="M-10-8h20a3 3 0 0 1 3 3v9a3 3 0 0 1-3 3h-9l-6 5v-5h-5a3 3 0 0 1-3-3v-9a3 3 0 0 1 3-3z"/>'},
+ watch:{name:'Watch',hint:'what people do',color:'var(--gold)',ic:'<path d="M-12 0Q0-12 12 0Q0 12-12 0z"/><circle r="4"/>'},
+ read:{name:'Read the record',hint:'what the data shows',color:'var(--accent)',ic:'<path d="M-7-10h9l5 5v15h-14z"/><path d="M-3-1h6M-3 4h6"/>'},
+ make:{name:'Make',hint:'what we build to learn',color:'var(--ok)',ic:'<rect x="-10" y="-10" width="12" height="12" rx="2"/><rect x="-2" y="-2" width="12" height="12" rx="2"/>'}
+};
+const lensIcon=(k,r=24,scale=1)=>`<g class="lic" style="--lens:${LENSES[k].color}"><circle r="${r}"/><g class="ic" transform="scale(${scale})">${LENSES[k].ic}</g></g>`;
+// t: position along the 12 weeks (0-1); s: position across the diamond's width (-1 to 1)
+const METHODS=[
+ {n:'Artifact audit',l:'Audit',lens:'read',t:.12,s:-.3,w:[1,2],who:'214 paper referrals',why:'There was no workflow document. The referrals were the only record of how the process behaved.',lim:'Paper only shows what was written down. Calls and verbal handoffs left no trace.'},
+ {n:'Specialist office calls',l:'Office calls',lens:'listen',t:.12,s:.3,w:[1,2],who:'18 partner offices',why:'Every office had its own rules. The same four questions made them comparable.',lim:'Answers came from whoever picked up and sometimes changed between calls.'},
+ {n:'Contextual inquiry',l:'Shadowing',lens:'watch',t:.21,s:-.55,w:[1,3],who:'6 shadowing sessions',why:'Staff couldn’t describe a process that was never written down. Watching showed the steps they skipped.',lim:'My presence likely made staff more careful than usual.'},
+ {n:'Stakeholder interviews',l:'Staff interviews',lens:'listen',t:.25,s:.5,w:[2,3],who:'4 providers · 2 front desk · 1 director',why:'To learn who believed they owned each step, and where those beliefs conflicted.',lim:'Volunteer providers had little time, so two sessions ran under 20 minutes.'},
+ {n:'Patient interviews',l:'Patient interviews',lens:'listen',t:.32,s:-.15,w:[3,4],who:'9 patients with open referrals',why:'The audit showed where referrals stalled. Only patients could explain why.',lim:'I only reached patients who still answered the clinic’s calls.'},
+ {n:'Affinity synthesis',l:'Synthesis',lens:'make',t:.45,s:0,w:[4,4],who:'142 notes',why:'To turn observations from five sources into patterns the team could act on.',lim:'Synthesized solo, then checked with two staff members to reduce bias.'},
+ {n:'Ideation + scoring',l:'Ideation',lens:'make',t:.57,s:.3,w:[5,5],who:'Director + 2 staff',why:'No budget and no developers, so ideas had to be ranked by impact against effort.',lim:'Scores were team estimates, not measurements.'},
+ {n:'Prototype + usability tests',l:'Usability tests',lens:'watch',t:.7,s:-.4,w:[5,8],who:'4 staff · 3 rounds',why:'The tracker only works if a busy person can read it in seconds. Think-aloud tests showed where they hesitated.',lim:'Small samples find problems; they don’t prove significance.'},
+ {n:'Rollout + measurement',l:'Rollout',lens:'read',t:.86,s:.2,w:[8,12],who:'Every active referral',why:'The outcome that mattered was whether patients were seen sooner.',lim:'No baseline instrumentation, so “before” is reconstructed from dates.'}
+];
+const dd=$('#dd'),mcard=$('#mcard'),lensBtns=$('#lenses');
+let planSel=0,planLens=null,planVert=null,planRaf;
+// wide screens run time left to right; phones run it top to bottom
+const planGeo=vert=>vert?{W:360,H:780,P:(t,s)=>[200+s*140,50+t*680]}:{W:1000,H:400,P:(t,s)=>[40+t*920,200+s*150]};
+function drawPlan(){
+  const vert=dd.clientWidth<600;
+  if(vert===planVert)return;planVert=vert;
+  const {W,H,P}=planGeo(vert),pt=(t,s)=>P(t,s).map(v=>v.toFixed(1)).join(' ');
+  const outline=[[0,0],[.225,1],[.45,0],[.7,1],[1,0],[.7,-1],[.45,0],[.225,-1]];
+  let h=`<path class="env" pathLength="1" d="M${outline.map(([t,s])=>pt(t,s)).join('L')}Z"/>`;
+  [['DISCOVER',.11],['DEFINE',.34],['DEVELOP',.58],['DELIVER',.85]].forEach(([n,t])=>{
+    const [x,y]=vert?[8,P(t,0)[1]]:[P(t,0)[0],24];
+    h+=`<text class="phl" x="${x}" y="${y}" text-anchor="${vert?'start':'middle'}">${n}</text>`;
+  });
+  // the diamonds are drawn by phase, not to a linear week scale, so only the phase edges get a week marker
+  [['WK 1',0,'start'],['WK 4',.45,'middle'],['WK 12',1,'end']].forEach(([n,t,anchor])=>{
+    const [x,y]=vert?[352,P(t,0)[1]+4]:[P(t,0)[0],388];
+    h+=`<text class="wkl" x="${x}" y="${y}" text-anchor="${vert?'end':anchor}">${n}</text>`;
+  });
+  h+='<line class="head" id="ddHead"/>';
+  h+=METHODS.map((m,i)=>{const [x,y]=P(m.t,m.s);return `<g class="mnode" data-m="${i}" data-lens="${m.lens}" role="button" tabindex="0" aria-label="${m.n}, weeks ${m.w[0]} to ${m.w[1]}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)})"><g class="pop">${lensIcon(m.lens)}${vert?'':`<text y="44" text-anchor="middle">${m.l}</text>`}</g></g>`}).join('');
+  dd.setAttribute('viewBox',`0 0 ${W} ${H}`);
+  dd.innerHTML=h;
+  selectMethod(planSel);applyLens();
+}
+function selectMethod(i){
+  planSel=i;
+  $$('.mnode',dd).forEach(g=>g.setAttribute('aria-pressed',+g.dataset.m===i));
+  const m=METHODS[i];
+  mcard.innerHTML=`<div class="who"><svg viewBox="-26 -26 52 52" aria-hidden="true">${lensIcon(m.lens)}</svg><div><b>${m.n}</b><span class="mono">Wk ${m.w[0]}${m.w[1]>m.w[0]?'–'+m.w[1]:''} · ${m.who}</span></div></div><p><span class="mono">Why this method</span>${m.why}</p><p class="blind"><span class="mono">Blind spot</span>${m.lim}</p>`;
+}
+const applyLens=()=>$$('.mnode',dd).forEach(g=>g.classList.toggle('dim',!!planLens&&g.dataset.lens!==planLens));
+dd.addEventListener('click',e=>{const g=e.target.closest('.mnode');if(g)selectMethod(+g.dataset.m)});
+dd.addEventListener('keydown',e=>{const g=e.target.closest('.mnode');if(g&&(e.key==='Enter'||e.key===' ')){e.preventDefault();selectMethod(+g.dataset.m)}});
+lensBtns.innerHTML=Object.entries(LENSES).map(([k,l])=>`<button type="button" aria-pressed="false" data-lens="${k}"><svg viewBox="-17 -17 34 34" aria-hidden="true">${lensIcon(k,15,.62)}</svg>${l.name} <span>${l.hint}</span></button>`).join('');
+lensBtns.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  planLens=planLens===b.dataset.lens?null:b.dataset.lens;
+  $$('button',lensBtns).forEach(x=>x.setAttribute('aria-pressed',x.dataset.lens===planLens));
+  applyLens();
+  if(planLens)selectMethod(METHODS.findIndex(m=>m.lens===planLens));
+});
+// draw the outline, then sweep a playhead through the weeks while each method pops in
+function playPlan(){
+  if(reduce)return;
+  cancelAnimationFrame(planRaf);
+  const head=$('#ddHead'),{P}=planGeo(planVert),dur=2600,pops=$$('.mnode .pop',dd);
+  dd.classList.add('pre','instant');dd.getBoundingClientRect();dd.classList.remove('instant');
+  pops.forEach((p,i)=>{p.style.transitionDelay=Math.round(500+METHODS[i].t*dur)+'ms'});
+  // reveal without waiting on a frame, so the diagram never stays hidden in a throttled tab
+  dd.getBoundingClientRect();dd.classList.remove('pre');
+  const t0=performance.now()+500;
+  const step=now=>{
+    const t=clamp((now-t0)/dur,0,1),[x1,y1]=P(t,-1.15),[x2,y2]=P(t,1.15);
+    Object.entries({x1,y1,x2,y2}).forEach(([k,v])=>head.setAttribute(k,v));
+    head.style.opacity=t>0&&t<1?1:0;
+    if(t<1)planRaf=requestAnimationFrame(step);else pops.forEach(p=>{p.style.transitionDelay=''});
+  };
+  planRaf=requestAnimationFrame(step);
+}
+drawPlan();
+new ResizeObserver(drawPlan).observe(dd);
+$('#planReplay').addEventListener('click',playPlan);
+if(!reduce&&dd.getBoundingClientRect().top>innerHeight){dd.classList.add('pre','instant');dd.getBoundingClientRect();dd.classList.remove('instant');onView(dd,playPlan,.4)}
+
+/* ---------- artifact audit ---------- */
+const DIMS={
+ age:{note:'61% had been waiting more than six months.',cats:[['Under 3 months',24],['3–6 months',59],['6–12 months',68],['Over 12 months',63]],colors:['color-mix(in srgb,var(--accent) 25%,var(--bg-2))','color-mix(in srgb,var(--accent) 50%,var(--bg-2))','color-mix(in srgb,var(--accent) 75%,var(--bg-2))','var(--accent)']},
+ stall:{note:'38% stalled on financial aid paperwork, more than any other step.',cats:[['Waiting on aid paperwork',82],['Never sent',71],['Sent, no response',39],['Bounced, missing notes',22]],colors:['var(--warn)','var(--accent)','var(--teal)','var(--gold)']},
+ next:{note:'Not one referral said what should happen next, or who should do it.',cats:[['No next action recorded',214],['Next action recorded',0]],colors:['var(--faint)','var(--accent)']}
+};
+const dots=$('#dots');dots.innerHTML='<i></i>'.repeat(214);
+const dotEls=[...dots.children];
+function showDim(key){
+  const d=DIMS[key];let k=0;
+  d.cats.forEach(([,n],c)=>{for(let j=0;j<n;j++)dotEls[k++].style.background=d.colors[c]});
+  $('#auditNote').textContent=d.note;
+  $('#legend').innerHTML=d.cats.map(([l,n],c)=>`<li><i style="background:${d.colors[c]}"></i>${l}<b>${n} · ${Math.round(n/2.14)}%</b></li>`).join('');
+}
+pressGroup($$('[data-dim]'),b=>showDim(b.dataset.dim));
+showDim('age');
+
+/* ---------- affinity board ---------- */
+const THEMES=['No shared owner','One-size-fits-all packets','No visibility','Patient carries the load','No closure point'];
+const NOTES=[
+ [0,'staff','I write the referral and assume the front desk takes it from there.','Provider'],
+ [0,'staff','I thought the doctors followed up on those.','Front desk'],
+ [0,'staff','Nobody’s name is on any of them.','Clinic director'],
+ [0,'audit','0 of 214 referrals listed an owner.','Audit'],
+ [1,'staff','We send the same three pages to everyone.','Front desk'],
+ [1,'office','Half of what the clinic faxes, we can’t use.','Specialist office'],
+ [1,'office','Our aid form is different. They never include it.','Specialist office'],
+ [1,'audit','22 referrals bounced for missing clinical notes.','Audit'],
+ [2,'staff','Once it’s faxed, it’s gone.','Front desk'],
+ [2,'staff','I’ve asked about the same patient four times.','Provider'],
+ [2,'audit','0 of 214 had a recorded next action.','Audit'],
+ [2,'staff','We had no way to say how old a referral was.','Clinic director'],
+ [3,'patient','They gave me a list. I don’t have a printer.','Patient'],
+ [3,'patient','I took off work twice to get one letter.','Patient'],
+ [3,'patient','The form asked for things I didn’t understand.','Patient'],
+ [3,'audit','82 referrals stalled on aid paperwork.','Audit'],
+ [4,'patient','I stopped calling. I figured they forgot about me.','Patient'],
+ [4,'staff','I don’t know if she was ever seen.','Provider'],
+ [4,'staff','I don’t think anyone has ever closed one.','Front desk'],
+ [4,'office','We never hear back after the visit.','Specialist office']
+];
+const notesEl=$('#notes');
+// DOM order is grouped by theme so screen readers get the clustered reading order
+notesEl.innerHTML=THEMES.map((t,ti)=>`<li class="head" data-t="${ti}">${t}</li>`+NOTES.filter(n=>n[0]===ti).map(n=>`<li data-t="${ti}"><div class="note" data-src="${n[1]}">“${n[2]}”<small>${n[3]}</small></div></li>`).join('')).join('');
+const noteItems=$$('li',notesEl);
+// clustered packs each theme (header + notes) into the shortest column;
+// scattered packs the notes one by one in a shuffled order, slightly askew
+const themeGroups=THEMES.map((_,ti)=>noteItems.map((li,i)=>+li.dataset.t===ti?i:-1).filter(i=>i>=0));
+const noteIdx=noteItems.map((li,i)=>li.classList.contains('head')?-1:i).filter(i=>i>=0);
+const shuffled=noteIdx.map(i=>[rand(),i]).sort((a,b)=>a[0]-b[0]).map(([,i])=>[i]);
+const tilt=noteItems.map(()=>({x:(rand()-.5)*16,r:(rand()-.5)*7}));
+let clustered=false;
+function pack(groups,cols,cw,hs,gap){
+  const colH=Array(cols).fill(0),pos=[];
+  groups.forEach(g=>{const c=colH.indexOf(Math.min(...colH));g.forEach(i=>{pos[i]={x:c*(cw+gap),y:colH[c]};colH[c]+=hs[i]+gap});colH[c]+=gap});
+  return {pos,H:Math.max(...colH)};
+}
+function layoutNotes(){
+  const W=notesEl.clientWidth,cols=W>960?5:W>560?2:1,gap=12,cw=(W-gap*(cols-1))/cols;
+  noteItems.forEach(li=>{li.style.width=cw+'px'});
+  const hs=noteItems.map(li=>li.offsetHeight);
+  const grouped=pack(themeGroups,cols,cw,hs,gap),loose=pack(shuffled,cols,cw,hs,gap+6);
+  notesEl.style.height=(clustered?grouped.H:loose.H)+'px';
+  noteItems.forEach((li,i)=>{
+    const p=clustered||!loose.pos[i]?grouped.pos[i]:loose.pos[i],t=clustered?{x:0,r:0}:tilt[i];
+    li.style.transform=`translate(${p.x+t.x}px,${p.y}px) rotate(${t.r}deg)`;
+  });
+}
+const clusterBtn=$('#clusterBtn');
+const setCluster=on=>{clustered=on;notesEl.classList.toggle('clustered',on);clusterBtn.setAttribute('aria-pressed',on);clusterBtn.textContent=on?'Scatter notes':'Cluster by theme';layoutNotes()};
+clusterBtn.addEventListener('click',()=>setCluster(!clustered));
+// relayout only when the width changes; layoutNotes sets the height itself
+let notesW=0;
+new ResizeObserver(()=>{if(notesEl.clientWidth!==notesW){notesW=notesEl.clientWidth;layoutNotes()}}).observe(notesEl);
+if(reduce)setCluster(true);else onView(notesEl,()=>setTimeout(()=>setCluster(true),900),.15);
+
+/* ---------- specialist office calls ---------- */
+const CHANNELS={fax:['Fax','var(--accent)'],phone:['Phone','var(--teal)'],email:['Email','var(--gold)'],portal:['Portal','var(--ok)']};
+// one letter per office, in call order: f=fax p=phone e=email o=portal
+const OFFICES=[...'fpfeffpfoepfpfeofp'].map(c=>({f:'fax',p:'phone',e:'email',o:'portal'})[c]);
+const officesEl=$('#offices'),chansEl=$('#chans');
+officesEl.innerHTML=OFFICES.map((c,i)=>`<li class="office" data-ch="${c}" aria-label="Office ${i+1}, prefers ${CHANNELS[c][0].toLowerCase()}">${icon('building')}<span class="ch" style="--ch:${CHANNELS[c][1]}">${icon(c)}</span></li>`).join('');
+chansEl.innerHTML=Object.entries(CHANNELS).map(([k,[n,col]])=>`<button type="button" aria-pressed="false" data-ch="${k}"><i style="--ch:${col}">${icon(k)}</i>${n} <b>${OFFICES.filter(c=>c===k).length}</b></button>`).join('');
+let chanSel=null;
+chansEl.addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  chanSel=chanSel===b.dataset.ch?null:b.dataset.ch;
+  $$('button',chansEl).forEach(x=>x.setAttribute('aria-pressed',x.dataset.ch===chanSel));
+  $$('.office',officesEl).forEach(o=>o.classList.toggle('dim',!!chanSel&&o.dataset.ch!==chanSel));
+});
+
+/* ---------- insights ---------- */
+// [theme, evidence, requirement icon, requirement, sticky-note tilt]
+const INSIGHTS=[
+ ['No shared owner','7 of 7 staff interviews','owner','One named coordinator owns every referral',-1.5],
+ ['One-size-fits-all packets','18 office calls','checklist','A checklist for each specialist office',1],
+ ['No visibility','214 audited referrals','table','A tracker with a next action on every row',-.8],
+ ['Patient carries the load','9 patient interviews','heart','Staff do the paperwork with the patient',1.4],
+ ['No closure point','0 closed referrals','flag','“Closed” means the patient was seen',-1]
+];
+$('#insights').innerHTML=INSIGHTS.map(([t,e,ic,req,r])=>`<li><div class="theme" style="--r:${r}deg"><b>${t}</b><small class="mono">${e}</small></div><span class="arrow" aria-hidden="true"></span><div class="req"><span class="badge">${icon(ic)}</span>${req}</div></li>`).join('');
+
+/* ---------- personas ---------- */
+// flat portraits: background tint, body color and a prop that says what the person does
+const PROPS={
+ headset:'<path d="M42 50a18 18 0 0 1 36 0" fill="none" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/><rect x="37" y="47" width="7" height="12" rx="3" fill="var(--ink)"/><rect x="76" y="47" width="7" height="12" rx="3" fill="var(--ink)"/><path d="M80 59q0 9-10 10" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linecap="round"/>',
+ stethoscope:'<path d="M48 84v12a12 12 0 0 0 24 0V84" fill="none" stroke="var(--surface-solid)" stroke-width="3" stroke-linecap="round"/><circle cx="60" cy="110" r="5" fill="var(--surface-solid)"/>',
+ folder:'<g transform="rotate(-8 74 100)"><rect x="60" y="88" width="34" height="26" rx="3" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="2"/><path d="M66 97h20M66 104h14" stroke="var(--ink)" stroke-width="2" stroke-linecap="round"/></g>'
+};
+const portrait=p=>`<svg class="portrait" viewBox="0 0 120 120" aria-hidden="true"><defs><clipPath id="pc-${p.prop}"><circle cx="60" cy="60" r="58"/></clipPath></defs><circle cx="60" cy="60" r="58" fill="${p.tint}"/><g clip-path="url(#pc-${p.prop})"><path d="M18 122c0-27 19-42 42-42s42 15 42 42z" fill="${p.body}"/><circle cx="60" cy="50" r="17" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="2"/>${PROPS[p.prop]}</g></svg>`;
+const PERSONAS=[
+ {role:'Primary user',name:'The Coordinator',prop:'headset',tint:'var(--peri)',body:'var(--accent)',bio:'Front-desk staff member. Handles check-in, phones and every referral, often at once.',quote:'I want to come in and know exactly which five things to do first.',goal:'Know what to do next each morning',pain:'No list of open referrals',need:'One queue sorted by urgency',impl:'the tracker’s “next action first” layout.'},
+ {role:'Stakeholder',name:'The Referring Provider',prop:'stethoscope',tint:'var(--mist)',body:'var(--teal)',bio:'Volunteer physician, one day a week. Writes referrals, rarely learns what happened.',quote:'Three months later they’re back in my chair asking what happened.',goal:'Get patients seen in time',pain:'No word after referring',need:'Status visible at the next visit',impl:'a five-state status anyone can read in two seconds.'},
+ {role:'Who it’s for',name:'The Patient',prop:'folder',tint:'var(--blush)',body:'var(--gold)',bio:'Uninsured, works hourly shifts, prefers Spanish. No printer at home.',quote:'I stopped calling. I figured they forgot about me.',goal:'See a specialist before it gets worse',pain:'Forms full of unfamiliar terms',need:'Someone to do the paperwork with',impl:'in-person paperwork sessions and one call once it’s booked.'}
+];
+const fact=(ic,label,text)=>`<li><span class="badge">${icon(ic)}</span><div><small class="mono">${label}</small>${text}</div></li>`;
+dataTabs('personaTabs','personaPanel',PERSONAS,p=>p.name,p=>`<div class="persona">${portrait(p)}
+  <div class="body"><div><span class="mono">${p.role} · composite</span><h4>${p.name}</h4><p class="muted" style="margin-top:6px">${p.bio}</p></div>
+  <blockquote>“${p.quote}”</blockquote>
+  <ul class="facts">${fact('target','Goal',p.goal)}${fact('knot','Frustration',p.pain)}${fact('key','Needs',p.need)}</ul>
+  <p class="impl"><b>Shaped:</b> ${p.impl}</p></div></div>`);
+
+/* ---------- journey map ---------- */
+const LANES=['Clinic','Specialist','Patient','No owner'];
+// [stage, lane, what happens, feeling -2..2, pain or opportunity]
+const JOURNEY={
+ before:[
+  ['Referral written','Clinic','A provider writes a specialist referral in the chart.',1,'Hope is high. The patient leaves believing help is coming.'],
+  ['Handoff','No owner','The order enters the front office with no defined owner.',0,'Opportunity: name one accountable coordinator.'],
+  ['Packet sent','Clinic','The same generic packet is faxed to every specialist.',0,'Opportunity: a checklist for each office’s requirements.'],
+  ['Bounced or buried','Specialist','The office returns it for missing items, or it sits unread.',-1,'Opportunity: a named contact at each office and a follow-up date.'],
+  ['No follow-up','No owner','Nobody tracks status. The referral goes silent.',-2,'Opportunity: a tracker where every row has a next action.'],
+  ['Patient waits','Patient','More than 12 months pass. Symptoms worsen.',-2,'Opportunity: define “closed” as the patient being seen.']],
+ after:[
+  ['Referral written','Clinic','A provider writes a specialist referral in the chart.',1,'Logged in the tracker the same day.'],
+  ['Coordinator owns it','Clinic','The SOP names one coordinator as accountable.',1,'Every row has an owner and a due date.'],
+  ['Paperwork, together','Patient','The patient completes aid forms in person, with help.',1,'The hardest step moves off the patient.'],
+  ['Tailored packet','Clinic','Each office gets exactly what its checklist requires.',1,'Sent to a named contact, confirmed by phone.'],
+  ['Accepted','Specialist','The office accepts and books an appointment.',2,'Coordinator calls the patient with the date.'],
+  ['Patient seen','Patient','The referral closes when care happens.',2,'Median: 14 days from referral.']]
+};
+let jView='before',jStage=0;
+const lanesEl=$('#lanes');
+function drawJourney(){
+  const S=JOURNEY[jView],lanes=jView==='after'?LANES.slice(0,3):LANES;
+  let h='<div></div>'+S.map((_,i)=>`<div class="stg">STAGE ${i+1}</div>`).join('');
+  lanes.forEach(l=>{
+    h+=`<div class="lab">${l}</div>`;
+    S.forEach((s,i)=>{h+=`<div class="cell">${s[1]===l?`<button type="button" class="node${l==='No owner'?' none':''}${i===jStage?' cur':''}" data-i="${i}" aria-pressed="${i===jStage}">${s[0]}</button>`:''}</div>`});
+  });
+  // feeling row: x at column centers, y from -2 (bottom) to 2 (top)
+  const pts=S.map((s,i)=>[(i+.5)/S.length*100,(2-s[3])/4*80+8]);
+  h+=`<div class="lab">Patient feels</div><div class="feel"><svg viewBox="0 0 100 96" preserveAspectRatio="none" aria-hidden="true"><line x1="0" x2="100" y1="48" y2="48"/><path d="${pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ')}"/></svg>${pts.map((p,i)=>`<b class="${S[i][3]<0?'low':''}" style="left:${p[0]}%;top:${p[1]}px"></b>`).join('')}</div>`;
+  lanesEl.innerHTML=h;
+  const s=S[jStage],feel=['Hopeless','Frustrated','Neutral','Reassured','Relieved'][s[3]+2];
+  $('#jdetail').innerHTML=`<div><span class="mono">Stage ${jStage+1} · ${s[1]}</span><h4>${s[0]}</h4><p>${s[2]}</p></div><div class="opp"><span class="mono">Patient feels: ${feel}</span><p>${s[4]}</p></div>`;
+  $('#jnum').textContent=`STAGE ${jStage+1} / ${S.length}`;
+}
+lanesEl.addEventListener('click',e=>{const b=e.target.closest('.node');if(b){jStage=+b.dataset.i;drawJourney();$(`.node[data-i="${jStage}"]`,lanesEl).focus()}});
+pressGroup($$('[data-v]'),b=>{jView=b.dataset.v;drawJourney()});
+drawJourney();
+
+/* ---------- impact / effort matrix ---------- */
+// [concept, impact 0-10, effort 0-10, verdict, reasoning]
+const CONCEPTS=[
+ ['Shared referral tracker',9,2,'build','Excel was already installed and familiar. It shipped in days and made every case visible.'],
+ ['Named coordinator role',9,3,'build','Fixed the ownership gap directly. Cost was a role change, not new headcount.'],
+ ['Per-office checklists',8,3,'build','The phone survey had already gathered the content. Formatting it took a few afternoons.'],
+ ['In-person aid sessions',8,5,'build','Highest impact on the patients who stalled most. Effort was staff time, scheduled into slow hours.'],
+ ['Written SOP',7,3,'build','Low effort, and the only way the process could survive staff turnover.'],
+ ['SMS status updates',5,6,'later','Useful, but needed a vendor, consent flows and translation. Deferred until the basics worked.'],
+ ['EHR referral module',7,9,'later','The right long-term home, but required vendor configuration the clinic couldn’t fund yet.'],
+ ['Specialist partner portal',5,9,'no','Offices wouldn’t adopt another login. A phone call to a named contact worked better.'],
+ ['Patient-facing app',3,10,'no','Many patients lacked smartphones or data plans, and nobody could maintain it. It would have looked good in a portfolio and helped few people.']
+];
+const matrix=$('#matrix'),mDetail=$('#mDetail');
+const VERDICT={build:'Build now',later:'Later',no:'Rejected'};
+matrix.insertAdjacentHTML('beforeend',CONCEPTS.map((c,i)=>`<button type="button" class="pt ${c[3]}" style="left:${c[2]*9+5}%;bottom:${c[1]*8+4}%" data-c="${i}" aria-pressed="${i===0}" aria-label="${c[0]}: impact ${c[1]}, effort ${c[2]}, ${VERDICT[c[3]]}"></button>`).join(''));
+const showConcept=c=>{mDetail.innerHTML=`<span class="verdict ${c[3]}">${VERDICT[c[3]]}</span><h4>${c[0]}</h4><p class="mono">Impact ${c[1]} / 10 · Effort ${c[2]} / 10</p><p>${c[4]}</p><div class="m-key"><span><i style="background:var(--accent)"></i>Build now</span><span><i style="background:var(--gold)"></i>Later</span><span><i style="background:var(--faint)"></i>Rejected</span></div>`};
+pressGroup($$('.pt',matrix),b=>showConcept(CONCEPTS[b.dataset.c]));
+showConcept(CONCEPTS[0]);
+
+/* ---------- decision log ---------- */
+const DECISIONS=[
+ {short:'App or tracker?',q:'Patient-facing app, or an internal tracker?',finding:'Hundreds of referrals lived on paper in a drawer. No one could see what was open or how old it was.',insight:'The bottleneck wasn’t effort. It was invisibility. Nothing forced an open referral to demand its next action.',decision:'Build one shared tracker that surfaces every open case and its next action daily.',outcome:'The backlog became workable. Median referral time fell from 12+ months to 14 days.',tradeoff:'Less visible “design” than a patient app, but it’s the tool the team could run every day without me.'},
+ {short:'Who owns the handoff?',q:'Who owns the handoff to the specialist?',finding:'Packets went into a void. Offices had no point of contact at the clinic and often never responded.',insight:'The failure was structural: an ownerless handoff between the clinic and each specialist.',decision:'Name a single coordinator who holds each specialist relationship and its aid contact.',outcome:'Cases moved in days, and partners gained a reliable coordinator, cited in Mercy’s public staff feature.',tradeoff:'Concentrating knowledge in one role created a single point of failure, which decision 3 addressed.'},
+ {short:'Outlive me',q:'Clear more cases now, or make the process outlive me?',finding:'A process that worked only because one person pushed it would collapse when that person left.',insight:'Durability is a design requirement. A win that can’t survive a handoff doesn’t count.',decision:'Encode the work into an SOP, per-office checklists and a daily cadence anyone could run.',outcome:'The system stayed in use after I left.',tradeoff:'I spent time documenting instead of clearing a few more cases in the short term.'}
+];
+const STEPS=[['finding','Finding'],['insight','Insight'],['decision','Decision'],['outcome','Outcome'],['tradeoff','Tradeoff accepted']];
+let decCur=0,decShown=reduce?5:1;
+const decPanel=$('#decPanel');
+const renderDecision=(d,i)=>`<div class="dec"><div><span class="mono">Decision ${i+1} of ${DECISIONS.length}</span><h4>${d.q}</h4>
+  <div class="dec-ctrl"><button class="sbtn dark" type="button" data-a="next" ${decShown>=5?'disabled':''}>Show next step →</button><button class="sbtn" type="button" data-a="all">Show all</button></div></div>
+  <div class="steps">${STEPS.map(([k,l],j)=>`<div class="stepx${j<decShown?' on':''}${k==='tradeoff'?' trade':''}"><small>${l}</small><p>${d[k]}</p></div>`).join('')}</div></div>`;
+dataTabs('decTabs','decPanel',DECISIONS,(d,i)=>`0${i+1} · ${d.short}`,(d,i)=>{if(i!==decCur){decCur=i;decShown=reduce?5:1}return renderDecision(d,i)});
+decPanel.addEventListener('click',e=>{const b=e.target.closest('[data-a]');if(!b)return;
+  decShown=b.dataset.a==='all'?5:Math.min(5,decShown+1);decPanel.innerHTML=renderDecision(DECISIONS[decCur],decCur);
+  const nb=$('[data-a="next"]',decPanel);(nb.disabled?$('[data-a="all"]',decPanel):nb).focus()});
+
+/* ---------- prototype iterations ---------- */
+const ITERS=[
+ {tab:'v1 · Paper sketch',sketch:true,cols:['patient','DOB','specialty','fin. aid?','sent?','NEXT ACTION','status'],hot:5,rows:[],
+  what:'Sketched in a team meeting and reviewed with the clinic director.',
+  learn:['The director asked, <b>“How would anyone know what to do with this row?”</b> That question added the Next Action column.','One row per referral, never per patient, since one patient can have several.'],tasks:null},
+ {tab:'v2 · First spreadsheet',cols:['Patient','DOB','Specialty','Referral date','Financial aid','Sent','Appt','Notes','Status'],hot:-1,
+  rows:[['D. Williams','09/15/81','Orthopedics','12/01/24','pending','–','–','called pt, needs DOL letter, try again thurs?','waiting'],['R. Thompson','02/28/55','Optometry','11/30/24','Approved','12/02/24','–','f/u w/ office','sent?']],
+  what:'Built in Excel and tested with 4 staff members on 3 tasks.',
+  learn:['Next steps were <b>buried in free-text Notes</b>, so nobody could sort by them.','Staff typed statuses freely: <b>14 different spellings</b> of “waiting” in one week.','DOB duplicated the EHR and added unnecessary patient data to a shared file.'],
+  tasks:[['Find every overdue follow-up','2 / 4','94s'],['Log a new referral','3 / 4','70s'],['Say what a patient needs next','1 / 4','60s']]},
+ {tab:'v3 · Shipped',cols:['Next action','Due','Patient','Specialty','Financial aid','Status'],hot:0,
+  rows:[['Book in-office aid session','12/09','M. Davis','Dermatology','Not started','<span class="st open">Open</span>',1],['Call DOL with patient','12/10','D. Williams','Orthopedics','Pending DOL letter','<span class="st awaiting">Awaiting docs</span>']],
+  what:'Retested with the same 4 staff members and the same 3 tasks.',
+  learn:['<b>Next action and Due moved to the front</b>, and rows sort by due date.','Status became a <b>five-option dropdown</b>.','<b>Overdue rows highlight automatically</b> with conditional formatting.','DOB removed. The tracker holds the minimum patient data needed.'],
+  tasks:[['Find every overdue follow-up','4 / 4','18s'],['Log a new referral','4 / 4','45s'],['Say what a patient needs next','4 / 4','9s']]}
+];
+const mockTable=v=>`<div class="mock${v.sketch?' sketch':''}"><table><thead><tr>${v.cols.map((c,i)=>`<th class="${i===v.hot?'hot':''}">${c}</th>`).join('')}</tr></thead><tbody>${
+  v.rows.length?v.rows.map(r=>`<tr class="${r[v.cols.length]?'late':''}">${r.slice(0,v.cols.length).map(c=>`<td>${c}</td>`).join('')}</tr>`).join(''):`<tr><td colspan="${v.cols.length}">One row = one referral. Never let a row go quiet.</td></tr>`
+}</tbody></table></div>`;
+const taskTable=v=>v.tasks?`<table class="task"><thead><tr><th>Task</th><th>Success</th><th>Avg time</th></tr></thead><tbody>${v.tasks.map(t=>`<tr><td>${t[0]}</td><td class="num${v===ITERS[2]?' up':''}">${t[1]}</td><td class="num">${t[2]}</td></tr>`).join('')}</tbody></table>`:'<p class="cap">Reviewed, not tested. Paper is for finding the right columns, not for timing tasks.</p>';
+dataTabs('iterTabs','iterPanel',ITERS,v=>v.tab,v=>`<div class="iter"><div style="display:flex;flex-direction:column;gap:16px;min-width:0">${mockTable(v)}<span class="mono">${v.what}</span>${taskTable(v)}</div><div style="min-width:0"><span class="mono">What we learned</span><ul style="margin-top:12px">${v.learn.map(l=>`<li>${l}</li>`).join('')}</ul></div></div>`);
+
+/* ---------- solution tabs (static panels) ---------- */
+tabs($('#solTabs'),i=>$$('.sol [role="tabpanel"]').forEach((p,j)=>{p.hidden=j!==i}));
+// daily loop: four stops around a ring centered at 220,135, labels pushed outward
+const LOOP=[['table','Open the tracker',220,50,220,16,'middle'],['checklist','Work top-down',305,135,340,139,'start'],['phone','Call offices',220,220,220,268,'middle'],['pen','Update rows',135,135,100,139,'end']];
+$('#cycle').innerHTML='<circle class="ring" cx="220" cy="135" r="85"/><circle class="orbit" cx="220" cy="50" r="6"/>'+
+  `<g transform="translate(208 112)">${icon('sun').replace('<svg','<svg width="24" height="24"')}</g><text class="hub" x="220" y="160" text-anchor="middle">EVERY MORNING</text>`+
+  LOOP.map(([ic,label,x,y,lx,ly,anchor])=>`<circle class="stop" cx="${x}" cy="${y}" r="26"/><g transform="translate(${x-12} ${y-12})">${icon(ic).replace('<svg','<svg width="24" height="24"')}</g><text x="${lx}" y="${ly}" text-anchor="${anchor}">${label}</text>`).join('');
+const boxes=$$('.check input'),ckOut=$('#ckOut');
+const updateCheck=()=>{const n=boxes.filter(b=>b.checked).length;ckOut.textContent=n===5?'✓ Packet ready to send':`${n} of 5 ready`;ckOut.classList.toggle('ok',n===5)};
+boxes.forEach(b=>b.addEventListener('change',updateCheck));updateCheck();
+
+/* ---------- working tracker ---------- */
+const TODAY=new Date(2024,11,10);
+// [next action, due, patient, specialty, aid, sent, appt, status]
+const ROWS=[
+ ['Book in-office aid session','12/09/24','M. Davis','Dermatology','Not started','–','–','open'],
+ ['Call DOL with patient','12/10/24','D. Williams','Orthopedics','Pending DOL letter','–','–','awaiting'],
+ ['Follow up with partner office','12/11/24','R. Thompson','Optometry','Approved','12/02/24','–','sent'],
+ ['Confirm fax received','12/12/24','K. Nguyen','GI · Hepatology','Approved','12/04/24','–','sent'],
+ ['Help gather pay stubs','12/12/24','S. Patel','Mental health','Pending proof of income','–','–','awaiting'],
+ ['Reminder call to patient','12/13/24','A. Martinez','Cardiology','Approved','11/18/24','12/16/24','scheduled'],
+ ['Reminder call to patient','12/16/24','J. Wilson','Neurology','Approved','11/12/24','12/18/24','scheduled'],
+ ['Patient seen ✓','–','T. Brown','GI · Hepatology','Approved','10/28/24','11/15/24','closed'],
+ ['Patient seen ✓','–','L. Garcia','Mental health','Approved','10/20/24','11/04/24','closed']
+];
+const STATUS={open:'Open',awaiting:'Awaiting docs',sent:'Sent',scheduled:'Scheduled',closed:'Closed'};
+const parse=s=>{const [m,d,y]=s.split('/');return new Date(2000+ +y,m-1,+d)};
+const dueCell=s=>{if(s==='–')return '<span class="due">–</span>';const d=parse(s),late=d<TODAY,today=+d===+TODAY;return `<span class="due${late||today?' late':''}">${s.slice(0,5)}${late?' · overdue':today?' · today':''}</span>`};
+$('#trackBody').innerHTML=ROWS.map(r=>`<tr data-s="${r[7]}"><td>${r[0]}</td><td>${dueCell(r[1])}</td><td>${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td class="num">${r[5]}</td><td class="num">${r[6]}</td><td><span class="st ${r[7]}">${STATUS[r[7]]}</span></td></tr>`).join('');
+const filtersEl=$('#filters'),trackRows=$$('#trackBody tr');
+filtersEl.innerHTML=[['all','All'],...Object.entries(STATUS)].map(([k,l],i)=>`<button class="sbtn" type="button" data-f="${k}" aria-pressed="${i===0}">${l}</button>`).join('');
+const applyFilter=f=>{let n=0;trackRows.forEach(r=>{const show=f==='all'||r.dataset.s===f;r.hidden=!show;n+=show});$('#trackCount').textContent=`${n} referral${n===1?'':'s'} · today is 12/10/24`};
+pressGroup($$('[data-f]',filtersEl),b=>applyFilter(b.dataset.f));
+applyFilter('all');
+
+/* ---------- outcome charts ---------- */
+const BACKLOG=[214,205,188,166,142,118,96,77,60,46,35,27,22];
+const X=i=>34+i*(316/12),Y=v=>150-v*.65;
+const d=BACKLOG.map((v,i)=>(i?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1)).join(' ');
+const burn=$('#burn'),end=$('#burnEnd'),lab=$('#burnLab'),last=BACKLOG.length-1;
+burn.setAttribute('d',d);$('#burnArea').setAttribute('d',`${d} L350 150 L34 150 Z`);
+end.setAttribute('cx',X(last));end.setAttribute('cy',Y(BACKLOG[last]));
+lab.setAttribute('x',X(last)-8);lab.setAttribute('y',Y(BACKLOG[last])-10);lab.textContent=BACKLOG[last]+' open';
 if(!reduce){
-  const len=burn.getTotalLength();burn.style.strokeDasharray=len;burn.style.strokeDashoffset=0;
-  const io=new IntersectionObserver(es=>{if(!es[0].isIntersecting)return;io.disconnect();
-    burn.style.transition='none';burn.style.strokeDashoffset=len;ring.style.transition='none';ring.style.strokeDashoffset=377;fills.forEach(f=>{f.style.transition='none';f.style.width='0%'});
-    requestAnimationFrame(()=>requestAnimationFrame(()=>{burn.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)';burn.style.strokeDashoffset=0;ring.style.transition='';ring.style.strokeDashoffset=37.7;fills.forEach(f=>{f.style.transition='';f.style.width=f.dataset.w+'%'})}));
-  },{threshold:.4});
-  const r=$('#charts').getBoundingClientRect();if(r.top>innerHeight)io.observe($('#charts'));
+  const charts=$('#charts'),ring=$('#ring'),fills=$$('.fill[data-w]'),len=burn.getTotalLength();
+  // only replay the draw-in when the charts start below the fold, so the resting state is never blank
+  if(charts.getBoundingClientRect().top>innerHeight){
+    burn.style.strokeDasharray=len;burn.style.strokeDashoffset=len;ring.style.strokeDashoffset=376.99;fills.forEach(f=>{f.style.width='0%'});
+    onView(charts,()=>{burn.style.transition='stroke-dashoffset 1.6s cubic-bezier(.2,.8,.2,1)';burn.style.strokeDashoffset=0;ring.style.strokeDashoffset=37.7;fills.forEach(f=>{f.style.width=f.dataset.w+'%'})});
+  }
 }
+
+/* ---------- draw-in for illustrated sections ---------- */
+// children of a [data-stagger] list get an index so they arrive one after another
+$$('[data-stagger]').forEach(list=>[...list.children].forEach((el,i)=>el.style.setProperty('--i',i)));
+// like the charts, only sections that start below the fold wait to be drawn in
+if(!reduce)$$('[data-draw]').forEach(sec=>{
+  if(sec.getBoundingClientRect().top<=innerHeight)return;
+  sec.classList.add('undrawn');onView(sec,()=>sec.classList.remove('undrawn'),.2);
+});
 })();
 </script>
 </body>
