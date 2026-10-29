@@ -384,8 +384,47 @@ tbody tr:last-child td{border-bottom:0}
 .sol [role="tabpanel"]{display:flex;flex-direction:column;gap:14px}
 .sol h4{font-size:clamp(24px,2.8vw,34px)}
 .sol [role="tabpanel"]>p{color:var(--muted);max-width:62ch}
-.sol .from{font-size:14px;padding:12px 14px;border-radius:var(--r-md);background:var(--bg-2)}
-.sol .from b{font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin-right:8px}
+.sol .from{display:flex;gap:12px;align-items:center;font-size:14.5px;color:var(--muted)}
+.sol .from .badge{width:40px;height:40px}
+.sol .from .badge .ico{width:20px;height:20px}
+.sol .from b{display:block;font:500 10.5px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.sol-art{padding:24px;border-radius:var(--r-md);background:var(--bg-2);min-width:0}
+/* SOP: a referral passes through four hands, one of which owns it */
+.handoff{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;position:relative}
+.handoff::before{content:"";position:absolute;left:12.5%;right:12.5%;top:25px;height:2px;background:repeating-linear-gradient(90deg,var(--faint) 0 6px,transparent 6px 11px)}
+.handoff::after{content:"";position:absolute;top:20px;left:12.5%;width:12px;height:12px;border-radius:50%;background:var(--accent);animation:run 4.5s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes run{85%,100%{left:calc(87.5% - 12px)}}
+.handoff li{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;font-size:13.5px;color:var(--muted)}
+.handoff li b{display:block;font-size:14.5px;color:var(--ink)}
+.handoff .badge{background:var(--surface-solid);border:1px solid var(--line);color:var(--muted)}
+.handoff .own .badge{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 22%,transparent)}
+@media (max-width:560px){.handoff{grid-template-columns:1fr 1fr;row-gap:22px}.handoff::before,.handoff::after{display:none}}
+/* tracker: rows slide into due-date order and the overdue one flags itself */
+.sortdemo{position:relative;height:178px}
+.sortdemo>div{position:absolute;inset:0 0 auto;height:38px;display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;padding-inline:14px;border-radius:10px;background:var(--surface-solid);border:1px solid var(--line);font-size:13.5px;white-space:nowrap;animation:sortrow .9s cubic-bezier(.5,0,.2,1) .8s both}
+.sortdemo>div span:nth-child(2){overflow:hidden;text-overflow:ellipsis}
+.sortdemo>.late{animation:sortrow .9s cubic-bezier(.5,0,.2,1) .8s both,flagrow .5s 1.8s both}
+.sortdemo .due{font:500 12px var(--mono)}
+@keyframes sortrow{from{transform:translateY(var(--from))}to{transform:translateY(var(--to))}}
+@keyframes flagrow{to{border-color:var(--warn);background:color-mix(in srgb,var(--warn) 14%,var(--surface-solid))}}
+/* paperwork: two people at a table, the form ticks itself off */
+.scene{display:block;width:100%;max-width:440px;height:auto;margin:0 auto}
+.scene .tick{fill:none;stroke:var(--ok);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;animation:tick .45s ease forwards}
+@keyframes tick{to{stroke-dashoffset:0}}
+.steps4{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-top:20px}
+.steps4 li{display:flex;flex-direction:column;gap:8px;font-size:13.5px}
+.steps4 .badge{width:40px;height:40px}
+.steps4 .badge .ico{width:20px;height:20px}
+@media (max-width:560px){.steps4{grid-template-columns:1fr 1fr}}
+/* daily loop: four steps around a ring, with a dot doing the rounds */
+.cycle{display:block;width:100%;max-width:460px;height:auto;margin:0 auto;overflow:visible}
+.cycle .ring{fill:none;stroke:var(--faint);stroke-width:2;stroke-dasharray:4 7}
+.cycle .stop{fill:var(--surface-solid);stroke:var(--line);stroke-width:1.5}
+.cycle .ico{color:var(--accent)}
+.cycle text{font:600 13px var(--body);fill:var(--ink)}
+.cycle .hub{font:500 11px var(--mono);letter-spacing:.1em;fill:var(--muted)}
+.cycle .orbit{fill:var(--accent);transform-origin:220px 135px;animation:spin 7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 @media (max-width:820px){.sol{grid-template-columns:1fr}.sol .tabs{flex-direction:row;border-right:0;border-bottom:1px solid var(--line)}.sol .tabs [role="tab"]{flex:none}}
 .blocks{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .block{background:var(--surface-solid);border:1px solid var(--line);border-radius:var(--r-md);padding:16px;display:flex;flex-direction:column;gap:8px;min-width:0}
@@ -393,6 +432,7 @@ tbody tr:last-child td{border-bottom:0}
 .block small{color:var(--muted);font-size:12.5px}
 .tax{display:flex;flex-direction:column;gap:6px;font-size:13.5px}
 .tax div{display:flex;gap:10px;align-items:center}
+.block.check{grid-column:1/-1}
 .check label{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:3px 0;cursor:pointer}
 .check input{accent-color:var(--accent);margin-top:5px}
 .check output{font:600 11px var(--body);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -453,10 +493,30 @@ details.tr summary::-webkit-details-marker{display:none}
 details.tr summary::after{content:"+";font-size:24px;color:var(--accent);transition:transform .3s;line-height:1}
 details.tr[open] summary::after{transform:rotate(45deg)}
 details.tr p{color:var(--muted);padding-bottom:18px;max-width:64ch}
-.nextlist{list-style:none;padding:0;border-top:1px solid var(--ink)}
-.nextlist li{display:grid;grid-template-columns:1fr 2fr;gap:20px;padding:15px 0;border-bottom:1px solid var(--line)}
-.nextlist span{color:var(--muted)}
-@media (max-width:640px){.nextlist li{grid-template-columns:1fr;gap:4px}}
+/* what I'd build next: stops on a dotted road */
+.roadmap{list-style:none;padding:0;margin-top:18px;display:flex;flex-direction:column;position:relative}
+.roadmap::before{content:"";position:absolute;left:21px;top:30px;bottom:30px;width:2px;background:repeating-linear-gradient(180deg,var(--faint) 0 5px,transparent 5px 10px)}
+.roadmap li{position:relative;display:grid;grid-template-columns:44px minmax(0,1fr);gap:16px;align-items:center;padding-block:10px}
+.roadmap .badge{width:44px;height:44px;background:var(--surface-solid);border:1px solid var(--line);color:var(--accent);transition:transform .5s cubic-bezier(.3,1.5,.5,1) calc(var(--i,0)*150ms),opacity .4s calc(var(--i,0)*150ms)}
+.roadmap .badge .ico{width:22px;height:22px}
+.roadmap span{display:block;color:var(--muted);font-size:14.5px}
+.undrawn .roadmap .badge{transform:scale(0);opacity:0}
+/* legacy: my twelve weeks, then the line keeps going without me */
+.legacy{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+.legacy>div{display:flex;flex-direction:column;gap:10px}
+.legacy .line{position:relative;height:60px;display:flex;align-items:center;justify-content:space-around}
+.legacy .line::before{content:"";position:absolute;left:0;right:0;top:29px;height:3px;background:var(--accent);transform-origin:left;transition:transform 1s cubic-bezier(.4,0,.2,1)}
+.legacy .after .line::before{right:10px;background:repeating-linear-gradient(90deg,var(--accent) 0 8px,transparent 8px 14px);transition-delay:1s}
+.legacy .after .line::after{content:"";position:absolute;right:0;top:24px;border:6.5px solid transparent;border-left:10px solid var(--accent);border-right:0}
+.legacy .pin{position:absolute;right:-8px;top:23px;width:16px;height:16px;border-radius:50%;background:var(--accent);border:3px solid var(--surface-solid)}
+.legacy .badge{position:relative;width:46px;height:46px;background:var(--surface-solid);border:1px solid var(--line);color:var(--accent);transition:transform .5s cubic-bezier(.3,1.5,.5,1) calc(var(--i,0)*150ms + 1.4s),opacity .4s calc(var(--i,0)*150ms + 1.4s)}
+.undrawn .legacy .line::before{transform:scaleX(0)}
+.undrawn .legacy .badge{transform:scale(0);opacity:0}
+.legacy-card{padding:28px;display:flex;flex-direction:column;gap:18px}
+.legacy-card h3{font-size:clamp(28px,3.2vw,40px)}
+.moment{display:flex;gap:14px;align-items:center;padding:14px 16px;border-radius:var(--r-md);background:var(--blush);font-size:15px}
+.moment .badge{width:42px;height:42px;background:var(--surface-solid);color:var(--warn)}
+.moment .badge .ico{width:21px;height:21px}
 .next{display:grid;grid-template-columns:1fr auto;align-items:center;gap:24px;padding:36px;text-decoration:none;transition:transform .3s}
 .next:hover{transform:translateY(-3px)}
 .next h3{font-size:clamp(30px,4vw,48px);margin-top:8px}
@@ -469,7 +529,7 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
 .foot nav{display:flex;gap:18px;flex-wrap:wrap}
 
 @media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
 </style>
 </head>
@@ -732,22 +792,39 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
           <button role="tab" type="button" id="sol-t0" aria-controls="sol-p0" aria-selected="true"><span>01</span>Standard operating procedure</button>
           <button role="tab" type="button" id="sol-t1" aria-controls="sol-p1" aria-selected="false"><span>02</span>Referral tracker</button>
           <button role="tab" type="button" id="sol-t2" aria-controls="sol-p2" aria-selected="false"><span>03</span>Reusable building blocks</button>
-          <button role="tab" type="button" id="sol-t3" aria-controls="sol-p3" aria-selected="false"><span>04</span>In-person document help</button>
-          <button role="tab" type="button" id="sol-t4" aria-controls="sol-p4" aria-selected="false"><span>05</span>Daily follow-up cadence</button>
+          <button role="tab" type="button" id="sol-t3" aria-controls="sol-p3" aria-selected="false"><span>04</span>Paperwork, together</button>
+          <button role="tab" type="button" id="sol-t4" aria-controls="sol-p4" aria-selected="false"><span>05</span>Daily follow-up loop</button>
         </div>
         <div class="panel" role="tabpanel" id="sol-p0" aria-labelledby="sol-t0">
           <h4>A standard operating procedure</h4>
-          <p>The SOP defines who does what, in what order, and where each handoff happens. It names one Referrals Coordinator as accountable for every referral from order to appointment.</p>
-          <p class="from"><b>From research</b>Every role assumed another role owned follow-up. (Theme: no shared owner)</p>
+          <p>One written process, with one coordinator accountable from order to appointment.</p>
+          <div class="sol-art">
+            <ol class="handoff">
+              <li><span class="badge" data-icon="doctor"></span><span><b>Provider</b>writes the referral</span></li>
+              <li class="own"><span class="badge" data-icon="owner"></span><span><b>Coordinator</b>owns it end to end</span></li>
+              <li><span class="badge" data-icon="building"></span><span><b>Specialist</b>books the visit</span></li>
+              <li><span class="badge" data-icon="flag"></span><span><b>Patient seen</b>referral closed</span></li>
+            </ol>
+          </div>
+          <p class="from"><span class="badge" data-icon="people"></span><span><b>From research</b>Every role assumed another role owned follow-up.</span></p>
         </div>
         <div class="panel" role="tabpanel" id="sol-p1" aria-labelledby="sol-t1" hidden>
           <h4>One referral tracker</h4>
-          <p>A shared Excel tracker gives every active referral a status, a next action and a due date. Rows sort by due date, so the most urgent work is always at the top. Patient identifiers stay minimal: name and specialty only, with clinical detail kept in the EHR.</p>
-          <p class="from"><b>From research</b>0 of 214 referrals had a recorded next action. (Theme: no visibility)</p>
+          <p>Every referral gets a status, a next action and a due date. Clinical detail stays in the EHR.</p>
+          <div class="sol-art">
+            <div class="sortdemo" role="img" aria-label="Four tracker rows sorting into due-date order, with the overdue row flagged">
+              <div class="late" style="--from:46px;--to:0px"><span class="due">12/09</span><span>Book in-office aid session</span><span class="st open">Open</span></div>
+              <div style="--from:138px;--to:46px"><span class="due">12/10</span><span>Call DOL with patient</span><span class="st awaiting">Awaiting docs</span></div>
+              <div style="--from:0px;--to:92px"><span class="due">12/11</span><span>Follow up with partner office</span><span class="st sent">Sent</span></div>
+              <div style="--from:92px;--to:138px"><span class="due">12/13</span><span>Reminder call to patient</span><span class="st scheduled">Scheduled</span></div>
+            </div>
+            <p class="mono" style="margin-top:14px">Rows sort by due date. Overdue ones flag themselves.</p>
+          </div>
+          <p class="from"><span class="badge" data-icon="table"></span><span><b>From research</b>0 of 214 referrals had a recorded next action.</span></p>
         </div>
         <div class="panel" role="tabpanel" id="sol-p2" aria-labelledby="sol-t2" hidden>
           <h4>Reusable building blocks</h4>
-          <p>The system held together because its parts were standard. These were the closest thing this operation had to a design system.</p>
+          <p>Standard parts, built once and reused on every referral.</p>
           <div class="blocks">
             <div class="block"><h5>Status taxonomy</h5><small>Five states replaced 14 free-text spellings</small><div class="tax"><div><span class="st open">Open</span>Logged, not started</div><div><span class="st awaiting">Awaiting docs</span>Aid paperwork pending</div><div><span class="st sent">Sent</span>Complete packet sent</div><div><span class="st scheduled">Scheduled</span>Appointment booked</div><div><span class="st closed">Closed</span>Patient seen</div></div></div>
             <div class="block"><h5>Specialist contact card</h5><small>One per office, from the phone survey</small><dl class="kv"><dt>Office</dt><dd>Partner hospital, GI</dd><dt>Contact</dt><dd>Fax, then call to confirm</dd><dt>Aid rep</dt><dd>Direct line on file</dd><dt>Requires</dt><dd>Clinical notes + aid approval</dd></dl></div>
@@ -759,18 +836,44 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
               <label><input type="checkbox" id="ck5">Cover sheet to named contact</label>
               <output id="ckOut" aria-live="polite">0 of 5 ready</output>
             </div>
-            <div class="block"><h5>Patient prep guide</h5><small>The paperwork, broken into steps</small><ol style="padding-left:18px;font-size:13.5px;display:flex;flex-direction:column;gap:4px"><li>Book a short in-person session. Bring any ID you have.</li><li>We gather your documents together.</li><li>We fill out the aid application line by line.</li><li>We send the packet and call you when it’s scheduled.</li></ol></div>
           </div>
         </div>
         <div class="panel" role="tabpanel" id="sol-p3" aria-labelledby="sol-t3" hidden>
-          <h4>In-person document assembly</h4>
-          <p>Instead of handing patients a list, I sat with each one in a dedicated appointment and we completed applications together. For patients who couldn’t return, I made the calls and gathered documents for them.</p>
-          <p class="from"><b>From research</b>82 referrals stalled on aid paperwork. Patients described no printer, no time off and forms they couldn’t parse. (Theme: patient load)</p>
+          <h4>Paperwork, done together</h4>
+          <p>Patients filled out aid forms in person with me beside them. For those who couldn’t come back, I made the calls.</p>
+          <div class="sol-art">
+            <svg class="scene" viewBox="0 0 400 186" role="img" aria-label="A coordinator and a patient at a table, ticking off an aid form together">
+              <path d="M140 54Q200 24 260 54" fill="none" stroke="var(--faint)" stroke-width="2" stroke-dasharray="3 6"/>
+              <path d="M78 132c0-28 16-44 36-44s36 16 36 44z" fill="var(--accent)"/>
+              <circle cx="114" cy="68" r="19" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="2"/>
+              <path d="M250 132c0-28 16-44 36-44s36 16 36 44z" fill="var(--gold)"/>
+              <circle cx="286" cy="68" r="19" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="2"/>
+              <rect x="70" y="128" width="260" height="8" rx="4" fill="var(--faint)"/>
+              <rect x="96" y="136" width="6" height="46" rx="2" fill="var(--faint)"/>
+              <rect x="298" y="136" width="6" height="46" rx="2" fill="var(--faint)"/>
+              <g transform="rotate(-4 200 108)">
+                <rect x="170" y="84" width="60" height="44" rx="3" fill="var(--surface-solid)" stroke="var(--ink)" stroke-width="1.5"/>
+                <path d="M194 96h26M194 106h26M194 116h20" stroke="var(--faint)" stroke-width="3" stroke-linecap="round"/>
+                <path class="tick" pathLength="1" d="M177 95l4 4 6-7" style="animation-delay:.6s"/>
+                <path class="tick" pathLength="1" d="M177 105l4 4 6-7" style="animation-delay:1.1s"/>
+                <path class="tick" pathLength="1" d="M177 115l4 4 6-7" style="animation-delay:1.6s"/>
+              </g>
+              <path d="M146 118l22-14" stroke="var(--ink)" stroke-width="3" stroke-linecap="round"/>
+            </svg>
+            <ol class="steps4">
+              <li><span class="badge" data-icon="idcard"></span>Bring any ID you have</li>
+              <li><span class="badge" data-icon="form"></span>Gather documents together</li>
+              <li><span class="badge" data-icon="pen"></span>Fill the form line by line</li>
+              <li><span class="badge" data-icon="phone"></span>Get a call when it’s booked</li>
+            </ol>
+          </div>
+          <p class="from"><span class="badge" data-icon="heart"></span><span><b>From research</b>82 referrals stalled on aid paperwork.</span></p>
         </div>
         <div class="panel" role="tabpanel" id="sol-p4" aria-labelledby="sol-t4" hidden>
-          <h4>Daily follow-up and partner check-ins</h4>
-          <p>Each morning the coordinator works the tracker top-down by due date. Standing check-ins with specialist offices turned one-off faxes into relationships that moved cases in days.</p>
-          <p class="from"><b>From research</b>No referral had ever been marked done. (Theme: no closure point)</p>
+          <h4>A daily follow-up loop</h4>
+          <p>The same four steps every morning. Standing check-ins turned one-off faxes into working relationships.</p>
+          <div class="sol-art"><svg class="cycle" id="cycle" viewBox="0 0 440 280" role="img" aria-label="Every morning: open the tracker, work top-down, call offices, update rows"></svg></div>
+          <p class="from"><span class="badge" data-icon="flag"></span><span><b>From research</b>No referral had ever been marked done.</span></p>
         </div>
       </div>
     </div>
@@ -839,12 +942,17 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" data-draw>
     <div class="wrap grid-2" style="align-items:start">
-      <div style="display:flex;flex-direction:column;gap:18px;max-width:60ch">
+      <div class="legacy-card glass">
         <div class="eyebrow">The outcome I’m most proud of</div>
-        <p class="muted"><b style="color:var(--ink)">The system outlived my role.</b> When I left Mercy, the SOP, the tracker, the checklists and the daily cadence stayed in use. A process that depends on one person is fragile. A process that keeps running after that person leaves is a system.</p>
-        <p class="muted">The patients who had waited longest benefited first, including a patient with cirrhosis who was scheduled with a hepatologist in the first cycle of the new process.</p>
+        <div class="legacy" role="img" aria-label="My 12 weeks, then the SOP, tracker, checklists and daily loop kept running after I left">
+          <div><span class="mono">My 12 weeks</span><div class="line"><span class="pin"></span></div></div>
+          <div class="after"><span class="mono">After I left</span><div class="line" data-stagger><span class="badge" data-icon="form"></span><span class="badge" data-icon="table"></span><span class="badge" data-icon="checklist"></span><span class="badge" data-icon="sun"></span></div></div>
+        </div>
+        <h3>The system outlived my role.</h3>
+        <p class="muted">The SOP, tracker, checklists and daily loop all stayed in use.</p>
+        <p class="moment"><span class="badge" data-icon="heart"></span>First cycle: a patient with cirrhosis, waiting over a year, saw a hepatologist.</p>
       </div>
       <figure class="quote glass">
         <div class="eyebrow">In Mercy’s words</div>
@@ -861,17 +969,17 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
     </div>
   </section>
 
-  <section class="sec">
+  <section class="sec" data-draw>
     <div class="wrap">
-      <div class="refl">
-        <div><h4>Visibility beat effort</h4><p>I expected the fix to be chasing specialist offices harder. Making every open case visible in one place changed behavior more than any amount of chasing.</p></div>
-        <div><h4>Designing for people, not users</h4><p>I sat with sick, exhausted people and asked them for bank statements. The person on the other side of every form has a body and a limit.</p></div>
-        <div><h4>Systems that outlive you</h4><p>I could have been the system, holding every relationship in my head. Writing it down so someone else could inherit it was the harder, better choice.</p></div>
+      <div class="refl" data-stagger>
+        <div><span class="badge" data-icon="eye"></span><h4>Visibility beat effort</h4><p>Making every open case visible changed behavior more than chasing offices harder.</p></div>
+        <div><span class="badge" data-icon="heart"></span><h4>Design for people, not users</h4><p>The person on the other side of every form has a body and a limit.</p></div>
+        <div><span class="badge" data-icon="sprout"></span><h4>Build systems that outlive you</h4><p>Writing it down so someone else could inherit it was the harder, better choice.</p></div>
       </div>
     </div>
   </section>
 
-  <section class="sec" style="padding-top:56px">
+  <section class="sec" style="padding-top:56px" data-draw>
     <div class="wrap grid-2" style="align-items:start;gap:48px">
       <div>
         <div class="eyebrow">Research limitations</div>
@@ -884,12 +992,12 @@ footer{padding-block:60px;color:var(--muted);font-size:13.5px}
       </div>
       <div>
         <div class="eyebrow">What I’d build next</div>
-        <ul class="nextlist" style="margin-top:18px">
-          <li><b>Automated reminders</b><span>Status-based alerts, so a stalled referral surfaces itself.</span></li>
-          <li><b>Multilingual SMS updates</b><span>Plain-language, shame-free messages when a referral moves.</span></li>
-          <li><b>Referral-health dashboard</b><span>Closure rate and aging cases at a glance for leadership.</span></li>
-          <li><b>SOP inside the EHR</b><span>Move the checklist into eClinicalWorks, where the work already happens.</span></li>
-        </ul>
+        <ol class="roadmap" data-stagger>
+          <li><span class="badge" data-icon="bell"></span><div><b>Automated reminders</b><span>A stalled referral surfaces itself.</span></div></li>
+          <li><span class="badge" data-icon="sms"></span><div><b>Multilingual SMS updates</b><span>Plain, shame-free texts when a referral moves.</span></div></li>
+          <li><span class="badge" data-icon="chart"></span><div><b>Referral-health dashboard</b><span>Closure rate and aging cases for leadership.</span></div></li>
+          <li><span class="badge" data-icon="ehr"></span><div><b>SOP inside the EHR</b><span>The checklist lives where the work happens.</span></div></li>
+        </ol>
       </div>
     </div>
   </section>
@@ -960,7 +1068,15 @@ const ICONS={
  flag:'<path d="M5 21V4h12l-2 4 2 4H5"/>',
  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
  knot:'<path d="M3 12c2-6 5 6 7 0s5 6 7 0 3 2 4 0"/>',
- key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>'
+ key:'<circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l3 3"/>',
+ doctor:'<circle cx="12" cy="7" r="3.5"/><path d="M5 21c0-4 3-7 7-7s7 3 7 7M9 14v3a3 3 0 0 0 6 0v-3"/>',
+ idcard:'<rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="9" cy="11" r="2"/><path d="M6 16c.5-1.5 1.7-2 3-2s2.5.5 3 2M14 10h4M14 13h3"/>',
+ pen:'<path d="M4 20l4-1L19 8l-3-3L5 16l-1 4"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6 7 7M17 17l1.4 1.4M5.6 18.4 7 17M17 7l1.4-1.4"/>',
+ bell:'<path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4l2-2"/><path d="M10 20a2 2 0 0 0 4 0"/>',
+ sms:'<path d="M4 5h16v11H9l-5 4V5"/><path d="M8 9h8M8 12h5"/>',
+ chart:'<path d="M4 4v16h16"/><path d="M8 16v-4M12 16V8M16 16v-6"/>',
+ ehr:'<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M12 8v6M9 11h6"/>'
 };
 // pathLength="1" lets one dash rule draw any shape in, whatever its length
 const icon=n=>`<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">${ICONS[n].replace(/<(path|circle|rect)/g,'<$1 pathLength="1"')}</svg>`;
@@ -1307,6 +1423,11 @@ dataTabs('iterTabs','iterPanel',ITERS,v=>v.tab,v=>`<div class="iter"><div style=
 
 /* ---------- solution tabs (static panels) ---------- */
 tabs($('#solTabs'),i=>$$('.sol [role="tabpanel"]').forEach((p,j)=>{p.hidden=j!==i}));
+// daily loop: four stops around a ring centered at 220,135, labels pushed outward
+const LOOP=[['table','Open the tracker',220,50,220,16,'middle'],['checklist','Work top-down',305,135,340,139,'start'],['phone','Call offices',220,220,220,268,'middle'],['pen','Update rows',135,135,100,139,'end']];
+$('#cycle').innerHTML='<circle class="ring" cx="220" cy="135" r="85"/><circle class="orbit" cx="220" cy="50" r="6"/>'+
+  `<g transform="translate(208 112)">${icon('sun').replace('<svg','<svg width="24" height="24"')}</g><text class="hub" x="220" y="160" text-anchor="middle">EVERY MORNING</text>`+
+  LOOP.map(([ic,label,x,y,lx,ly,anchor])=>`<circle class="stop" cx="${x}" cy="${y}" r="26"/><g transform="translate(${x-12} ${y-12})">${icon(ic).replace('<svg','<svg width="24" height="24"')}</g><text x="${lx}" y="${ly}" text-anchor="${anchor}">${label}</text>`).join('');
 const boxes=$$('.check input'),ckOut=$('#ckOut');
 const updateCheck=()=>{const n=boxes.filter(b=>b.checked).length;ckOut.textContent=n===5?'✓ Packet ready to send':`${n} of 5 ready`;ckOut.classList.toggle('ok',n===5)};
 boxes.forEach(b=>b.addEventListener('change',updateCheck));updateCheck();
